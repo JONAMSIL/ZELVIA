@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ZELVIA">
+<meta name="theme-color" content="#0d1f3c">
+<title>ZELVIA · 학원 AI 학습관리 시스템</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0d1f3c; --gold:#c9a84c; --gold2:#b8922a;
+  --bg:#f5f3ee; --white:#fff; --gray:#6b7280;
+  --border:#e5e7eb; --green:#16a34a; --purple:#7c3aed;
+  --teal:#0891b2; --orange:#f26c1b;
+}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);min-height:100vh;color:#1a1a2e}
+
+/* 헤더 */
+.hdr{background:var(--navy);padding:18px 20px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.hdr-brand{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:900;color:var(--gold);letter-spacing:2px}
+.hdr-sub{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:3px;margin-top:2px}
+
+.main{max-width:480px;margin:0 auto;padding:24px 16px 100px}
+
+/* 역할 선택 */
+.role-section{margin-bottom:28px}
+.section-label{font-size:11px;font-weight:900;color:var(--gray);letter-spacing:2px;margin-bottom:12px;text-transform:uppercase}
+
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.role-card{
+  background:var(--white);border-radius:18px;padding:20px 12px;
+  text-align:center;border:2px solid var(--border);cursor:pointer;
+  transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.04);
+  text-decoration:none;display:block
+}
+.role-card:active{transform:scale(.97)}
+.role-card.active{border-color:var(--gold);background:#fffbeb}
+.role-icon{font-size:36px;margin-bottom:8px}
+.role-name{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.role-desc{font-size:11px;color:var(--gray);line-height:1.5}
+
+/* 앱 카드 */
+.app-grid{display:grid;gap:10px}
+.app-card{
+  background:var(--white);border-radius:16px;padding:16px 18px;
+  border:1.5px solid var(--border);cursor:pointer;
+  transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.04);
+  text-decoration:none;display:flex;align-items:center;gap:14px
+}
+.app-card:active{transform:scale(.98)}
+.app-card:hover{border-color:var(--gold);box-shadow:0 4px 16px rgba(201,168,76,.15)}
+.app-icon{font-size:32px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:12px;flex-shrink:0}
+.app-info{flex:1}
+.app-name{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.app-desc{font-size:12px;color:var(--gray);line-height:1.5}
+.app-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px}
+.badge-done{background:#d1fae5;color:var(--green)}
+.badge-new{background:#ede9fe;color:var(--purple)}
+
+/* 앱별 색상 */
+.app-glsi .app-icon{background:#fdf6e3}
+.app-att .app-icon{background:#f0fdf4}
+.app-omr .app-icon{background:#eff6ff}
+.app-diag .app-icon{background:#faf5ff}
+.app-report .app-icon{background:#fff7ed}
+.app-intake .app-icon{background:#f0fdfa}
+
+/* 공지 박스 */
+.notice-box{background:linear-gradient(135deg,#1a3260,#0d1f3c);border-radius:16px;padding:16px 18px;margin-bottom:20px;color:var(--white)}
+.notice-title{font-size:12px;font-weight:900;color:var(--gold);margin-bottom:6px;letter-spacing:1px}
+.notice-text{font-size:12px;color:rgba(255,255,255,.7);line-height:1.7}
+
+/* 연동 상태 */
+.link-status{background:var(--white);border-radius:14px;padding:14px 16px;margin-top:16px;border:1.5px solid var(--border)}
+.link-title{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.link-row{display:flex;align-items:center;justify-content:space-between;font-size:12px;padding:4px 0}
+.link-dot{width:8px;height:8px;border-radius:50%;margin-right:8px;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-brand">ZELVIA</div>
+  <div class="hdr-sub">AI LEARNING MANAGEMENT SYSTEM</div>
+</div>
+
+<div class="main">
+
+  <!-- 공지 -->
+  <div class="notice-box">
+    <div class="notice-title">💡 사용 안내</div>
+    <div class="notice-text">
+      모든 앱이 <b>같은 브라우저</b>에서 열려야 데이터가 연동됩니다.<br>
+      크롬(Chrome) 또는 삼성 인터넷을 사용해주세요.<br>
+      음성 기능은 마이크 권한 허용이 필요합니다.
+    </div>
+  </div>
+
+  <!-- 역할별 빠른 접근 -->
+  <div class="role-section">
+    <div class="section-label">역할 선택</div>
+    <div class="role-grid">
+      <div class="role-card" onclick="showApps('admin')">
+        <div class="role-icon">👑</div>
+        <div class="role-name">원장</div>
+        <div class="role-desc">전체 현황<br>경영 데이터</div>
+      </div>
+      <div class="role-card" onclick="showApps('teacher')">
+        <div class="role-icon">👩‍🏫</div>
+        <div class="role-name">선생님</div>
+        <div class="role-desc">출석·관찰<br>음성 기록</div>
+      </div>
+      <div class="role-card" onclick="showApps('student')">
+        <div class="role-icon">✏️</div>
+        <div class="role-name">학생</div>
+        <div class="role-desc">OMR 마킹<br>오답 확인</div>
+      </div>
+      <div class="role-card" onclick="showApps('all')">
+        <div class="role-icon">📋</div>
+        <div class="role-name">전체 앱</div>
+        <div class="role-desc">모든 기능<br>보기</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 앱 목록 -->
+  <div class="section-label">앱 목록</div>
+  <div class="app-grid" id="appGrid">
+    <!-- JS로 렌더링 -->
+  </div>
+
+  <!-- 연동 상태 -->
+  <div class="link-status" id="linkStatus">
+    <div class="link-title">🔗 데이터 연동 상태</div>
+    <div id="linkRows"></div>
+  </div>
+
+</div>
+
+<script>
+const APPS = [
+  {
+    id: 'glsi',
+    name: 'GLSI v8 · 허브',
+    desc: '학습상태지수 · 전체 대시보드 · 원장 메인',
+    icon: '📊',
+    iconBg: 'app-glsi',
+    url: 'glsi.html',
+    roles: ['admin', 'all'],
+    badge: '핵심',
+    badgeClass: 'badge-done',
+    storageKey: 'glsi_students_v2',
+    color: '#b8922a'
+  },
+  {
+    id: 'att',
+    name: '출석관찰부 v3',
+    desc: '출석 체크 · 음성 관찰 기록 · GLSI 자동 연동',
+    icon: '📅',
+    iconBg: 'app-att',
+    url: 'attendance.html',
+    roles: ['teacher', 'admin', 'all'],
+    badge: '음성',
+    badgeClass: 'badge-done',
+    storageKey: 'zelvia_att_bridge_v1',
+    color: '#16a34a'
+  },
+  {
+    id: 'omr',
+    name: 'OMR 오답노트 v2',
+    desc: '답안 마킹 · 숙제 모드 · 역설교수법 · 끊어읽기',
+    icon: '📝',
+    iconBg: 'app-omr',
+    url: 'omr.html',
+    roles: ['student', 'teacher', 'admin', 'all'],
+    badge: 'NEW',
+    badgeClass: 'badge-new',
+    storageKey: 'zelvia_omr_books',
+    color: '#2563eb'
+  },
+  {
+    id: 'diag',
+    name: '수학진단테스트 v2',
+    desc: '학년별 단원 진단 · 끊어읽기 · 역설교수법',
+    icon: '🧮',
+    iconBg: 'app-diag',
+    url: 'diagnosis.html',
+    roles: ['student', 'teacher', 'admin', 'all'],
+    badge: 'NEW',
+    badgeClass: 'badge-new',
+    storageKey: null,
+    color: '#7c3aed'
+  },
+  {
+    id: 'intake',
+    name: '입회테스트 v12',
+    desc: '신입 진단 · 학습유형 분류 · GLSI 초기값',
+    icon: '🚪',
+    iconBg: 'app-intake',
+    url: 'intake.html',
+    roles: ['admin', 'teacher', 'all'],
+    badge: null,
+    storageKey: 'zelvia_admission_test',
+    color: '#0891b2'
+  },
+  {
+    id: 'report',
+    name: '상담리포트',
+    desc: '월간 성장 리포트 · 학부모 상담 자동 생성',
+    icon: '📋',
+    iconBg: 'app-report',
+    url: 'report.html',
+    roles: ['admin', 'all'],
+    badge: null,
+    storageKey: null,
+    color: '#d97706'
+  },
+];
+
+let currentRole = 'all';
+
+function showApps(role) {
+  currentRole = role;
+  // 역할 카드 활성화
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  renderApps();
+}
+
+function renderApps() {
+  const grid = document.getElementById('appGrid');
+  const filtered = currentRole === 'all'
+    ? APPS
+    : APPS.filter(a => a.roles.includes(currentRole));
+
+  grid.innerHTML = filtered.map(app => `
+    <a class="app-card ${app.iconBg}" href="${app.url}" target="_blank">
+      <div class="app-icon">${app.icon}</div>
+      <div class="app-info">
+        <div class="app-name">
+          ${app.name}
+          ${app.badge ? `<span class="app-badge ${app.badgeClass}">${app.badge}</span>` : ''}
+        </div>
+        <div class="app-desc">${app.desc}</div>
+      </div>
+      <div style="color:#d1d5db;font-size:18px">›</div>
+    </a>
+  `).join('');
+}
+
+// 데이터 연동 상태 확인
+function checkLinkStatus() {
+  const rows = document.getElementById('linkRows');
+  const checks = [
+    { name: '학생 데이터 (GLSI)', key: 'glsi_students_v2', color: '#16a34a' },
+    { name: '출석 연동', key: 'zelvia_att_bridge_v1', color: '#0891b2' },
+    { name: 'OMR 문제집', key: 'zelvia_omr_books', color: '#7c3aed' },
+    { name: 'OMR 성적', key: 'glsi_omr_bridge_v1', color: '#d97706' },
+    { name: '입회테스트', key: 'zelvia_admission_test', color: '#0891b2' },
+  ];
+
+  let html = '';
+  checks.forEach(c => {
+    let exists = false;
+    try {
+      const val = localStorage.getItem(c.key);
+      exists = val !== null && val !== '[]' && val !== '{}';
+    } catch(e) {}
+
+    html += `<div class="link-row">
+      <div style="display:flex;align-items:center">
+        <div class="link-dot" style="background:${exists ? c.color : '#d1d5db'}"></div>
+        <span style="color:${exists ? '#1a1a2e' : '#9ca3af'}">${c.name}</span>
+      </div>
+      <span style="font-weight:700;color:${exists ? c.color : '#9ca3af'}">${exists ? '연동됨' : '데이터 없음'}</span>
+    </div>`;
+  });
+
+  rows.innerHTML = html;
+}
+
+// 초기화
+renderApps();
+checkLinkStatus();
+setInterval(checkLinkStatus, 3000); // 3초마다 상태 갱신
+</script>
+</body>
+</html>

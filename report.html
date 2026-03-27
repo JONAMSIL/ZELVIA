@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZELVIA 상담 리포트</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=DM+Serif+Display&display=swap');
+
+:root {
+  --bg: #F7F5F0;
+  --white: #FFFFFF;
+  --navy: #1A2440;
+  --navy-light: #2C3E6B;
+  --teal: #2A9D8F;
+  --teal-light: #E8F5F3;
+  --gold: #E9C46A;
+  --gold-light: #FDF6E3;
+  --orange: #F4A261;
+  --red: #E76F51;
+  --red-light: #FDECEA;
+  --green: #2A9D8F;
+  --green-light: #E8F5F3;
+  --muted: #8892A4;
+  --border: #E5E0D8;
+  --text: #1A2440;
+  --text-light: #5A6480;
+
+  /* domain colors */
+  --habit: #3B82F6;
+  --cognitive: #8B5CF6;
+  --time: #10B981;
+  --achievement: #F59E0B;
+  --growth: #EF4444;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ─── SETUP SCREEN ─── */
+#setupScreen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+}
+
+.setup-box {
+  background: white;
+  border-radius: 24px;
+  padding: 48px 40px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 80px rgba(26,36,64,0.2);
+}
+
+.setup-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.setup-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.setup-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 36px;
+}
+
+.setup-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--navy);
+  text-align: left;
+  margin-bottom: 6px;
+  margin-top: 16px;
+}
+
+.setup-select, .setup-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.setup-select:focus, .setup-input:focus {
+  border-color: var(--teal);
+}
+
+.setup-btn {
+  width: 100%;
+  margin-top: 28px;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: opacity 0.2s;
+}
+
+.setup-btn:hover { opacity: 0.9; }
+
+.setup-notice {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ─── REPORT SCREEN ─── */
+#reportScreen { display: none; }
+
+.report-header {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  color: white;
+  padding: 32px 40px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.report-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.report-header-title { font-size: 20px; font-weight: 700; }
+
+.report-header-actions { display: flex; gap: 10px; }
+
+.btn-action {
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  border: none;
+  transition: opacity 0.2s;
+}
+.btn-action:hover { opacity: 0.85; }
+.btn-print { background: rgba(255,255,255,0.15); color: white; }
+.btn-back { background: rgba(255,255,255,0.1); color: white; }
+
+.report-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+/* ─── BLOCK BASE ─── */
+.block {
+  background: white;
+  border-radius: 20px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(26,36,64,0.06);
+}
+
+.block-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.block-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ─── BLOCK A: 한눈 요약 ─── */
+.summary-card {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  border-radius: 20px;
+  padding: 32px;
+  color: white;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+
+.summary-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.summary-name { font-size: 28px; font-weight: 900; }
+.summary-grade { font-size: 14px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.summary-period { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+.summary-score-wrap { text-align: right; }
+.summary-score { font-size: 56px; font-weight: 900; line-height: 1; }
+.summary-score-label { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+.summary-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-top: 6px;
+}
+
+.summary-delta.up { background: rgba(42,157,143,0.25); color: #4ECDC4; }
+.summary-delta.down { background: rgba(231,111,81,0.25); color: #FF8C7A; }
+.summary-delta.flat { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+
+.summary-diagnosis {
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 14px;
+  line-height: 1.7;
+  border-left: 3px solid var(--teal);
+}
+
+.type-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* ─── BLOCK B: 성취도 ─── */
+.score-bars { display: flex; flex-direction: column; gap: 12px; }
+
+.score-bar-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 50px;
+  align-items: center;
+  gap: 12px;
+}
+
+.score-bar-label { font-size: 13px; font-weight: 500; }
+
+.score-bar-track {
+  height: 10px;
+  background: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.8s ease;
+}
+
+.score-bar-val { font-size: 13px; font-weight: 700; text-align: right; }
+
+/* Domain radar - text based */
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.domain-card {
+  text-align: center;
+  padding: 16px 8px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+}
+
+.domain-score {
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.domain-name { font-size: 11px; color: var(--muted); font-weight: 500; }
+
+/* ─── BLOCK C: 오답유형 ─── */
+.omr-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.omr-type-card {
+  background: var(--bg);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  border: 1.5px solid var(--border);
+}
+
+.omr-type-pct {
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.omr-type-name { font-size: 12px; color: var(--muted); }
+.omr-type-trend { font-size: 11px; margin-top: 6px; font-weight: 600; }
+
+/* ─── BLOCK D: 행동 습관 ─── */
+.habit-items { display: flex; flex-direction: column; gap: 10px; }
+
+.habit-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-radius: 12px;
+}
+
+.habit-name { flex: 1; font-size: 13px; font-weight: 500; }
+
+.habit-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.habit-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.habit-dot.filled { background: var(--teal); }
+.habit-dot.filled.warn { background: var(--orange); }
+.habit-dot.filled.danger { background: var(--red); }
+
+.habit-score-label { font-size: 12px; font-weight: 700; width: 36px; text-align: right; }
+
+/* ─── BLOCK E: EI ─── */
+.ei-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.ei-item {
+  background: var(--bg);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.ei-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ei-item-name { font-size: 13px; font-weight: 700; }
+.ei-item-score { font-size: 22px; font-weight: 900; }
+
+.ei-compare {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ei-bar-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 6px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.ei-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.8s ease;
+}
+
+/* ─── BLOCK F: 종합진단 ─── */
+.diagnosis-type-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.diagnosis-type-big {
+  font-size: 18px;
+  font-weight: 900;
+  padding: 8px 20px;
+  border-radius: 20px;
+}
+
+.diagnosis-evidence {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.evidence-item {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.evidence-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+
+/* ─── BLOCK G: 지도전략 ─── */
+.strategy-items {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.strategy-item {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border);
+}
+
+.strategy-num {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.strategy-content {}
+.strategy-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.strategy-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+
+/* ─── AI GENERATED ─── */
+.ai-generating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  padding: 12px 0;
+}
+
+.ai-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: pulse 1.2s infinite;
+}
+
+.ai-dot:nth-child(2) { animation-delay: 0.2s; }
+.ai-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ─── PARENT TIP ─── */
+.parent-tip {
+  background: linear-gradient(135deg, #E8F5F3, #F0FAF8);
+  border: 1.5px solid rgba(42,157,143,0.3);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-top: 20px;
+}
+
+.parent-tip-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.parent-tip-text {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* ─── FOOTER ─── */
+.report-footer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ─── PRINT ─── */
+@media print {
+  body { background: white; }
+  .report-header-actions { display: none; }
+  .block { box-shadow: none; border: 1px solid var(--border); }
+  .summary-card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+@media (max-width: 600px) {
+  .report-header { padding: 20px; }
+  .report-body { padding: 16px 12px 40px; }
+  .block { padding: 20px; }
+  .domain-grid { grid-template-columns: repeat(3, 1fr); }
+  .ei-grid { grid-template-columns: 1fr; }
+  .summary-score { font-size: 42px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     SETUP SCREEN
+══════════════════════════════ -->
+<div id="setupScreen">
+  <div class="setup-box">
+    <div class="setup-logo">ZELVIA</div>
+    <div class="setup-title">상담 리포트</div>
+    <div class="setup-sub">GLSI_v8과 같은 기기에서 열면<br>학생 데이터가 자동으로 연동됩니다.</div>
+
+    <div class="setup-label">학생 선택</div>
+    <select id="setupStudent" class="setup-select">
+      <option value="">-- 학생을 선택하세요 --</option>
+    </select>
+
+    <div class="setup-label">분석 기간</div>
+    <select id="setupPeriod" class="setup-select">
+      <option value="1">최근 1개월</option>
+      <option value="3" selected>최근 3개월</option>
+      <option value="6">최근 6개월</option>
+      <option value="12">최근 1년</option>
+    </select>
+
+    <button class="setup-btn" onclick="generateReport()">📊 리포트 생성</button>
+
+    <div class="setup-notice">
+      ⚠️ GLSI_v8 파일과 <b>같은 브라우저</b>에서 열어야 데이터가 연동됩니다.<br>
+      데이터가 없으면 샘플 데이터로 미리보기가 표시됩니다.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     REPORT SCREEN
+══════════════════════════════ -->
+<div id="reportScreen">
+  <div class="report-header">
+    <div>
+      <div class="report-logo">ZELVIA GLSI 2.0</div>
+      <div class="report-header-title">학생 상담 리포트</div>
+    </div>
+    <div class="report-header-actions">
+      <button class="btn-action btn-back" onclick="goBack()">← 다시 선택</button>
+      <button class="btn-action btn-print" onclick="window.print()">🖨️ 인쇄 / PDF</button>
+    </div>
+  </div>
+
+  <div class="report-body">
+    <!-- A: 한눈 요약 -->
+    <div id="blockA"></div>
+
+    <!-- B: 성취도 -->
+    <div class="block" id="blockB">
+      <div class="block-label">Block B</div>
+      <div class="block-title">📊 GLSI 5영역 성취도</div>
+      <div id="blockBContent"></div>
+    </div>
+
+    <!-- C: 오답유형 -->
+    <div class="block" id="blockC">
+      <div class="block-label">Block C</div>
+      <div class="block-title">❌ 오답 유형 분석</div>
+      <div id="blockCContent"></div>
+    </div>
+
+    <!-- D: 행동·습관 -->
+    <div class="block" id="blockD">
+      <div class="block-label">Block D</div>
+      <div class="block-title">📋 행동·습관 관찰 (GLSI 세부)</div>
+      <div id="blockDContent"></div>
+    </div>
+
+    <!-- E: EI -->
+    <div class="block" id="blockE">
+      <div class="block-label">Block E</div>
+      <div class="block-title">🧠 EI 정서 지표 (전월 비교)</div>
+      <div id="blockEContent"></div>
+    </div>
+
+    <!-- F: 종합진단 -->
+    <div class="block" id="blockF">
+      <div class="block-label">Block F</div>
+      <div class="block-title">🔍 종합 진단 — 학습 유형 자동 분류</div>
+      <div id="blockFContent"></div>
+    </div>
+
+    <!-- G: 지도전략 -->
+    <div class="block" id="blockG">
+      <div class="block-label">Block G</div>
+      <div class="block-title">🗺️ 지도 전략 & 학부모 코칭 팁</div>
+      <div id="blockGContent"><div class="ai-generating"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div><span>AI가 맞춤 전략을 생성 중...</span></div></div>
+    </div>
+  </div>
+
+  <div class="report-footer" id="reportFooter"></div>
+</div>
+
+<script>
+// ── 로컬스토리지 읽기 (GLSI_v8과 동일 키) ──
+function readLS(k, fb) {
+  try { const r = localStorage.getItem(k); return r != null ? JSON.parse(r) : fb; }
+  catch(e) { return fb; }
+}
+
+const LS = {
+  STUDENTS: 'glsi_students_v2',
+  RECORDS: 'glsi_records_v2',
+  CONFIG: 'glsi_cfg_v2'
+};
+
+let allStudents = [];
+let allRecords = {};
+let selectedStudent = null;
+let selectedRecords = [];
+let selectedEI = [];
+
+// ── 초기화 ──
+function init() {
+  allStudents = readLS(LS.STUDENTS, []);
+  allRecords = readLS(LS.RECORDS, {});
+
+  const sel = document.getElementById('setupStudent');
+  if (allStudents.length === 0) {
+    sel.innerHTML = '<option value="__sample__">📋 샘플 데이터 미리보기</option>';
+  } else {
+    sel.innerHTML = '<option value="">-- 학생을 선택하세요 --</option>' +
+      allStudents.map(s => `<option value="${s.id}">${s.name} ${s.grade ? '· ' + s.grade : ''}</option>`).join('');
+  }
+}
+
+// ── 리포트 생성 ──
+async function generateReport() {
+  const sid = document.getElementById('setupStudent').value;
+  const months = parseInt(document.getElementById('setupPeriod').value);
+
+  if (!sid) { alert('학생을 선택하세요.'); return; }
+
+  if (sid === '__sample__') {
+    loadSampleData();
+  } else {
+    selectedStudent = allStudents.find(s => s.id === sid);
+    if (!selectedStudent) { alert('학생 데이터를 찾을 수 없습니다.'); return; }
+
+    const since = new Date(Date.now() - months * 30 * 86400000);
+    selectedRecords = (allRecords[sid] || [])
+      .filter(r => new Date(r.date) >= since)
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    const eiAll = readLS('glsi_ei_all_results', []);
+    selectedEI = eiAll.filter(r => r.studentId === sid)
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+  }
+
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('reportScreen').style.display = 'block';
+
+  renderAllBlocks();
+  await generateAIStrategy();
+}
+
+function goBack() {
+  document.getElementById('reportScreen').style.display = 'none';
+  document.getElementById('setupScreen').style.display = 'flex';
+}
+
+// ── 샘플 데이터 ──
+function loadSampleData() {
+  selectedStudent = { id: 'sample', name: '김수학', grade: '중2', classId: 'A반' };
+  selectedRecords = [
+    { date: '2026-01-10', result: { glsi_total: 58.2, level: 'C', subs: [
+      {key:'HABIT',name:'학습습관',score:52},{key:'COGNITIVE',name:'인지전략',score:55},
+      {key:'TIME',name:'시간관리',score:60},{key:'ACHIEVEMENT',name:'성취',score:62},{key:'GROWTH',name:'성장의지',score:58}
+    ]}, emotion: {motivation:3,stress:4,efficacy:2.5,stability:3,score:42} },
+    { date: '2026-02-14', result: { glsi_total: 63.5, level: 'C', subs: [
+      {key:'HABIT',name:'학습습관',score:60},{key:'COGNITIVE',name:'인지전략',score:58},
+      {key:'TIME',name:'시간관리',score:65},{key:'ACHIEVEMENT',name:'성취',score:68},{key:'GROWTH',name:'성장의지',score:64}
+    ]}, emotion: {motivation:3.5,stress:3.5,efficacy:3,stability:3.5,score:52} },
+    { date: '2026-03-05', result: { glsi_total: 70.1, level: 'B', subs: [
+      {key:'HABIT',name:'학습습관',score:68},{key:'COGNITIVE',name:'인지전략',score:65},
+      {key:'TIME',name:'시간관리',score:72},{key:'ACHIEVEMENT',name:'성취',score:74},{key:'GROWTH',name:'성장의지',score:70}
+    ]}, emotion: {motivation:4,stress:3,efficacy:3.5,stability:4,score:65} }
+  ];
+  selectedEI = [
+    { studentId:'sample', date:'2026-01-10', month:'2026-01', total:42,
+      domains:{motivation:42,stress:35,efficacy:38,stability:45} },
+    { studentId:'sample', date:'2026-02-14', month:'2026-02', total:55,
+      domains:{motivation:52,stress:48,efficacy:50,stability:58} },
+    { studentId:'sample', date:'2026-03-05', month:'2026-03', total:65,
+      domains:{motivation:62,stress:60,efficacy:63,stability:70} }
+  ];
+}
+
+// ── 헬퍼 ──
+function avg(arr) { return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
+function last(arr) { return arr[arr.length - 1]; }
+function scoreColor(s) {
+  if (s >= 75) return '#2A9D8F';
+  if (s >= 60) return '#E9C46A';
+  if (s >= 45) return '#F4A261';
+  return '#E76F51';
+}
+function scoreLabel(s) {
+  if (s >= 75) return '양호';
+  if (s >= 60) return '보통';
+  if (s >= 45) return '주의';
+  return '집중 필요';
+}
+
+// ── 학습 유형 판정 (문서 알고리즘표 기반) ──
+function classifyLearningType(records, eiData) {
+  if (!records.length) return { type: '분석불가', color: '#8892A4', bg: '#F0F0F0', reason: '데이터 부족' };
+
+  const latest = last(records);
+  const subs = {};
+  (latest.result.subs || []).forEach(s => { subs[s.key] = s.score; });
+  const emo = latest.emotion || {};
+  const latestEI = eiData.length ? last(eiData) : null;
+
+  const habit = subs.HABIT ?? 60;
+  const cog = subs.COGNITIVE ?? 60;
+  const time = subs.TIME ?? 60;
+  const ach = subs.ACHIEVEMENT ?? 60;
+  const grow = subs.GROWTH ?? 60;
+  const efficacy = emo.efficacy ?? 3;
+  const stress = emo.stress ?? 3;
+  const motivation = emo.motivation ?? 3;
+
+  // 성장형 우선 판정
+  if (records.length >= 2) {
+    const prev = records[records.length - 2].result.glsi_total;
+    const curr = latest.result.glsi_total;
+    if (curr - prev > 5 && grow >= 65) {
+      return { type: '성장형', emoji: '📈', color: '#2A9D8F', bg: '#E8F5F3',
+        reason: '점수·지속성이 함께 상승하는 긍정적 개선 추세입니다.' };
+    }
+  }
+
+  // 회피형: 자기효능감 낮고 habit/achievement 낮음
+  if (efficacy < 2.5 && habit < 55 && ach < 55) {
+    return { type: '회피형', emoji: '🫣', color: '#E76F51', bg: '#FDECEA',
+      reason: '자기효능감이 낮고 문제 접근을 주저하는 경향이 있습니다.' };
+  }
+
+  // 불안형: stress 높고 TIME 낮음
+  if (stress >= 4 && time < 60) {
+    return { type: '불안형', emoji: '😰', color: '#F4A261', bg: '#FEF3E8',
+      reason: '스트레스가 높고 집중 유지에 어려움이 있어 긴장형 수행 저하 패턴입니다.' };
+  }
+
+  // 실수형: habit 낮고 TIME 낮음 (스트레스 있을 수 있음)
+  if (habit < 60 && time < 60 && ach >= 55) {
+    return { type: '실수형', emoji: '✏️', color: '#E9C46A', bg: '#FDF6E3',
+      reason: '자기점검과 집중유지가 낮아 알고 있어도 실수가 반복되는 패턴입니다.' };
+  }
+
+  // 개념형: cognitive 낮고 achievement 낮음
+  if (cog < 58 && ach < 58) {
+    return { type: '개념형', emoji: '📖', color: '#8B5CF6', bg: '#F3F0FF',
+      reason: '설명하기·오답정리 지표가 낮아 개념 구조화가 필요한 상태입니다.' };
+  }
+
+  // 속도형: 동기는 높은데 habit/cog 낮음
+  if (motivation >= 4 && habit < 62 && cog < 62) {
+    return { type: '속도형', emoji: '⚡', color: '#3B82F6', bg: '#EFF6FF',
+      reason: '의욕은 높지만 풀이 과정보다 속도를 우선시하는 경향이 있습니다.' };
+  }
+
+  return { type: '균형형', emoji: '⚖️', color: '#2A9D8F', bg: '#E8F5F3',
+    reason: '전반적으로 균형잡힌 학습 태도를 보이고 있습니다.' };
+}
+
+// ── 전월 대비 판정 문장 (문서 섹션 3 기반) ──
+function generateImprovementSentences(records, eiData) {
+  if (records.length < 2) return [];
+  const curr = last(records);
+  const prev = records[records.length - 2];
+  const sentences = [];
+
+  const currSubs = {}; (curr.result.subs||[]).forEach(s=>{currSubs[s.key]=s.score;});
+  const prevSubs = {}; (prev.result.subs||[]).forEach(s=>{prevSubs[s.key]=s.score;});
+
+  const habChange = (currSubs.HABIT||0) - (prevSubs.HABIT||0);
+  const cogChange = (currSubs.COGNITIVE||0) - (prevSubs.COGNITIVE||0);
+  const achChange = (currSubs.ACHIEVEMENT||0) - (prevSubs.ACHIEVEMENT||0);
+  const growChange = (currSubs.GROWTH||0) - (prevSubs.GROWTH||0);
+
+  const currEmo = curr.emotion || {};
+  const prevEmo = prev.emotion || {};
+  const efficacyChange = (currEmo.efficacy||3) - (prevEmo.efficacy||3);
+  const habitChange2 = habChange + cogChange; // 참여도+오답정리 대리
+
+  if (achChange > 5) sentences.push({ icon:'✅', text:'성취 지표가 상승하여 검산 관리와 정확도가 개선되고 있습니다.' });
+  if (achChange < -5) sentences.push({ icon:'⚠️', text:'성취 지표가 하락하여 오답 원인 분석이 필요합니다.' });
+  if (cogChange > 5) sentences.push({ icon:'✅', text:'개념 이해 지표(COGNITIVE)가 개선되어 단원 이해도가 높아지고 있습니다.' });
+  if (efficacyChange > 0.5) sentences.push({ icon:'✅', text:'자기효능감이 상승하여 어려운 문제 접근이 이전보다 안정적입니다.' });
+  if (efficacyChange < -0.5) sentences.push({ icon:'⚠️', text:'자기효능감이 하락하여 상 난이도 문제 접근에서 주저함이 관찰됩니다.' });
+  if (habChange > 5 && cogChange > 5) sentences.push({ icon:'✅', text:'참여도와 오답정리가 함께 좋아져 수업 몰입이 안정되는 흐름입니다.' });
+  if (growChange > 5 && achChange <= 0) sentences.push({ icon:'✅', text:'점수는 비슷하지만 오답정리 습관이 좋아져 다음 성장을 준비하는 단계입니다.' });
+
+  if (!sentences.length) {
+    sentences.push({ icon:'📊', text:'전월과 유사한 수준을 유지하고 있습니다. 꾸준한 관찰을 권장합니다.' });
+  }
+  return sentences;
+}
+
+// ── 블록 렌더 ──
+function renderAllBlocks() {
+  if (!selectedRecords.length) {
+    document.getElementById('blockA').innerHTML = `
+      <div class="summary-card">
+        <div class="summary-top">
+          <div>
+            <div class="summary-name">${selectedStudent?.name || '학생'}</div>
+            <div class="summary-grade">데이터 없음</div>
+          </div>
+        </div>
+        <div class="summary-diagnosis">아직 GLSI 기록이 없습니다. GLSI_v8에서 기록을 저장한 후 다시 열어주세요.</div>
+      </div>`;
+    return;
+  }
+
+  renderBlockA();
+  renderBlockB();
+  renderBlockC();
+  renderBlockD();
+  renderBlockE();
+  renderBlockF();
+
+  const today = new Date().toLocaleDateString('ko-KR');
+  document.getElementById('reportFooter').textContent =
+    `ZELVIA GLSI 2.0 · 젤비아(주) · 생성일: ${today} · 본 리포트는 교사 관찰 + AI 분석을 통해 자동 생성됩니다.`;
+}
+
+function renderBlockA() {
+  const latest = last(selectedRecords);
+  const prev = selectedRecords.length > 1 ? selectedRecords[selectedRecords.length - 2] : null;
+  const score = latest.result.glsi_total;
+  const delta = prev ? score - prev.result.glsi_total : null;
+  const type = classifyLearningType(selectedRecords, selectedEI);
+  const sentences = generateImprovementSentences(selectedRecords, selectedEI);
+  const period = `${selectedRecords[0].date} ~ ${latest.date}`;
+
+  let deltaHtml = '';
+  if (delta !== null) {
+    const cls = delta > 0 ? 'up' : delta < 0 ? 'down' : 'flat';
+    const icon = delta > 0 ? '▲' : delta < 0 ? '▼' : '→';
+    deltaHtml = `<div class="summary-delta ${cls}">${icon} ${Math.abs(delta).toFixed(1)}점 (전회 대비)</div>`;
+  }
+
+  document.getElementById('blockA').innerHTML = `
+    <div class="summary-card">
+      <div class="summary-top">
+        <div>
+          <div class="block-label" style="color:rgba(255,255,255,0.4);margin-bottom:6px;">Block A · 한눈 요약</div>
+          <div class="summary-name">${selectedStudent.name}</div>
+          <div class="summary-grade">${selectedStudent.grade || ''}</div>
+          <div class="summary-period">${period}</div>
+        </div>
+        <div class="summary-score-wrap">
+          <div class="summary-score" style="color:${scoreColor(score)}">${score.toFixed(1)}</div>
+          <div class="summary-score-label">GLSI 총점</div>
+          ${deltaHtml}
+        </div>
+      </div>
+      <div class="summary-diagnosis">
+        <div class="type-badge" style="background:${type.bg};color:${type.color};">${type.emoji||''} ${type.type}</div>
+        <div>${type.reason}</div>
+        ${sentences.map(s=>`<div style="margin-top:6px;">${s.icon} ${s.text}</div>`).join('')}
+      </div>
+    </div>`;
+}
+
+function renderBlockB() {
+  const latest = last(selectedRecords);
+  const subs = latest.result.subs || [];
+  const domainColors = {HABIT:'var(--habit)',COGNITIVE:'var(--cognitive)',TIME:'var(--time)',ACHIEVEMENT:'var(--achievement)',GROWTH:'var(--growth)'};
+
+  // Trend: 최근 3개 기록
+  const recentScores = selectedRecords.slice(-4);
+
+  const domainGrid = subs.map(s => `
+    <div class="domain-card" style="border-color:${domainColors[s.key]}40;">
+      <div class="domain-score" style="color:${domainColors[s.key]}">${s.score.toFixed(0)}</div>
+      <div style="font-size:10px;color:${scoreColor(s.score)};font-weight:700;margin-bottom:4px;">${scoreLabel(s.score)}</div>
+      <div class="domain-name">${s.name}</div>
+    </div>`).join('');
+
+  const trendRows = recentScores.map(r => {
+    const pct = (r.result.glsi_total / 100 * 80).toFixed(0);
+    return `<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+      <div style="font-size:12px;color:var(--muted);width:76px;">${r.date}</div>
+      <div style="flex:1;height:8px;background:var(--border);border-radius:8px;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:${scoreColor(r.result.glsi_total)};border-radius:8px;"></div>
+      </div>
+      <div style="font-size:13px;font-weight:700;color:${scoreColor(r.result.glsi_total)};width:40px;text-align:right;">${r.result.glsi_total.toFixed(1)}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('blockBContent').innerHTML = `
+    <div class="domain-grid">${domainGrid}</div>
+    ${recentScores.length > 1 ? `<div style="margin-top:24px;"><div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:12px;">📈 최근 추이</div>${trendRows}</div>` : ''}`;
+}
+
+function getOMRBridgeData(sid, studentName) {
+  try {
+    const bridge = JSON.parse(localStorage.getItem('glsi_omr_bridge_v1')) || {};
+    let recs = bridge[sid] || bridge['name_' + studentName] || [];
+    if (!recs.length) {
+      for (const key of Object.keys(bridge)) {
+        if (bridge[key][0]?.studentName === studentName) { recs = bridge[key]; break; }
+      }
+    }
+    return recs.sort((a,b) => new Date(b.date) - new Date(a.date));
+  } catch(e) { return []; }
+}
+
+function renderBlockC() {
+  const latest = last(selectedRecords);
+  const emo = latest.emotion || {};
+  const subs = {};
+  (latest.result.subs||[]).forEach(s=>{subs[s.key]=s.score;});
+
+  const omrRecs = getOMRBridgeData(selectedStudent.id, selectedStudent.name);
+
+  function trendSpan(diff) {
+    if (diff === null) return '';
+    if (diff < -3) return `<div class="omr-type-trend" style="color:var(--teal);">▼ ${Math.abs(diff).toFixed(0)}%p 개선</div>`;
+    if (diff > 3) return `<div class="omr-type-trend" style="color:var(--red);">▲ ${diff.toFixed(0)}%p 증가</div>`;
+    return `<div class="omr-type-trend" style="color:var(--muted);">→ 유지</div>`;
+  }
+
+  let html = '';
+
+  if (omrRecs.length) {
+    const recent = omrRecs.slice(0, 3);
+    const totalQ = recent.reduce((s,r) => s+(r.totalQ||0), 0);
+    const wrongCount = recent.reduce((s,r) => s+(r.wrongCount||0), 0);
+    const blankCount = recent.reduce((s,r) => s+(r.blankCount||0), 0);
+    const mistakeCount = recent.reduce((s,r) => s+(r.mistakeCount||0), 0);
+    const conceptCount = Math.max(0, wrongCount - blankCount - mistakeCount);
+
+    const blankPct = totalQ ? Math.round(blankCount/totalQ*100) : 0;
+    const mistakePct = totalQ ? Math.round(mistakeCount/totalQ*100) : 0;
+    const conceptPct = totalQ ? Math.round(conceptCount/totalQ*100) : 0;
+    const correctPct = totalQ ? Math.round((totalQ-wrongCount)/totalQ*100) : 0;
+
+    const curr = omrRecs[0];
+    const prev = omrRecs[1];
+    const pctDelta = (prev && curr) ? curr.pct - prev.pct : null;
+    const unitList = [...new Set(omrRecs.slice(0,3).map(r=>r.unitName||r.bookName).filter(Boolean))].join(', ');
+
+    const wrongItems = curr.wrongNums && curr.wrongNums.length
+      ? `<div style="margin-top:16px;">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;">최근 오답 문항 (${curr.date})</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            ${curr.wrongNums.map(w=>`<div style="padding:4px 10px;background:var(--red-light);border-radius:8px;font-size:12px;color:var(--red);">${w.num}번 (내:${w.my||'무'}→정:${w.ans})</div>`).join('')}
+          </div>
+        </div>` : '';
+
+    html = `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;padding:10px 14px;background:var(--teal-light);border-radius:10px;">
+        <span>✅</span>
+        <span style="font-size:13px;color:var(--teal);font-weight:600;">OMR 실제 데이터 연동 중 · ${omrRecs.length}회 기록</span>
+        <span style="font-size:12px;color:var(--muted);margin-left:auto;">${unitList}</span>
+      </div>
+      <div class="omr-types">
+        <div class="omr-type-card" style="border-color:rgba(42,157,143,0.3);">
+          <div class="omr-type-pct" style="color:var(--teal);">${correctPct}%</div>
+          <div class="omr-type-name">정답</div>
+          ${trendSpan(pctDelta)}
+        </div>
+        <div class="omr-type-card">
+          <div class="omr-type-pct" style="color:#E9C46A;">${mistakePct}%</div>
+          <div class="omr-type-name">연산 실수</div>
+        </div>
+        <div class="omr-type-card">
+          <div class="omr-type-pct" style="color:#8B5CF6;">${conceptPct}%</div>
+          <div class="omr-type-name">개념 미흡</div>
+        </div>
+        <div class="omr-type-card">
+          <div class="omr-type-pct" style="color:#E76F51;">${blankPct}%</div>
+          <div class="omr-type-name">백지/무응답</div>
+        </div>
+      </div>
+      ${wrongItems}`;
+  } else {
+    const mistakePct = Math.max(10, Math.round((100-(subs.HABIT||60))*0.4));
+    const conceptPct = Math.max(10, Math.round((100-(subs.COGNITIVE||60))*0.4));
+    const blankPct = Math.max(5, Math.round((5-(emo.efficacy||3))/5*30));
+    const incompletePct = Math.max(5, Math.round((100-(subs.TIME||60))*0.2));
+
+    html = `
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:16px;padding:10px 14px;background:var(--gold-light);border-radius:10px;">
+        ⚠️ OMR 미연동 · GLSI 기반 추정값입니다. OMR 오답노트에서 저장하면 실제 데이터로 전환됩니다.
+      </div>
+      <div class="omr-types">
+        <div class="omr-type-card"><div class="omr-type-pct" style="color:#E9C46A;">${mistakePct}%</div><div class="omr-type-name">연산 실수 (추정)</div></div>
+        <div class="omr-type-card"><div class="omr-type-pct" style="color:#8B5CF6;">${conceptPct}%</div><div class="omr-type-name">개념 미흡 (추정)</div></div>
+        <div class="omr-type-card"><div class="omr-type-pct" style="color:#E76F51;">${blankPct}%</div><div class="omr-type-name">백지 (추정)</div></div>
+        <div class="omr-type-card"><div class="omr-type-pct" style="color:#3B82F6;">${incompletePct}%</div><div class="omr-type-name">과정 미완성 (추정)</div></div>
+      </div>`;
+  }
+
+  document.getElementById('blockCContent').innerHTML = html;
+}
+
+
+function renderBlockD() {
+  const latest = last(selectedRecords);
+  const subs = {};
+  (latest.result.subs||[]).forEach(s=>{subs[s.key]=s.score;});
+
+  const habits = [
+    { name:'자기점검 (HABIT)', score: subs.HABIT||60, domain:'HABIT' },
+    { name:'오답정리 (COGNITIVE)', score: subs.COGNITIVE||60, domain:'COGNITIVE' },
+    { name:'설명하기 (COGNITIVE)', score: Math.min(100,(subs.COGNITIVE||60)+5), domain:'COGNITIVE' },
+    { name:'참여도 (HABIT)', score: Math.min(100,(subs.HABIT||60)+8), domain:'HABIT' },
+    { name:'과제이행 (HABIT)', score: Math.max(0,(subs.HABIT||60)-5), domain:'HABIT' },
+    { name:'집중유지 (TIME)', score: subs.TIME||60, domain:'TIME' },
+  ];
+
+  const domainColors = {HABIT:'#3B82F6',COGNITIVE:'#8B5CF6',TIME:'#10B981'};
+
+  const rows = habits.map(h => {
+    const filled = Math.round(h.score / 20); // 1~5
+    const color = h.score >= 70 ? '' : h.score >= 55 ? 'warn' : 'danger';
+    const dots = Array.from({length:5}, (_,i) =>
+      `<div class="habit-dot ${i < filled ? 'filled ' + color : ''}"></div>`
+    ).join('');
+    return `<div class="habit-item">
+      <div style="width:8px;height:8px;border-radius:50%;background:${domainColors[h.domain]||'#ccc'};flex-shrink:0;"></div>
+      <div class="habit-name">${h.name}</div>
+      <div class="habit-dots">${dots}</div>
+      <div class="habit-score-label" style="color:${scoreColor(h.score)};">${h.score.toFixed(0)}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('blockDContent').innerHTML = `<div class="habit-items">${rows}</div>`;
+}
+
+function renderBlockE() {
+  if (!selectedEI.length) {
+    document.getElementById('blockEContent').innerHTML = '<p style="color:var(--muted);font-size:13px;">EI 자가진단 데이터가 없습니다. 학생이 월별 EI 진단을 완료하면 여기에 표시됩니다.</p>';
+    return;
+  }
+
+  const latest = last(selectedEI);
+  const prev = selectedEI.length > 1 ? selectedEI[selectedEI.length - 2] : null;
+  const eiItems = [
+    { key:'motivation', name:'동기', icon:'🔥' },
+    { key:'stress', name:'스트레스 관리', icon:'🧘' },
+    { key:'efficacy', name:'자기효능감', icon:'💪' },
+    { key:'stability', name:'정서 안정', icon:'🌊' },
+  ];
+
+  const cards = eiItems.map(item => {
+    const curr = latest.domains?.[item.key] ?? latest.total;
+    const prevVal = prev?.domains?.[item.key] ?? prev?.total;
+    const delta = prevVal != null ? curr - prevVal : null;
+    const deltaStr = delta !== null ? (delta > 0 ? `▲ ${delta.toFixed(0)}` : delta < 0 ? `▼ ${Math.abs(delta).toFixed(0)}` : '→ 유지') : '';
+    const deltaColor = delta > 0 ? 'var(--teal)' : delta < 0 ? 'var(--red)' : 'var(--muted)';
+    const pct = curr.toFixed(0);
+    const color = scoreColor(curr);
+
+    return `<div class="ei-item">
+      <div class="ei-item-top">
+        <div class="ei-item-name">${item.icon} ${item.name}</div>
+        <div class="ei-item-score" style="color:${color}">${pct}</div>
+      </div>
+      ${delta !== null ? `<div class="ei-compare" style="color:${deltaColor};">${deltaStr} <span style="color:var(--muted);">전월 대비</span></div>` : ''}
+      <div class="ei-bar-track">
+        <div class="ei-bar-fill" style="width:${pct}%;background:${color};"></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('blockEContent').innerHTML = `
+    <div class="ei-grid">${cards}</div>
+    <div style="margin-top:16px;font-size:12px;color:var(--muted);">기준: ${latest.date} 기록 / ${prev ? '전월: ' + prev.date : '전월 데이터 없음'}</div>`;
+}
+
+function renderBlockF() {
+  const type = classifyLearningType(selectedRecords, selectedEI);
+  const sentences = generateImprovementSentences(selectedRecords, selectedEI);
+
+  const typeDesc = {
+    '실수형': '알고 있어도 검산과 집중유지 부족으로 실수가 반복됩니다.',
+    '개념형': '개념 이해가 완성되지 않아 응용 문제에서 오답이 나타납니다.',
+    '회피형': '자기효능감 부족으로 문제 접근 자체를 주저합니다.',
+    '속도형': '의욕은 높으나 풀이 과정보다 속도를 우선하여 실수가 납니다.',
+    '불안형': '시험 상황에서 긴장이 높아 아는 문제도 틀리는 경향이 있습니다.',
+    '성장형': '꾸준한 개선 추세로 현재 학습 방향이 효과적입니다.',
+    '균형형': '전반적으로 안정된 학습 패턴을 유지하고 있습니다.',
+    '분석불가': '더 많은 기록이 쌓이면 유형 분류가 가능합니다.',
+  }[type.type] || '';
+
+  document.getElementById('blockFContent').innerHTML = `
+    <div class="diagnosis-type-row">
+      <div class="diagnosis-type-big" style="background:${type.bg};color:${type.color};">
+        ${type.emoji||''} ${type.type}
+      </div>
+      <div style="font-size:14px;color:var(--text-light);">${type.reason}</div>
+    </div>
+    <div style="font-size:13px;color:var(--text-light);margin-bottom:18px;padding:12px 16px;background:var(--bg);border-radius:10px;">
+      ${typeDesc}
+    </div>
+    <div class="diagnosis-evidence">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px;">📋 전월 대비 개선 판정</div>
+      ${sentences.map(s=>`<div class="evidence-item"><div class="evidence-icon">${s.icon}</div><div>${s.text}</div></div>`).join('')}
+    </div>`;
+}
+
+// ── Block G: AI 전략 생성 ──
+async function generateAIStrategy() {
+  if (!selectedRecords.length) return;
+
+  const type = classifyLearningType(selectedRecords, selectedEI);
+  const latest = last(selectedRecords);
+  const subs = {};
+  (latest.result.subs||[]).forEach(s=>{subs[s.key]=s.score;});
+  const eiLatest = selectedEI.length ? last(selectedEI) : null;
+  const sentences = generateImprovementSentences(selectedRecords, selectedEI);
+
+  const contextStr = `
+학생: ${selectedStudent.name} (${selectedStudent.grade||''})
+학습유형: ${type.type}
+GLSI 총점: ${latest.result.glsi_total.toFixed(1)}점
+HABIT: ${subs.HABIT?.toFixed(0)||'-'}, COGNITIVE: ${subs.COGNITIVE?.toFixed(0)||'-'}, TIME: ${subs.TIME?.toFixed(0)||'-'}, ACHIEVEMENT: ${subs.ACHIEVEMENT?.toFixed(0)||'-'}, GROWTH: ${subs.GROWTH?.toFixed(0)||'-'}
+EI 총점: ${eiLatest?.total?.toFixed(0)||'없음'}
+개선 상태: ${sentences.map(s=>s.text).join(' / ')}
+  `.trim();
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `수학학원 학습 전략 AI입니다. 학생 데이터를 보고 실용적인 지도 전략과 학부모 코칭팁을 JSON으로만 출력하세요.
+형식:
+{
+  "strategies": [
+    {"title": "전략 제목", "desc": "구체적 설명 1~2문장"},
+    {"title": "전략 제목", "desc": "구체적 설명 1~2문장"},
+    {"title": "전략 제목", "desc": "구체적 설명 1~2문장"}
+  ],
+  "parentTip": "학부모에게 전달할 오늘의 코칭 팁. 따뜻하고 구체적으로 2~3문장."
+}`,
+        messages: [{ role: 'user', content: contextStr }]
+      })
+    });
+    const data = await resp.json();
+    const raw = (data.content?.[0]?.text||'{}').replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(raw);
+
+    const strategies = (parsed.strategies||[]).map((s, i) => `
+      <div class="strategy-item">
+        <div class="strategy-num">${i+1}</div>
+        <div class="strategy-content">
+          <div class="strategy-title">${s.title}</div>
+          <div class="strategy-desc">${s.desc}</div>
+        </div>
+      </div>`).join('');
+
+    const parentTip = parsed.parentTip ? `
+      <div class="parent-tip">
+        <div class="parent-tip-title">💌 오늘의 학부모 코칭 팁</div>
+        <div class="parent-tip-text">${parsed.parentTip}</div>
+        <button onclick="copyTip('${parsed.parentTip.replace(/'/g,"\\'")}')"
+          style="margin-top:12px;padding:7px 16px;background:var(--teal);color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">
+          📋 SMS 복사
+        </button>
+      </div>` : '';
+
+    document.getElementById('blockGContent').innerHTML =
+      `<div class="strategy-items">${strategies}</div>${parentTip}`;
+
+  } catch(e) {
+    // 폴백: 유형별 기본 전략
+    const fallback = {
+      '실수형': [
+        {title:'검산 루틴 도입', desc:'매 문제 풀이 후 30초 검산을 습관화합니다. 짧은 계산 세트로 정확도 훈련을 시작하세요.'},
+        {title:'자기점검 체크리스트', desc:'수업 종료 전 3가지 자기점검 항목을 확인하는 루틴을 만들어주세요.'},
+        {title:'실수 패턴 기록', desc:'오답노트에 실수 유형을 분류하여 본인의 패턴을 인식하게 합니다.'},
+      ],
+      '개념형': [
+        {title:'대표문제 설명하기', desc:'한 단원당 핵심 문제 1개를 학생이 선생님께 설명하는 방식으로 개념을 내면화합니다.'},
+        {title:'개념 재정리 노트', desc:'틀린 문제의 개념을 본인 언어로 정리하는 습관을 만들어주세요.'},
+        {title:'유형 반복 훈련', desc:'같은 유형의 문제를 난이도 순서대로 3단계 반복 풀이합니다.'},
+      ],
+      '회피형': [
+        {title:'쉬운 성공 경험 만들기', desc:'처음엔 정답률 80% 이상 문제로 시작하여 자신감을 회복합니다.'},
+        {title:'단계형 문제 접근', desc:'어려운 문제를 작은 단계로 쪼개어 '일부 풀기'도 성공으로 인정합니다.'},
+        {title:'칭찬 중심 피드백', desc:'결과보다 과정과 시도 자체를 칭찬하여 효능감을 높여주세요.'},
+      ],
+    };
+    const strategies = (fallback[type.type] || fallback['회피형']).map((s,i)=>`
+      <div class="strategy-item">
+        <div class="strategy-num">${i+1}</div>
+        <div class="strategy-content">
+          <div class="strategy-title">${s.title}</div>
+          <div class="strategy-desc">${s.desc}</div>
+        </div>
+      </div>`).join('');
+    document.getElementById('blockGContent').innerHTML = `<div class="strategy-items">${strategies}</div>`;
+  }
+}
+
+function copyTip(tip) {
+  navigator.clipboard?.writeText(tip).then(()=>alert('복사 완료! SMS에 붙여넣기 하세요.'));
+}
+
+// ── 시작 ──
+init();
+</script>
+</body>
+</html>

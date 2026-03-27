@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZELVIA 출석 · 관찰부 v7</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0d1f3c;--navy2:#1a3260;--orange:#f26c1b;--orange2:#ff9a5c;
+  --gold:#c9a84c;--green:#16a34a;--red:#dc2626;--blue:#2563eb;
+  --purple:#7c3aed;--teal:#0891b2;
+  --bg:#f5f3ee;--surface:#fff;--border:#e2ddd6;--muted:#8c8680;
+  --text:#1a1814;--text2:#4a4640;
+}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* 헤더 */
+.hdr{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.brand{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#fff}
+.brand span{color:var(--orange)}
+.brand-sub{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:2px;display:block}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.date-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px}
+.hdr-btn{color:#fff;border:none;font-size:12px;font-weight:700;padding:7px 14px;border-radius:20px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s}
+.save-btn{background:linear-gradient(135deg,var(--orange),var(--orange2))}
+.print-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3)}
+.manage-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3)}
+
+.main{max-width:100%;padding:16px 16px 100px}
+
+/* 반 선택 */
+.class-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.class-btn{padding:7px 16px;border-radius:20px;border:2px solid var(--border);background:var(--surface);font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;font-family:'Noto Sans KR',sans-serif}
+.class-btn.active{border-color:var(--orange);background:#fff8f4;color:var(--orange)}
+.class-btn:hover{border-color:var(--orange2)}
+.add-class-btn{padding:7px 14px;border-radius:20px;border:2px dashed var(--border);background:transparent;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+.add-class-btn:hover{border-color:var(--orange);color:var(--orange)}
+
+/* 범례 */
+.legend{background:var(--surface);border-radius:12px;padding:10px 16px;margin-bottom:12px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.legend-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.score-dot{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0}
+.s1{background:#ef4444}.s2{background:#f97316}.s3{background:#3b82f6}.s4{background:#16a34a}
+
+/* 테이블 */
+.table-wrap{overflow-x:auto;border-radius:16px;box-shadow:0 2px 16px rgba(0,0,0,.08)}
+.att-table{width:100%;border-collapse:collapse;background:var(--surface);min-width:700px}
+.att-table th{background:var(--navy);color:#fff;font-size:12px;font-weight:700;padding:10px 8px;text-align:center;border:1px solid rgba(255,255,255,.1);white-space:nowrap}
+.att-table th.student-col{min-width:110px;text-align:left;padding-left:14px}
+.att-table th.att-col{min-width:70px}
+.att-table th.obs-col{min-width:68px}
+.att-table th.note-col{min-width:120px}
+.att-table th.expand-col{min-width:44px;cursor:pointer;background:#1a3260}
+.att-table th .th-sub{font-size:9px;font-weight:400;color:rgba(255,255,255,.5);display:block;margin-top:2px}
+.att-table td{padding:8px 6px;border:1px solid var(--border);text-align:center;vertical-align:middle}
+.att-table td.student-col{text-align:left;padding-left:10px}
+.att-table tr:nth-child(even) td{background:#faf9f6}
+.att-table tr:hover td{background:#fff8f4}
+
+/* 학생 이름 — 수정 가능 */
+.student-name-wrap{display:flex;align-items:center;gap:6px}
+.student-name{font-size:13px;font-weight:700;color:var(--navy);display:block;cursor:pointer;padding:2px 4px;border-radius:4px;border:1.5px solid transparent;transition:all .15s;min-width:50px}
+.student-name:hover{border-color:var(--orange);background:#fff8f4}
+.student-name:focus{outline:none;border-color:var(--orange);background:#fff;box-shadow:0 0 0 3px rgba(242,108,27,.15)}
+.student-grade{font-size:10px;color:var(--muted);display:block}
+.del-student-btn{width:18px;height:18px;border-radius:50%;border:none;background:#fee2e2;color:var(--red);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:opacity .15s}
+.move-class-btn{width:18px;height:18px;border-radius:50%;border:none;background:#e0f2fe;color:#0369a1;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:opacity .15s;font-weight:900}
+.att-table tr:hover .del-student-btn{opacity:1}
+.att-table tr:hover .move-class-btn{opacity:1}
+
+/* 출석 버튼 */
+.att-btns{display:flex;gap:4px;justify-content:center}
+.att-btn{width:32px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fafafa;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--text2)}
+.att-btn:hover{border-color:var(--orange);color:var(--orange)}
+.att-btn.att-in{background:#dcfce7;border-color:var(--green);color:var(--green)}
+.att-btn.att-late{background:#fef3c7;border-color:#d97706;color:#d97706}
+.att-btn.att-out{background:#fee2e2;border-color:var(--red);color:var(--red)}
+
+/* 점수 버튼 */
+.score-btns{display:flex;gap:3px;justify-content:center}
+.score-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fafafa;font-size:12px;font-weight:900;cursor:pointer;transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:#aaa;position:relative}
+.score-btn:hover{transform:scale(1.1)}
+.score-btn.s1-active{background:#ef4444;border-color:#ef4444;color:#fff}
+.score-btn.s2-active{background:#f97316;border-color:#f97316;color:#fff}
+.score-btn.s3-active{background:#3b82f6;border-color:#3b82f6;color:#fff}
+.score-btn.s4-active{background:#16a34a;border-color:#16a34a;color:#fff}
+
+/* 툴팁 */
+.tooltip-wrap{position:relative}
+.tooltip-wrap .tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;font-size:11px;line-height:1.6;padding:8px 12px;border-radius:10px;white-space:nowrap;z-index:200;box-shadow:0 4px 14px rgba(0,0,0,.3);pointer-events:none;min-width:160px;text-align:left}
+.tooltip-wrap .tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--navy)}
+.score-btn:hover + .tooltip,.score-btn:focus + .tooltip{display:block}
+
+/* 메모 */
+.memo-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:6px 8px;font-size:12px;font-family:'Noto Sans KR',sans-serif;background:#fafafa;outline:none;resize:none;transition:border .2s;min-height:36px}
+.memo-input:focus{border-color:var(--orange);background:#fff}
+
+/* 추가 행 */
+.add-student-row td{background:#f5f3ee !important;border-top:2px dashed var(--border)}
+.add-student-btn{width:100%;padding:8px;border:2px dashed var(--border);border-radius:8px;background:transparent;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .2s}
+.add-student-btn:hover{border-color:var(--orange);color:var(--orange);background:#fff8f4}
+
+/* 확장 */
+.expand-header{background:#1a3260 !important;cursor:pointer}
+.expand-indicator{font-size:16px;display:block}
+.extra-col{display:none}
+.extra-col.visible{display:table-cell}
+.att-table th.extra-col{background:#152a50}
+
+/* 요약 */
+.summary-bar{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.sum-card{background:var(--surface);border-radius:12px;padding:12px 16px;border:1px solid var(--border);flex:1;min-width:90px;text-align:center}
+.sum-num{font-family:'Noto Serif KR',serif;font-size:28px;font-weight:900;color:var(--navy);display:block}
+.sum-label{font-size:11px;color:var(--muted);font-weight:600}
+.sum-card.danger .sum-num{color:var(--red)}
+.sum-card.warn .sum-num{color:#d97706}
+
+/* 토스트 */
+.sms-toast{position:fixed;bottom:80px;right:20px;background:var(--green);color:#fff;padding:10px 18px;border-radius:12px;font-size:13px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,.2);display:none;z-index:999;animation:slideUp .3s ease}
+.save-toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:700;box-shadow:0 4px 20px rgba(0,0,0,.2);display:none;z-index:999}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* 하단 버튼 */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:12px 20px;display:flex;gap:10px;justify-content:flex-end;z-index:50}
+.btn-report{background:var(--navy2);color:#fff;border:none;font-size:13px;font-weight:700;padding:10px 20px;border-radius:20px;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+.btn-sms-all{background:var(--green);color:#fff;border:none;font-size:13px;font-weight:700;padding:10px 20px;border-radius:20px;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+
+/* 모달 */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px;padding:28px;width:90%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h3{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:16px}
+.modal input{width:100%;border:2px solid var(--border);border-radius:10px;padding:10px 14px;font-size:15px;font-family:'Noto Sans KR',sans-serif;outline:none;margin-bottom:10px}
+.modal input:focus{border-color:var(--orange)}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:6px}
+.modal-btn{padding:10px 20px;border-radius:12px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+.modal-btn.confirm{background:var(--orange);color:#fff}
+.modal-btn.cancel{background:#f1f0ee;color:var(--text2)}
+
+/* 반 설정 모달 */
+.class-manage-modal{max-width:520px}
+.class-manage-modal h3{margin-bottom:20px}
+.class-list-manage{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;max-height:320px;overflow-y:auto}
+.class-manage-row{display:flex;align-items:center;gap:8px;background:#f9f8f6;border-radius:10px;padding:10px 12px;border:1.5px solid var(--border);transition:all .15s;cursor:grab}
+.class-manage-row.drag-over{border-color:var(--orange);background:#fff8f4}
+.drag-handle{color:#ccc;font-size:16px;padding:0 4px;user-select:none;flex-shrink:0}
+.class-name-edit{flex:1;border:1.5px solid transparent;border-radius:7px;padding:5px 8px;font-size:14px;font-weight:700;font-family:'Noto Sans KR',sans-serif;background:transparent;outline:none;color:var(--navy);transition:all .15s}
+.class-name-edit:focus{border-color:var(--orange);background:#fff}
+.class-schedule-btn{font-size:11px;color:var(--muted);background:#eee;border-radius:6px;padding:3px 8px;border:none;font-family:'Noto Sans KR',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.class-schedule-btn.has-sched{background:#fff3e8;color:var(--orange)}
+.class-del-btn{width:26px;height:26px;border-radius:50%;border:none;background:#fee2e2;color:var(--red);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:900}
+.class-del-btn:hover{background:#fca5a5}
+.add-class-row{display:flex;gap:8px;margin-top:8px}
+.add-class-input{flex:1;border:2px dashed var(--border);border-radius:10px;padding:8px 12px;font-size:14px;font-family:'Noto Sans KR',sans-serif;outline:none;background:#fafafa}
+.add-class-input:focus{border-color:var(--orange);background:#fff}
+.add-class-confirm-btn{padding:8px 16px;border-radius:10px;border:none;background:var(--orange);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap}
+.sched-popover{position:fixed;background:#fff;border-radius:14px;padding:16px;box-shadow:0 8px 32px rgba(0,0,0,.25);z-index:700;width:230px;border:1.5px solid var(--border);display:none}
+.sched-popover.open{display:block}
+.sched-popover h4{font-size:13px;font-weight:900;color:var(--navy);margin-bottom:10px}
+.day-checkboxes{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.day-check{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;cursor:pointer}
+.day-check input{accent-color:var(--orange);cursor:pointer;width:14px;height:14px}
+.time-inputs{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--text2)}
+.time-inputs input[type=time]{flex:1;border:1.5px solid var(--border);border-radius:7px;padding:5px 7px;font-size:12px;font-family:'Noto Sans KR',sans-serif;outline:none}
+.time-inputs input[type=time]:focus{border-color:var(--orange)}
+.sched-save-btn{width:100%;margin-top:10px;padding:7px;border-radius:8px;border:none;background:var(--orange);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+
+/* 반응형 */
+@media(max-width:600px){
+  .hdr{padding:10px 14px}
+  .brand{font-size:15px}
+  .main{padding:10px 10px 100px}
+  .legend{display:none}
+}
+
+/* 인쇄 스타일 */
+@media print{
+  .hdr,.bottom-bar,.summary-bar,.sms-toast,.save-toast,.modal-overlay,
+  .add-student-row,.del-student-btn,.att-btn,.score-btn,.memo-input,
+  .class-bar,.legend,.manage-btn,.print-btn,.save-btn,.hdr-btn{display:none!important}
+  body{background:#fff}
+  .main{padding:0}
+  .table-wrap{box-shadow:none;border-radius:0}
+  .att-table{min-width:unset;width:100%}
+  .att-table th,.att-table td{font-size:10px;padding:4px}
+  .print-sheet{display:block!important}
+}
+.print-sheet{display:none}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <div class="brand">ZELVIA <span>EDU</span></div>
+    <span class="brand-sub">출석 · 관찰부</span>
+  </div>
+  <div class="hdr-right">
+    <div class="date-badge" id="dateLabel"></div>
+    <button class="hdr-btn manage-btn" onclick="openClassManage()">⚙️ 반 설정</button>
+    <button class="hdr-btn manage-btn" onclick="openAddStudent()">＋ 학생추가</button>
+    <button class="hdr-btn print-btn" onclick="window.print()">🖨️ 출력</button>
+    <button class="hdr-btn" style="background:linear-gradient(135deg,#0891b2,#0e7490)" onclick="backupToFile()">📥 백업</button>
+    <button class="hdr-btn" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)" onclick="document.getElementById('restoreInput').click()">📤 복원</button>
+    <input type="file" id="restoreInput" accept=".json" style="display:none" onchange="restoreFromFile(event)">
+    <button class="hdr-btn save-btn" onclick="saveAll()">💾 저장</button>
+    <button id="globalMicBtn" onclick="toggleGlobalVoice()" style="background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border:none;border-radius:20px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;">🎤 전체음성</button>
+    <button id="recBtn" onclick="toggleRecording()" style="background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;border:none;border-radius:20px;padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;">⏺ 수업녹음</button>
+  </div>
+</header>
+<div id="voiceStatusBar" style="display:none;background:#dcfce7;border-bottom:2px solid #16a34a;padding:6px 16px;font-size:12px;font-weight:700;color:#15803d;text-align:center;position:sticky;top:56px;z-index:150;">
+  🔴 전체 음성 인식 중 &nbsp;|&nbsp; <span id="voiceStatusName">이름을 말해주세요...</span>
+</div>
+<div id="recStatusBar" style="display:none;background:#fee2e2;border-bottom:2px solid #dc2626;padding:6px 16px;font-size:12px;font-weight:700;color:#dc2626;text-align:center;position:sticky;top:56px;z-index:149;">
+  ⏺ 수업 녹음 중 &nbsp;|&nbsp; <span id="recTimer">00:00</span> &nbsp;|&nbsp; <button onclick="stopRecording()" style="background:#dc2626;color:#fff;border:none;border-radius:10px;padding:2px 10px;font-size:11px;cursor:pointer;">⏹ 중지 & 저장</button>
+</div>
+
+<div class="main">
+  <div class="class-bar" id="classBar">
+    <span style="font-size:12px;font-weight:700;color:var(--muted)">반 선택</span>
+  </div>
+
+  <div class="legend">
+    <span class="legend-title">점수 기준</span>
+    <div class="legend-item"><div class="score-dot s1">1</div> 개선 필요</div>
+    <div class="legend-item"><div class="score-dot s2">2</div> 보통</div>
+    <div class="legend-item"><div class="score-dot s3">3</div> 양호</div>
+    <div class="legend-item"><div class="score-dot s4">4</div> 매우 좋음</div>
+    <span style="font-size:11px;color:var(--muted);margin-left:8px">✏️ 이름 클릭하면 수정 가능</span>
+  </div>
+
+  <div class="table-wrap">
+    <table class="att-table" id="mainTable">
+      <thead>
+        <tr>
+          <th class="student-col">학생<span class="th-sub">클릭=이름수정</span></th>
+          <th class="att-col">출석<span class="th-sub">문자발송</span></th>
+          <th class="obs-col">학습<br>에너지<span class="th-sub">HABIT</span></th>
+          <th class="obs-col">정서<br>안정도<span class="th-sub">GROWTH</span></th>
+          <th class="obs-col">컨디션<span class="th-sub">TIME</span></th>
+          <th class="obs-col">과제<br>이행<span class="th-sub">HABIT</span></th>
+          <th class="obs-col">이해도<span class="th-sub">COG</span></th>
+          <th class="expand-col expand-header" onclick="toggleExtra()">
+            <span class="expand-indicator" id="expandIcon">＋</span>
+            <span class="th-sub">더보기</span>
+          </th>
+          <th class="obs-col extra-col">수업<br>준비<span class="th-sub">HABIT</span></th>
+          <th class="obs-col extra-col">집중<br>유지<span class="th-sub">TIME</span></th>
+          <th class="obs-col extra-col">오답<br>태도<span class="th-sub">COG</span></th>
+          <th class="obs-col extra-col">과제<br>완성도<span class="th-sub">ACH</span></th>
+          <th class="note-col">코치 노트<span class="th-sub">특이사항</span></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="summary-bar" id="summaryBar"></div>
+</div>
+
+<div class="bottom-bar">
+  <button class="btn-sms-all" onclick="sendAllSMS()">📱 등원 문자 일괄발송</button>
+  <button class="btn-report" onclick="alert('리포트 기능 준비 중입니다 😊')">📊 오늘 리포트</button>
+</div>
+
+<!-- 반 설정 모달 -->
+<div class="modal-overlay" id="classManageModal">
+  <div class="modal class-manage-modal">
+    <h3>⚙️ 반 설정</h3>
+    <div class="class-list-manage" id="classManageList"></div>
+    <div class="add-class-row">
+      <input type="text" class="add-class-input" id="newClassNameInput" placeholder="새 반 이름 (예: 심화)">
+      <button class="add-class-confirm-btn" onclick="confirmAddClass()">＋ 반 추가</button>
+    </div>
+    <div class="modal-btns" style="margin-top:16px">
+      <button class="modal-btn cancel" onclick="closeClassManage()">닫기</button>
+      <button class="modal-btn confirm" onclick="saveClassManage()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 수업 일정 팝오버 -->
+<div class="sched-popover" id="schedPopover">
+  <h4>📅 수업 일정</h4>
+  <div class="day-checkboxes" id="dayCheckboxes"></div>
+  <div class="time-inputs">
+    <input type="time" id="schedStart" value="16:00">
+    <span>~</span>
+    <input type="time" id="schedEnd" value="18:00">
+  </div>
+  <button class="sched-save-btn" onclick="saveSchedPopover()">저장</button>
+</div>
+
+<!-- 학생 추가 모달 -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h3>학생 추가</h3>
+    <input type="text" id="newStudentName" placeholder="이름 입력" />
+    <select id="newStudentGrade" style="width:100%;border:2px solid var(--border);border-radius:10px;padding:10px 14px;font-size:15px;font-family:'Noto Sans KR',sans-serif;outline:none;margin-bottom:10px;background:#fff;color:var(--text);">
+      <option value="">학년 선택</option>
+      <optgroup label="초등학교">
+        <option value="초1">초1</option>
+        <option value="초2">초2</option>
+        <option value="초3">초3</option>
+        <option value="초4">초4</option>
+        <option value="초5">초5</option>
+        <option value="초6">초6</option>
+      </optgroup>
+      <optgroup label="중학교">
+        <option value="중1">중1</option>
+        <option value="중2">중2</option>
+        <option value="중3">중3</option>
+      </optgroup>
+      <optgroup label="고등학교">
+        <option value="고1">고1</option>
+        <option value="고2">고2</option>
+        <option value="고3">고3</option>
+      </optgroup>
+      <option value="기타">기타</option>
+    </select>
+    <input type="text" id="newStudentPhone" placeholder="학부모 연락처 (예: 010-1234-5678)" />
+    <div class="modal-btns">
+      <button class="modal-btn cancel" onclick="closeModal()">취소</button>
+      <button class="modal-btn confirm" onclick="confirmAddStudent()">추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- 반 변경 모달 -->
+<div class="modal-overlay" id="moveClassModal">
+  <div class="modal">
+    <h3 id="moveClassTitle">반 변경</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">이동할 반을 선택하세요</p>
+    <div id="moveClassList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;"></div>
+    <div class="modal-btns">
+      <button class="modal-btn cancel" onclick="closeMoveClass()">취소</button>
+    </div>
+  </div>
+</div>
+
+<div class="sms-toast" id="smsToast"></div>
+<div class="save-toast" id="saveToast">✅ 저장 완료!</div>
+
+<script>
+// ── 기본 데이터 ──
+let CLASSES = {
+  '알고리즘': [
+    {name:'김민준',grade:'중2',phone:'010-1234-5678'},
+    {name:'이서연',grade:'중2',phone:'010-2345-6789'},
+    {name:'박지호',grade:'중2',phone:'010-3456-7890'},
+    {name:'최하은',grade:'중2',phone:'010-4567-8901'},
+    {name:'정도윤',grade:'중2',phone:'010-5678-9012'},
+    {name:'강수아',grade:'중2',phone:'010-6789-0123'},
+    {name:'조현우',grade:'중2',phone:'010-7890-1234'},
+    {name:'윤지민',grade:'중2',phone:'010-8901-2345'},
+    {name:'임채원',grade:'중3',phone:'010-9012-3456'},
+    {name:'한예린',grade:'중3',phone:'010-0123-4567'},
+  ],
+  '로직': [
+    {name:'오승훈',grade:'중1',phone:'010-1111-2222'},
+    {name:'신나래',grade:'중1',phone:'010-2222-3333'},
+    {name:'권태양',grade:'중1',phone:'010-3333-4444'},
+    {name:'문소희',grade:'중1',phone:'010-4444-5555'},
+    {name:'배준혁',grade:'중1',phone:'010-5555-6666'},
+    {name:'노은서',grade:'중1',phone:'010-6666-7777'},
+  ],
+  '코어': [
+    {name:'황민서',grade:'초6',phone:'010-7777-8888'},
+    {name:'송지우',grade:'초6',phone:'010-8888-9999'},
+    {name:'류하진',grade:'초6',phone:'010-9999-0000'},
+    {name:'전수빈',grade:'초6',phone:'010-0000-1111'},
+  ]
+};
+
+const TOOLTIPS = {
+  energy:  ['무기력·멍함·참여 없음','시키면 함·수동적','적극적·질문 있음','주도적·넘치는 에너지'],
+  emotion: ['표정 어둡거나 불안·위축','보통·무표정','밝고 안정적','매우 긍정적·자신감'],
+  condition:['몸 안 좋음·졸음·기운 없음','그럭저럭·보통','양호·문제 없음','최상 컨디션·활기참'],
+  homework:['미제출·전혀 안 함','일부만 함','거의 다 함','완벽하게 완료'],
+  comprehension:['이해 못 함·멍함','부분 이해','대체로 이해','완전 이해·응용 가능'],
+  ready:   ['준비물 없음·지각 준비','부족한 준비','보통 준비','완벽 준비·여유 있음'],
+  focus:   ['산만·자주 이탈','가끔 산만','대체로 집중','완전 몰입·끝까지 집중'],
+  wrong_attitude:['오답 무시·확인 안 함','정답만 확인','이유 파악 시도','오답 분석·유사문제 시도'],
+  completion:['미완성·포기','절반 이하','대부분 완성','100% 완성·추가 도전'],
+};
+
+let currentClass = '알고리즘';
+let tableData = {};
+let extraVisible = false;
+
+// ── localStorage 메모리 폴백 (태블릿 file:// 환경 대응) ──
+const _mem = {};
+function lsGet(k) {
+  try { const r = localStorage.getItem(k); if(r != null) return JSON.parse(r); } catch(e) {}
+  return _mem[k] !== undefined ? _mem[k] : null;
+}
+function lsSet(k, v) {
+  _mem[k] = v;
+  try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {}
+}
+
+// ── 저장된 데이터 불러오기 ──
+function loadSaved() {
+  const saved = lsGet('zelvia_classes');
+  if(saved) CLASSES = saved;
+  const savedData = lsGet('zelvia_att_'+getDateKey());
+  if(savedData) tableData = savedData;
+  loadSchedules();
+}
+
+function getDateKey() {
+  return new Date().toISOString().slice(0,10);
+}
+
+function today() {
+  const d = new Date();
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} (${['일','월','화','수','목','금','토'][d.getDay()]})`;
+}
+document.getElementById('dateLabel').textContent = today();
+
+// ── 반 버튼 렌더 ──
+function renderClassBar() {
+  const bar = document.getElementById('classBar');
+  bar.innerHTML = '<span style="font-size:12px;font-weight:700;color:var(--muted)">반 선택</span>';
+  Object.keys(CLASSES).forEach(cls => {
+    const sched = classSchedules[cls];
+    const schedBadge = sched && sched.days && sched.days.length
+      ? `<span style="font-size:10px;font-weight:600;color:var(--orange);margin-left:4px">${sched.days.join('')} ${sched.start||''}</span>`
+      : '';
+    const btn = document.createElement('button');
+    btn.className = 'class-btn' + (cls === currentClass ? ' active' : '');
+    btn.innerHTML = cls + '반' + schedBadge;
+    btn.onclick = () => switchClass(btn, cls);
+    bar.appendChild(btn);
+  });
+  const addBtn = document.createElement('button');
+  addBtn.className = 'add-class-btn';
+  addBtn.textContent = '⚙️ 반 설정';
+  addBtn.onclick = openClassManage;
+  bar.appendChild(addBtn);
+}
+
+// ── 초기화 ──
+function initData(cls) {
+  if(!tableData[cls]) tableData[cls] = {};
+  CLASSES[cls].forEach(s => {
+    if(!tableData[cls][s.name])
+      tableData[cls][s.name] = {att:'',energy:0,emotion:0,condition:0,homework:0,comprehension:0,ready:0,focus:0,wrong_attitude:0,completion:0,note:''};
+  });
+}
+
+// ── 렌더 ──
+function render() {
+  initData(currentClass);
+  const students = CLASSES[currentClass];
+  const body = document.getElementById('tableBody');
+  body.innerHTML = '';
+
+  students.forEach((s, idx) => {
+    const d = tableData[currentClass][s.name] || {att:'',energy:0,emotion:0,condition:0,homework:0,comprehension:0,ready:0,focus:0,wrong_attitude:0,completion:0,note:''};
+    const tr = document.createElement('tr');
+
+    // 학생명 — contenteditable로 직접 수정 가능
+    tr.innerHTML += `<td class="student-col">
+      <div class="student-name-wrap">
+        <div>
+          <span class="student-name" contenteditable="true"
+            onblur="renameStudent(${idx}, this.textContent.trim())"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}"
+            title="클릭하여 이름 수정">${s.name}</span>
+          <span class="student-grade">${s.grade}</span>
+        </div>
+        <button class="move-class-btn" onclick="openMoveClass(${idx})" title="반 변경">↔</button>
+        <button class="del-student-btn" onclick="deleteStudent(${idx})" title="학생 삭제">✕</button>
+      </div>
+    </td>`;
+
+    // 출석
+    tr.innerHTML += `<td>
+      <div class="att-btns">
+        <button class="att-btn ${d.att==='in'?'att-in':''}" onclick="setAtt('${s.name}','in',this)">출석</button>
+        <button class="att-btn ${d.att==='late'?'att-late':''}" onclick="setAtt('${s.name}','late',this)">지각</button>
+        <button class="att-btn ${d.att==='out'?'att-out':''}" onclick="setAtt('${s.name}','out',this)">결석</button>
+      </div>
+    </td>`;
+
+    // 핵심 5개
+    ['energy','emotion','condition','homework','comprehension'].forEach(key => {
+      tr.innerHTML += `<td>${scoreCell(s.name, key, d[key])}</td>`;
+    });
+
+    tr.innerHTML += `<td style="background:#f5f3fa;border-color:#ddd6fe"></td>`;
+
+    // 추가 4개
+    ['ready','focus','wrong_attitude','completion'].forEach(key => {
+      tr.innerHTML += `<td class="extra-col ${extraVisible?'visible':''}">${scoreCell(s.name, key, d[key])}</td>`;
+    });
+
+    // 코치 노트
+    tr.innerHTML += `<td>
+      <div style="display:flex;align-items:flex-start;gap:4px;">
+        <textarea class="memo-input" id="note_${s.name.replace(/\s/g,'_')}" placeholder="특이사항..." onchange="setNote('${s.name}',this.value)">${d.note}</textarea>
+        <button onclick="startVoice('${s.name}')" id="micBtn_${s.name.replace(/\s/g,'_')}" title="음성입력" style="flex-shrink:0;width:30px;height:30px;border:none;border-radius:8px;background:#f0ede8;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s;">🎤</button>
+      </div>
+    </td>`;
+
+    body.appendChild(tr);
+  });
+
+  // 학생 추가 행
+  const addRow = document.createElement('tr');
+  addRow.className = 'add-student-row';
+  addRow.innerHTML = `<td colspan="13">
+    <button class="add-student-btn" onclick="openAddStudent()">＋ 학생 추가</button>
+  </td>`;
+  body.appendChild(addRow);
+
+  updateSummary();
+}
+
+// ── 점수 셀 ──
+function scoreCell(name, key, val) {
+  const tips = TOOLTIPS[key] || ['','','',''];
+  let html = '<div class="score-btns">';
+  for(let i=1;i<=4;i++){
+    const cls = val===i ? `s${i}-active` : '';
+    html += `<div class="tooltip-wrap">
+      <button class="score-btn ${cls}" onclick="setScore('${name}','${key}',${i},this)">${i}</button>
+      <div class="tooltip">${i}점: ${tips[i-1]}</div>
+    </div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+// ── 이름 수정 ──
+function renameStudent(idx, newName) {
+  if(!newName) return;
+  const oldName = CLASSES[currentClass][idx].name;
+  if(oldName === newName) return;
+
+  // 데이터 키 변경
+  if(tableData[currentClass] && tableData[currentClass][oldName]) {
+    tableData[currentClass][newName] = tableData[currentClass][oldName];
+    delete tableData[currentClass][oldName];
+  }
+  CLASSES[currentClass][idx].name = newName;
+  saveClasses();
+  render();
+}
+
+// ── 학생 삭제 ──
+function deleteStudent(idx) {
+  const name = CLASSES[currentClass][idx].name;
+  if(!confirm(`"${name}" 학생을 삭제하시겠어요?`)) return;
+  CLASSES[currentClass].splice(idx, 1);
+  if(tableData[currentClass]) delete tableData[currentClass][name];
+  saveClasses();
+  render();
+}
+
+// ── 학생 추가 모달 ──
+function openAddStudent() {
+  if(!currentClass || !CLASSES[currentClass]) {
+    alert('먼저 반을 선택해주세요!');
+    return;
+  }
+  document.getElementById('newStudentName').value = '';
+  document.getElementById('newStudentGrade').value = '';
+  document.getElementById('newStudentPhone').value = '';
+  document.getElementById('addModal').classList.add('open');
+  setTimeout(()=>document.getElementById('newStudentName').focus(), 100);
+}
+function closeModal() {
+  document.getElementById('addModal').classList.remove('open');
+}
+function confirmAddStudent() {
+  const name = document.getElementById('newStudentName').value.trim();
+  const grade = document.getElementById('newStudentGrade').value || '미입력';
+  const phone = document.getElementById('newStudentPhone').value.trim() || '010-0000-0000';
+  if(!name) { alert('이름을 입력해주세요!'); return; }
+  if(CLASSES[currentClass].some(s => s.name === name)) {
+    alert('이미 같은 이름의 학생이 있어요!'); return;
+  }
+  CLASSES[currentClass].push({name, grade, phone});
+  saveClasses();
+  closeModal();
+  render();
+}
+
+// ── 반 추가 (기존 prompt 방식 유지, 모달에서도 사용) ──
+function openAddClass() {
+  openClassManage();
+}
+
+// ── 반 변경 ──
+let moveStudentIdx = null;
+
+function openMoveClass(idx) {
+  const student = CLASSES[currentClass][idx];
+  moveStudentIdx = idx;
+  document.getElementById('moveClassTitle').textContent = `"${student.name}" 반 변경`;
+  const list = document.getElementById('moveClassList');
+  list.innerHTML = Object.keys(CLASSES).map(cls => {
+    const isCurrentClass = cls === currentClass;
+    return `<button onclick="confirmMoveClass('${cls}')" style="
+      width:100%;padding:12px 16px;border-radius:10px;border:2px solid ${isCurrentClass ? 'var(--orange)' : 'var(--border)'};
+      background:${isCurrentClass ? '#fff8f4' : '#fafafa'};
+      font-size:14px;font-weight:700;font-family:'Noto Sans KR',sans-serif;
+      color:${isCurrentClass ? 'var(--orange)' : 'var(--text2)'};
+      cursor:${isCurrentClass ? 'default' : 'pointer'};
+      text-align:left;
+    ">${cls}반 ${isCurrentClass ? '✓ 현재 반' : `(${CLASSES[cls].length}명)`}</button>`;
+  }).join('');
+  document.getElementById('moveClassModal').classList.add('open');
+}
+
+function closeMoveClass() {
+  document.getElementById('moveClassModal').classList.remove('open');
+  moveStudentIdx = null;
+}
+
+function confirmMoveClass(targetClass) {
+  if(targetClass === currentClass) return;
+  const student = CLASSES[currentClass][moveStudentIdx];
+  // 이동할 반에 같은 이름 있는지 체크
+  if(CLASSES[targetClass].some(s => s.name === student.name)) {
+    alert(`"${targetClass}반"에 이미 같은 이름의 학생이 있어요!`); return;
+  }
+  // 데이터 이동
+  const studentData = tableData[currentClass]?.[student.name];
+  CLASSES[targetClass].push(student);
+  CLASSES[currentClass].splice(moveStudentIdx, 1);
+  if(studentData) {
+    if(!tableData[targetClass]) tableData[targetClass] = {};
+    tableData[targetClass][student.name] = studentData;
+    delete tableData[currentClass][student.name];
+  }
+  saveClasses();
+  closeMoveClass();
+  render();
+  showToast(`✅ ${student.name} → ${targetClass}반 이동 완료!`, 'saveToast');
+}
+
+// ── 반 설정 모달 ──
+let classManageOrder = [];   // 편집 중 순서
+let classManageNames = {};   // 편집 중 이름 {oldName: newName}
+let classSchedules = {};     // {className: {days:[], start:'', end:''}}
+let schedTargetClass = null; // 팝오버 대상 반
+
+function loadSchedules() {
+  const s = lsGet('zelvia_schedules');
+  if(s) classSchedules = s;
+}
+function saveSchedules() {
+  lsSet('zelvia_schedules', classSchedules);
+}
+
+function openClassManage() {
+  // 현재 반 목록을 편집용으로 복사
+  classManageOrder = Object.keys(CLASSES);
+  classManageNames = {};
+  classManageOrder.forEach(c => classManageNames[c] = c);
+  renderClassManageList();
+  document.getElementById('newClassNameInput').value = '';
+  document.getElementById('classManageModal').classList.add('open');
+}
+
+function closeClassManage() {
+  document.getElementById('classManageModal').classList.remove('open');
+  closeSchedPopover();
+}
+
+function renderClassManageList() {
+  const list = document.getElementById('classManageList');
+  list.innerHTML = '';
+  classManageOrder.forEach((cls, idx) => {
+    const sched = classSchedules[cls];
+    const schedLabel = sched && sched.days && sched.days.length
+      ? sched.days.join('') + ' ' + (sched.start||'') + (sched.end ? '~'+sched.end : '')
+      : '일정 설정';
+    const hasSched = sched && sched.days && sched.days.length > 0;
+
+    const row = document.createElement('div');
+    row.className = 'class-manage-row';
+    row.draggable = true;
+    row.dataset.idx = idx;
+    row.innerHTML = `
+      <span class="drag-handle" title="드래그하여 순서 변경">☰</span>
+      <input class="class-name-edit" value="${classManageNames[cls]}" data-key="${cls}" placeholder="반 이름">
+      <button class="class-schedule-btn ${hasSched?'has-sched':''}" data-cls="${cls}" onclick="openSchedPopover(this,'${cls}')">📅 ${schedLabel}</button>
+      <button class="class-del-btn" onclick="deleteClassManage('${cls}')" title="반 삭제">✕</button>
+    `;
+
+    // 이름 변경 감지
+    row.querySelector('.class-name-edit').addEventListener('input', e => {
+      classManageNames[cls] = e.target.value.trim();
+    });
+
+    // 드래그 앤 드롭
+    row.addEventListener('dragstart', e => { e.dataTransfer.setData('text/plain', idx); row.style.opacity='.4'; });
+    row.addEventListener('dragend', e => { row.style.opacity='1'; });
+    row.addEventListener('dragover', e => { e.preventDefault(); row.classList.add('drag-over'); });
+    row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+    row.addEventListener('drop', e => {
+      e.preventDefault();
+      row.classList.remove('drag-over');
+      const fromIdx = parseInt(e.dataTransfer.getData('text/plain'));
+      const toIdx = idx;
+      if(fromIdx === toIdx) return;
+      const moved = classManageOrder.splice(fromIdx, 1)[0];
+      classManageOrder.splice(toIdx, 0, moved);
+      renderClassManageList();
+    });
+
+    list.appendChild(row);
+  });
+}
+
+function deleteClassManage(cls) {
+  const studentCount = CLASSES[cls] ? CLASSES[cls].length : 0;
+  const msg = studentCount > 0
+    ? `"${cls}반"에 학생 ${studentCount}명이 있습니다.\n삭제하면 모든 데이터가 사라져요. 정말 삭제할까요?`
+    : `"${cls}반"을 삭제할까요?`;
+  if(!confirm(msg)) return;
+  classManageOrder = classManageOrder.filter(c => c !== cls);
+  delete classManageNames[cls];
+  renderClassManageList();
+}
+
+function confirmAddClass() {
+  const input = document.getElementById('newClassNameInput');
+  const name = input.value.trim();
+  if(!name) { alert('반 이름을 입력해주세요!'); return; }
+  if(classManageOrder.includes(name) || Object.values(classManageNames).includes(name)) {
+    alert('이미 있는 반 이름이에요!'); return;
+  }
+  // 임시로 목록에만 추가 (저장 시 반영)
+  classManageOrder.push(name);
+  classManageNames[name] = name;
+  input.value = '';
+  renderClassManageList();
+}
+
+function saveClassManage() {
+  // 이름 유효성 체크
+  const newNames = classManageOrder.map(c => classManageNames[c]);
+  if(newNames.some(n => !n)) { alert('반 이름이 비어있어요!'); return; }
+  const unique = new Set(newNames);
+  if(unique.size !== newNames.length) { alert('반 이름이 중복되어 있어요!'); return; }
+
+  // 새 CLASSES 구성
+  const newCLASSES = {};
+  classManageOrder.forEach(oldName => {
+    const newName = classManageNames[oldName];
+    newCLASSES[newName] = CLASSES[oldName] || [];
+    // 일정 키도 이름 변경 시 이동
+    if(oldName !== newName && classSchedules[oldName]) {
+      classSchedules[newName] = classSchedules[oldName];
+      delete classSchedules[oldName];
+    }
+  });
+
+  CLASSES = newCLASSES;
+
+  // currentClass가 변경/삭제된 경우 첫 번째 반으로
+  const allKeys = Object.keys(CLASSES);
+  if(!CLASSES[currentClass]) {
+    currentClass = allKeys[0] || '';
+  }
+
+  saveClasses();
+  saveSchedules();
+  closeClassManage();
+  renderClassBar();
+  if(currentClass) render();
+}
+
+// ── 수업 일정 팝오버 ──
+const DAYS = ['월','화','수','목','금','토','일'];
+
+function openSchedPopover(btn, cls) {
+  schedTargetClass = cls;
+  const sched = classSchedules[cls] || {days:[], start:'16:00', end:'18:00'};
+
+  // 요일 체크박스 생성
+  const box = document.getElementById('dayCheckboxes');
+  box.innerHTML = DAYS.map(d => `
+    <label class="day-check">
+      <input type="checkbox" value="${d}" ${(sched.days||[]).includes(d)?'checked':''}>
+      ${d}
+    </label>`).join('');
+
+  document.getElementById('schedStart').value = sched.start || '16:00';
+  document.getElementById('schedEnd').value = sched.end || '18:00';
+
+  // 위치 계산
+  const rect = btn.getBoundingClientRect();
+  const pop = document.getElementById('schedPopover');
+  pop.style.top = (rect.bottom + 8 + window.scrollY) + 'px';
+  pop.style.left = Math.min(rect.left, window.innerWidth - 250) + 'px';
+  pop.classList.add('open');
+}
+
+function closeSchedPopover() {
+  document.getElementById('schedPopover').classList.remove('open');
+  schedTargetClass = null;
+}
+
+function saveSchedPopover() {
+  if(!schedTargetClass) return;
+  const days = [...document.querySelectorAll('#dayCheckboxes input:checked')].map(i=>i.value);
+  const start = document.getElementById('schedStart').value;
+  const end = document.getElementById('schedEnd').value;
+  classSchedules[schedTargetClass] = {days, start, end};
+  closeSchedPopover();
+  renderClassManageList();  // 버튼 라벨 갱신
+}
+
+// 팝오버 외부 클릭 시 닫기
+document.addEventListener('click', e => {
+  const pop = document.getElementById('schedPopover');
+  if(pop.classList.contains('open') && !pop.contains(e.target) && !e.target.classList.contains('class-schedule-btn')) {
+    closeSchedPopover();
+  }
+});
+
+
+// ── 이벤트 ──
+function setAtt(name, type, btn) {
+  const d = tableData[currentClass][name];
+  if(d.att === type){ d.att = ''; }
+  else {
+    d.att = type;
+    if(type === 'in') sendSMS(name);
+  }
+  render();
+}
+
+function setScore(name, key, val, btn) {
+  const d = tableData[currentClass][name];
+  if(d[key] === val) d[key] = 0;
+  else d[key] = val;
+  const btns = btn.closest('.score-btns').querySelectorAll('.score-btn');
+  btns.forEach((b,i) => {
+    b.className = 'score-btn';
+    if(d[key] === i+1) b.classList.add(`s${i+1}-active`);
+  });
+  updateSummary();
+}
+
+function setNote(name, val) {
+  tableData[currentClass][name].note = val;
+}
+
+// ── 음성인식 ──
+let activeRecognition = null;
+let activeMicName = null;
+
+function startVoice(name) {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert('이 브라우저는 음성인식을 지원하지 않아요.\n삼성 인터넷 또는 Chrome을 사용해주세요.');
+    return;
+  }
+
+  const safeId = name.replace(/\s/g,'_');
+  const btn = document.getElementById('micBtn_' + safeId);
+  const ta = document.getElementById('note_' + safeId);
+
+  // 이미 녹음 중이면 중지
+  if (activeMicName === name && activeRecognition) {
+    activeRecognition.stop();
+    return;
+  }
+
+  // 다른 학생 녹음 중이면 먼저 중지
+  if (activeRecognition) activeRecognition.stop();
+
+  const recog = new SpeechRecognition();
+  recog.lang = 'ko-KR';
+  recog.continuous = true;
+  recog.interimResults = true;
+
+  let baseText = ta.value;
+
+  recog.onstart = () => {
+    activeRecognition = recog;
+    activeMicName = name;
+    btn.style.background = '#fee2e2';
+    btn.textContent = '🔴';
+  };
+
+  recog.onresult = (e) => {
+    let interim = '';
+    let final = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) final += e.results[i][0].transcript;
+      else interim += e.results[i][0].transcript;
+    }
+    if (final) baseText += (baseText ? ' ' : '') + final;
+    ta.value = baseText + (interim ? ' ' + interim : '');
+    setNote(name, ta.value);
+  };
+
+  recog.onend = () => {
+    activeRecognition = null;
+    activeMicName = null;
+    btn.style.background = '#f0ede8';
+    btn.textContent = '🎤';
+    ta.value = baseText;
+    setNote(name, baseText);
+  };
+
+  recog.onerror = (e) => {
+    activeRecognition = null;
+    activeMicName = null;
+    btn.style.background = '#f0ede8';
+    btn.textContent = '🎤';
+    if (e.error !== 'aborted') alert('음성인식 오류: ' + e.error);
+  };
+
+  recog.start();
+}
+
+// ── 전체 음성 인식 (이름 감지 → 자동 매핑) ──
+let globalRecog = null;
+let globalVoiceOn = false;
+let currentTargetName = null; // 현재 말하고 있는 학생
+
+function toggleGlobalVoice() {
+  if (globalVoiceOn) {
+    stopGlobalVoice();
+  } else {
+    startGlobalVoice();
+  }
+}
+
+function startGlobalVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert('이 브라우저는 음성인식을 지원하지 않아요.\n삼성 인터넷 또는 Chrome을 사용해주세요.');
+    return;
+  }
+  // 개별 녹음 중이면 중지
+  if (activeRecognition) { activeRecognition.stop(); }
+
+  const btn = document.getElementById('globalMicBtn');
+  const bar = document.getElementById('voiceStatusBar');
+  const statusName = document.getElementById('voiceStatusName');
+
+  globalRecog = new SpeechRecognition();
+  globalRecog.lang = 'ko-KR';
+  globalRecog.continuous = true;
+  globalRecog.interimResults = true;
+
+  // 현재 반 학생 이름 목록
+  function getStudentNames() {
+    return (CLASSES[currentClass] || []).map(s => s.name);
+  }
+
+  // 텍스트에서 학생 이름 감지
+  function detectName(text) {
+    const names = getStudentNames();
+    for (const name of names) {
+      // 이름 앞 2글자 이상 일치하면 감지 (예: "민준아" → "민준")
+      const base = name.length >= 2 ? name.slice(0, 2) : name;
+      if (text.includes(base)) return name;
+    }
+    return null;
+  }
+
+  // 감지된 이름 이후 텍스트를 노트에 추가
+  function appendNoteForName(name, text) {
+    if (!name || !text.trim()) return;
+    const safeId = name.replace(/\s/g,'_');
+    const ta = document.getElementById('note_' + safeId);
+    if (!ta) return;
+    const prev = tableData[currentClass][name]?.note || '';
+    const newNote = prev ? prev + ' ' + text.trim() : text.trim();
+    ta.value = newNote;
+    setNote(name, newNote);
+    // 해당 행 하이라이트
+    ta.style.borderColor = '#16a34a';
+    setTimeout(() => { ta.style.borderColor = ''; }, 1500);
+  }
+
+  let pendingText = '';
+
+  globalRecog.onstart = () => {
+    globalVoiceOn = true;
+    btn.style.background = 'linear-gradient(135deg,#dc2626,#b91c1c)';
+    btn.textContent = '🔴 전체음성 ON';
+    bar.style.display = 'block';
+    statusName.textContent = '이름을 말해주세요...';
+  };
+
+  globalRecog.onresult = (e) => {
+    let finalText = '';
+    let interimText = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) finalText += e.results[i][0].transcript;
+      else interimText += e.results[i][0].transcript;
+    }
+
+    const displayText = finalText || interimText;
+
+    // 이름 감지
+    const detected = detectName(displayText);
+    if (detected) {
+      // 이전 학생 텍스트 저장
+      if (currentTargetName && pendingText) {
+        appendNoteForName(currentTargetName, pendingText);
+      }
+      currentTargetName = detected;
+      pendingText = '';
+      statusName.textContent = `🎯 ${detected} 학생 → 기록 중`;
+    }
+
+    // 이름 이후 텍스트 누적
+    if (currentTargetName && finalText) {
+      // 이름 부분 제거하고 나머지만
+      const base = currentTargetName.slice(0, 2);
+      const afterName = finalText.replace(new RegExp(`.*${base}[아야]?\\s*`), '').trim();
+      if (afterName) {
+        pendingText += (pendingText ? ' ' : '') + afterName;
+        appendNoteForName(currentTargetName, pendingText);
+        pendingText = '';
+      }
+    }
+
+    // 인터림 미리보기
+    if (interimText) {
+      statusName.textContent = currentTargetName
+        ? `🎯 ${currentTargetName} → "${interimText}"`
+        : `"${interimText}"`;
+    }
+  };
+
+  globalRecog.onend = () => {
+    // 자동 재시작 (수업 내내 켜두기)
+    if (globalVoiceOn) {
+      try { globalRecog.start(); } catch(e) {}
+    }
+  };
+
+  globalRecog.onerror = (e) => {
+    if (e.error === 'not-allowed') {
+      alert('마이크 권한을 허용해주세요.');
+      stopGlobalVoice();
+    }
+  };
+
+  globalRecog.start();
+}
+
+function stopGlobalVoice() {
+  globalVoiceOn = false;
+  currentTargetName = null;
+  if (globalRecog) { globalRecog.stop(); globalRecog = null; }
+  const btn = document.getElementById('globalMicBtn');
+  const bar = document.getElementById('voiceStatusBar');
+  btn.style.background = 'linear-gradient(135deg,#16a34a,#15803d)';
+  btn.textContent = '🎤 전체음성';
+  bar.style.display = 'none';
+}
+
+// ── 수업 녹음 기능 ──
+let mediaRecorder = null;
+let recordedChunks = [];
+let recTimerInterval = null;
+let recStartTime = null;
+let isRecording = false;
+
+function toggleRecording() {
+  if (isRecording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recordedChunks = [];
+
+    // 삼성 인터넷 호환 코덱 순서로 시도
+    const mimeTypes = ['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4','audio/'];
+    let mimeType = '';
+    for (const m of mimeTypes) {
+      if (MediaRecorder.isTypeSupported(m)) { mimeType = m; break; }
+    }
+
+    mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
+    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      saveRecording();
+    };
+    mediaRecorder.start(1000);
+
+    isRecording = true;
+    recStartTime = Date.now();
+
+    // UI 업데이트
+    const btn = document.getElementById('recBtn');
+    const bar = document.getElementById('recStatusBar');
+    btn.style.background = 'linear-gradient(135deg,#6b7280,#4b5563)';
+    btn.textContent = '⏹ 녹음중지';
+    bar.style.display = 'block';
+
+    // 타이머
+    recTimerInterval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - recStartTime) / 1000);
+      const m = String(Math.floor(elapsed / 60)).padStart(2,'0');
+      const s = String(elapsed % 60).padStart(2,'0');
+      document.getElementById('recTimer').textContent = `${m}:${s}`;
+    }, 1000);
+
+  } catch(err) {
+    alert('마이크 접근 오류: ' + err.message + '\n마이크 권한을 허용해주세요.');
+  }
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+    mediaRecorder.stop();
+  }
+  isRecording = false;
+  clearInterval(recTimerInterval);
+
+  const btn = document.getElementById('recBtn');
+  const bar = document.getElementById('recStatusBar');
+  btn.style.background = 'linear-gradient(135deg,#dc2626,#b91c1c)';
+  btn.textContent = '⏺ 수업녹음';
+  bar.style.display = 'none';
+}
+
+function saveRecording() {
+  if (!recordedChunks.length) return;
+  const blob = new Blob(recordedChunks, { type: recordedChunks[0].type || 'audio/webm' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const now = new Date();
+  const stamp = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
+  const ext = (recordedChunks[0].type || '').includes('mp4') ? 'mp4' : (recordedChunks[0].type || '').includes('ogg') ? 'ogg' : 'webm';
+  a.download = `ZELVIA_수업녹음_${currentClass}_${stamp}.${ext}`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+
+  // 저장 완료 토스트
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0d1f3c;color:#fff;padding:12px 22px;border-radius:12px;font-size:13px;font-weight:700;z-index:9999;';
+  t.textContent = '✅ 녹음 파일이 저장됐어요!';
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+
+  btn.classList.add('active');
+  currentClass = cls;
+  render();
+}
+
+function toggleExtra() {
+  extraVisible = !extraVisible;
+  document.getElementById('expandIcon').textContent = extraVisible ? '－' : '＋';
+  document.querySelectorAll('.extra-col').forEach(el => el.classList.toggle('visible', extraVisible));
+}
+
+// ── 요약 ──
+function updateSummary() {
+  const students = CLASSES[currentClass];
+  const data = tableData[currentClass];
+  let inCnt=0,lateCnt=0,outCnt=0,lowEnergy=0,lowEmotion=0;
+  students.forEach(s => {
+    const d = data[s.name] || {};
+    if(d.att==='in') inCnt++;
+    if(d.att==='late') lateCnt++;
+    if(d.att==='out') outCnt++;
+    if(d.energy===1||d.energy===2) lowEnergy++;
+    if(d.emotion===1) lowEmotion++;
+  });
+  document.getElementById('summaryBar').innerHTML = `
+    <div class="sum-card"><span class="sum-num">${inCnt}</span><span class="sum-label">✅ 출석</span></div>
+    <div class="sum-card warn"><span class="sum-num">${lateCnt}</span><span class="sum-label">⏰ 지각</span></div>
+    <div class="sum-card danger"><span class="sum-num">${outCnt}</span><span class="sum-label">❌ 결석</span></div>
+    <div class="sum-card ${lowEnergy>2?'danger':''}"><span class="sum-num">${lowEnergy}</span><span class="sum-label">⚡ 저에너지</span></div>
+    <div class="sum-card ${lowEmotion>0?'danger':''}"><span class="sum-num">${lowEmotion}</span><span class="sum-label">😟 정서위험</span></div>
+    <div class="sum-card"><span class="sum-num">${students.length}</span><span class="sum-label">👥 전체</span></div>
+  `;
+}
+
+// ── SMS ──
+function sendSMS(name) {
+  const student = CLASSES[currentClass].find(s=>s.name===name);
+  if(!student) return;
+  const time = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  const msg = `안녕하세요 😊 ${name} 학생이 오늘 ${time}에 젤비아 에듀센터에 등원했습니다.`;
+  showToast(`📱 ${student.phone} → "${msg.substring(0,28)}..."`,'smsToast');
+}
+
+function sendAllSMS() {
+  const data = tableData[currentClass];
+  let cnt=0;
+  CLASSES[currentClass].forEach(s=>{ if(data[s.name]?.att==='in') cnt++; });
+  showToast(`📱 출석 학생 ${cnt}명 학부모에게 등원 문자 발송 완료!`,'smsToast');
+}
+
+function showToast(msg, id) {
+  const t = document.getElementById(id);
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(()=>{ t.style.display='none'; }, 3000);
+}
+
+// ── 백업 저장 (구글 드라이브로) ──
+function backupToFile() {
+  saveAll(); // 먼저 로컬 저장
+  const backup = {
+    version: 7,
+    savedAt: new Date().toISOString(),
+    date: getDateKey(),
+    CLASSES: CLASSES,
+    tableData: tableData,
+    schedules: classSchedules
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `ZELVIA_backup_${getDateKey()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('📥 백업 파일 저장됨! 구글 드라이브에 업로드하세요.', 'saveToast');
+}
+
+// ── 백업 복원 ──
+function restoreFromFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const backup = JSON.parse(e.target.result);
+      if (!backup.CLASSES) { alert('올바른 백업 파일이 아니에요!'); return; }
+
+      if (!confirm(`📅 ${backup.date || '날짜미상'} 백업 데이터를 불러올까요?\n현재 데이터는 덮어씌워져요.`)) return;
+
+      CLASSES = backup.CLASSES;
+      tableData = backup.tableData || {};
+      classSchedules = backup.schedules || {};
+
+      lsSet('zelvia_classes', CLASSES);
+      lsSet('zelvia_att_' + getDateKey(), tableData);
+      lsSet('zelvia_schedules', classSchedules);
+
+      // 현재 반 초기화
+      const keys = Object.keys(CLASSES);
+      if (keys.length) currentClass = keys[0];
+
+      renderClassBar();
+      render();
+      showToast('✅ 백업 복원 완료!', 'saveToast');
+    } catch(err) {
+      alert('파일을 읽는 중 오류가 발생했어요: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ''; // 같은 파일 재선택 가능하게
+}
+
+// ── 저장 ──
+function saveClasses() {
+  lsSet('zelvia_classes', CLASSES);
+}
+
+function saveAll() {
+  saveClasses();
+  lsSet('zelvia_att_'+getDateKey(), tableData);
+  syncToGLSIBridge();  // GLSI_v8 자동 연동
+  showToast('✅ 저장 완료! GLSI 연동 중...','saveToast');
+}
+
+/* ══════════════════════════════════════════════════
+   GLSI_v8 출석관찰부 브릿지 동기화
+   - zelvia_att_bridge_v1 키에 오늘 관찰 데이터 저장
+   - GLSI_v8이 이 키를 읽어 대시보드에 반영
+   - 학생 이름 기반 매칭 (GLSI students 순회)
+══════════════════════════════════════════════════ */
+function syncToGLSIBridge() {
+  try {
+    const dateKey = getDateKey();
+    const glsiStudents = JSON.parse(localStorage.getItem('glsi_students_v2')) || [];
+
+    const bridgeData = {
+      date: dateKey,
+      syncedAt: new Date().toISOString(),
+      classes: {}
+    };
+
+    // 전체 반 순회
+    Object.keys(CLASSES).forEach(cls => {
+      const students = CLASSES[cls] || [];
+      const data = tableData[cls] || {};
+      bridgeData.classes[cls] = {};
+
+      students.forEach(s => {
+        const d = data[s.name] || {};
+        // GLSI_v8 학생 ID 매칭 (이름 기준)
+        const glsiStudent = glsiStudents.find(g => g.name === s.name);
+
+        bridgeData.classes[cls][s.name] = {
+          studentId: glsiStudent?.id || null,
+          studentName: s.name,
+          att: d.att || '',          // in/late/out/''
+          energy: d.energy || 0,     // 1~3
+          emotion: d.emotion || 0,   // 1~3
+          condition: d.condition || 0,
+          homework: d.homework || 0,
+          comprehension: d.comprehension || 0,
+          focus: d.focus || 0,
+          completion: d.completion || 0,
+          note: d.note || ''
+        };
+      });
+    });
+
+    localStorage.setItem('zelvia_att_bridge_v1', JSON.stringify(bridgeData));
+
+    // GLSI_v8 records에도 관찰 데이터 반영 (ACHIEVEMENT/HABIT 보조 데이터)
+    syncObservationToGLSIRecords(glsiStudents, bridgeData);
+
+  } catch(e) {
+    console.warn('GLSI 브릿지 동기화 실패:', e);
+  }
+}
+
+function syncObservationToGLSIRecords(glsiStudents, bridgeData) {
+  try {
+    const obsKey = 'zelvia_obs_history_v1';
+    const obsHistory = JSON.parse(localStorage.getItem(obsKey)) || {};
+    const dateKey = bridgeData.date;
+
+    Object.values(bridgeData.classes).forEach(classData => {
+      Object.values(classData).forEach(d => {
+        if (!d.studentId || !d.studentName) return;
+        if (!d.att && !d.energy && !d.focus && !d.note) return; // 빈 데이터 스킵
+
+        if (!obsHistory[d.studentId]) obsHistory[d.studentId] = [];
+
+        // 같은 날짜 덮어쓰기
+        const existing = obsHistory[d.studentId].findIndex(r => r.date === dateKey);
+        const rec = {
+          date: dateKey,
+          att: d.att,
+          energy: d.energy,
+          emotion: d.emotion,
+          homework: d.homework,
+          comprehension: d.comprehension,
+          focus: d.focus,
+          completion: d.completion,
+          note: d.note,
+          // GLSI 지표 매핑 (관찰 → 수치 변환)
+          glsiMapping: {
+            HABIT: calcHabitScore(d),
+            TIME: calcTimeScore(d),
+            ACHIEVEMENT: calcAchievementScore(d)
+          }
+        };
+        if (existing >= 0) obsHistory[d.studentId][existing] = rec;
+        else obsHistory[d.studentId].unshift(rec);
+      });
+    });
+
+    localStorage.setItem(obsKey, JSON.stringify(obsHistory));
+  } catch(e) {
+    console.warn('관찰 이력 저장 실패:', e);
+  }
+}
+
+// 관찰 지표 → GLSI 점수 변환 (알고리즘 문서 기반)
+function calcHabitScore(d) {
+  // HABIT = 과제이행 + 에너지 + 컨디션
+  const base = ((d.homework||0) + (d.energy||0) + (d.condition||0)) / 9 * 100;
+  return Math.round(Math.max(0, Math.min(100, base)));
+}
+function calcTimeScore(d) {
+  // TIME = 집중력 + 완성도
+  const base = ((d.focus||0) + (d.completion||0)) / 6 * 100;
+  return Math.round(Math.max(0, Math.min(100, base)));
+}
+function calcAchievementScore(d) {
+  // ACHIEVEMENT = 이해도 + 완성도
+  const base = ((d.comprehension||0) + (d.completion||0)) / 6 * 100;
+  return Math.round(Math.max(0, Math.min(100, base)));
+}
+
+// Enter로 모달 확인 / Escape로 닫기
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape') { closeModal(); closeClassManage(); closeSchedPopover(); closeMoveClass(); }
+  if(e.key==='Enter') {
+    const modal = document.getElementById('addModal');
+    if(modal.classList.contains('open')) confirmAddStudent();
+  }
+});
+
+// ── 초기 실행 ──
+loadSaved();
+renderClassBar();
+render();
+
+// 5분마다 자동저장
+setInterval(() => {
+  lsSet('zelvia_classes', CLASSES);
+  lsSet('zelvia_att_' + getDateKey(), tableData);
+  lsSet('zelvia_schedules', classSchedules);
+  showToast('🔄 자동저장 완료', 'saveToast');
+}, 5 * 60 * 1000);
+</script>
+</body>
+</html>

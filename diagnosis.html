@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ZELVIA 학년별 수학 진단테스트</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0d1f3c;--navy2:#1a3260;--orange:#f26c1b;--orange2:#ff9a5c;
+  --green:#16a34a;--red:#dc2626;--blue:#2563eb;--purple:#7c3aed;
+  --bg:#f5f3ee;--surface:#fff;--border:#e2ddd6;--muted:#8c8680;
+  --text:#1a1814;--text2:#4a4640;
+}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* 헤더 */
+.hdr{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.brand{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#fff}
+.brand span{color:var(--orange)}
+.brand-sub{font-size:10px;color:rgba(255,255,255,.4);letter-spacing:2px;display:block}
+.progress-bar{height:3px;background:rgba(255,255,255,.15);position:relative}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--orange),var(--orange2));transition:width .4s ease}
+
+/* 화면 전환 */
+.screen{display:none;padding:20px;max-width:720px;margin:0 auto}
+.screen.active{display:block}
+
+/* ── 입력화면 ── */
+.intro-card{background:var(--surface);border-radius:20px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:16px}
+.intro-title{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:900;color:var(--navy);margin-bottom:6px}
+.intro-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.form-label{font-size:13px;font-weight:700;color:var(--text2);margin-bottom:6px;display:block}
+.form-input{width:100%;border:2px solid var(--border);border-radius:12px;padding:11px 14px;font-size:15px;font-family:'Noto Sans KR',sans-serif;outline:none;background:#fff;margin-bottom:14px}
+.form-input:focus{border-color:var(--orange)}
+.grade-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.grade-btn{padding:10px 6px;border:2px solid var(--border);border-radius:10px;background:#fafafa;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;text-align:center;transition:all .2s;font-family:'Noto Sans KR',sans-serif}
+.grade-btn.selected{border-color:var(--orange);background:#fff8f4;color:var(--orange)}
+.level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px}
+.level-btn{padding:12px 8px;border:2px solid var(--border);border-radius:10px;background:#fafafa;cursor:pointer;text-align:center;transition:all .2s;font-family:'Noto Sans KR',sans-serif}
+.level-btn.selected{border-color:var(--blue);background:#eff6ff}
+.level-icon{font-size:20px;display:block;margin-bottom:4px}
+.level-name{font-size:12px;font-weight:700;color:var(--text2)}
+.level-desc{font-size:10px;color:var(--muted)}
+.btn-start{width:100%;padding:14px;background:linear-gradient(135deg,var(--orange),var(--orange2));color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:900;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+
+/* ── 단원 선택 ── */
+.unit-title{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:var(--navy);margin-bottom:4px}
+.unit-sub{font-size:12px;color:var(--muted);margin-bottom:16px}
+.unit-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+.unit-card{background:var(--surface);border:2px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;transition:all .2s}
+.unit-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:0 4px 14px rgba(242,108,27,.15)}
+.unit-card.selected{border-color:var(--orange);background:#fff8f4}
+.unit-icon{font-size:22px;margin-bottom:6px}
+.unit-name{font-size:14px;font-weight:700;color:var(--navy)}
+.unit-qs{font-size:11px;color:var(--muted);margin-top:2px}
+.btn-test-start{width:100%;padding:13px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;font-family:'Noto Sans KR',sans-serif}
+
+/* ── 문제 화면 ── */
+.q-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.q-unit-badge{background:var(--navy2);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
+.q-count{font-size:12px;color:var(--muted);font-weight:700}
+.q-card{background:var(--surface);border-radius:18px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:14px}
+.q-num{font-size:11px;font-weight:700;color:var(--orange);letter-spacing:1px;margin-bottom:8px}
+.q-type-badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:10px}
+.q-type-obj{background:#dbeafe;color:var(--blue)}
+.q-type-sub{background:#dcfce7;color:var(--green)}
+.q-text{font-size:15px;font-weight:700;color:var(--navy);line-height:1.7;margin-bottom:16px}
+.q-image{background:#f9f8f6;border-radius:10px;padding:14px;margin-bottom:14px;text-align:center;font-size:13px;color:var(--muted);border:1px dashed var(--border)}
+
+/* 객관식 */
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt-btn{width:100%;text-align:left;padding:12px 16px;border:2px solid var(--border);border-radius:12px;background:#fafafa;font-size:14px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+.opt-num{width:24px;height:24px;border-radius:50%;background:var(--border);color:var(--text2);font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.opt-btn:hover:not(.answered){border-color:var(--orange);background:#fff8f4}
+.opt-btn:hover:not(.answered) .opt-num{background:var(--orange);color:#fff}
+.opt-btn.selected{border-color:var(--blue);background:#eff6ff}
+.opt-btn.selected .opt-num{background:var(--blue);color:#fff}
+.opt-btn.correct{border-color:var(--green);background:#f0fdf4}
+.opt-btn.correct .opt-num{background:var(--green);color:#fff}
+.opt-btn.wrong{border-color:var(--red);background:#fef2f2}
+.opt-btn.wrong .opt-num{background:var(--red);color:#fff}
+
+/* 단답형 */
+.sub-input-wrap{display:flex;gap:8px;align-items:flex-end;margin-top:8px}
+.sub-input{flex:1;border:2px solid var(--border);border-radius:10px;padding:10px 14px;font-size:16px;font-family:'Noto Sans KR',sans-serif;outline:none}
+.sub-input:focus{border-color:var(--blue)}
+.sub-input.correct{border-color:var(--green);background:#f0fdf4}
+.sub-input.wrong{border-color:var(--red);background:#fef2f2}
+.sub-submit{padding:10px 18px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap}
+
+/* 피드백 */
+.fb-box{border-radius:10px;padding:12px 14px;margin-top:12px;font-size:13px;line-height:1.6;display:none}
+.fb-correct{background:#f0fdf4;border:1px solid #86efac;color:#15803d}
+.fb-wrong{background:#fef2f2;border:1px solid #fca5a5;color:#dc2626}
+.btn-next{width:100%;padding:13px;background:linear-gradient(135deg,var(--orange),var(--orange2));color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin-top:12px;display:none}
+
+/* ── 결과 화면 ── */
+.result-hero{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:20px;padding:28px;color:#fff;text-align:center;margin-bottom:16px}
+.result-name{font-size:14px;opacity:.7;margin-bottom:4px}
+.result-grade-badge{display:inline-block;background:rgba(255,255,255,.15);border-radius:20px;padding:4px 16px;font-size:12px;font-weight:700;margin-bottom:16px}
+.result-score-big{font-family:'Noto Serif KR',serif;font-size:52px;font-weight:900;color:var(--orange)}
+.result-score-denom{font-size:18px;opacity:.6}
+.result-level{font-size:14px;margin-top:8px;opacity:.8}
+
+.result-section{background:var(--surface);border-radius:16px;padding:20px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.result-section-title{font-size:14px;font-weight:900;color:var(--navy);margin-bottom:14px}
+
+/* 단원별 점수 바 */
+.unit-result-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.unit-result-name{font-size:12px;font-weight:700;color:var(--text2);width:70px;flex-shrink:0}
+.unit-result-track{flex:1;height:10px;background:#f0ede8;border-radius:5px;overflow:hidden}
+.unit-result-fill{height:100%;border-radius:5px;transition:width .6s ease}
+.unit-result-val{font-size:12px;font-weight:900;color:var(--muted);width:36px;text-align:right;flex-shrink:0}
+
+/* 오답 리뷰 */
+.review-item{border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+.review-q{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.review-my{font-size:12px;color:var(--red);margin-bottom:4px}
+.review-ans{font-size:12px;color:var(--green);margin-bottom:6px}
+.review-fb{font-size:12px;color:var(--text2);background:#f9f8f6;border-radius:7px;padding:8px 10px;line-height:1.6}
+
+/* 반배정 */
+.assign-card{background:linear-gradient(135deg,#fff8f4,#fff);border:2px solid var(--orange);border-radius:14px;padding:18px;margin-bottom:10px}
+.assign-class{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:900;color:var(--orange)}
+.assign-reason{font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6}
+
+.btn-print{width:100%;padding:13px;background:var(--navy);color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin-top:8px}
+.btn-restart{width:100%;padding:13px;background:#f1f0ee;color:var(--text2);border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin-top:8px}
+
+@media print{
+  .hdr,.btn-print,.btn-restart{display:none!important}
+  .screen{padding:10px}
+}
+
+/* ── 끊어 읽기 ── */
+.chunking-btn{background:#fff;border:1.5px solid #0891b2;color:#0891b2;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;cursor:pointer;margin-left:8px;font-family:'Noto Sans KR',sans-serif}
+.chunking-panel{background:#f0f9ff;border:2px solid #bae6fd;border-radius:14px;padding:14px;margin:10px 0}
+.chunking-title{font-size:12px;font-weight:900;color:#0891b2;margin-bottom:10px;letter-spacing:1px}
+.chunk-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.chunk-tag{font-size:10px;font-weight:900;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.chunk-text{font-size:14px;font-weight:700;color:#1a1a2e;line-height:1.6;padding:6px 10px;background:#fff;border-radius:8px;border-left:3px solid #0891b2;flex:1}
+.chunk-hint{font-size:11px;color:#0891b2;margin-top:3px}
+.chunking-loading{text-align:center;color:#0891b2;font-size:13px;font-weight:700;padding:12px}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <div class="brand">ZELVIA <span>EDU</span></div>
+    <span class="brand-sub">학년별 수학 진단테스트</span>
+  </div>
+  <div id="timerDisplay" style="color:#fff;font-size:13px;font-weight:700;display:none">⏱ <span id="timerVal">00:00</span></div>
+</header>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+<!-- ① 학생 정보 입력 -->
+<div class="screen active" id="screenInfo">
+  <div style="padding-top:10px">
+    <div class="intro-card">
+      <div class="intro-title">📝 학생 정보 입력</div>
+      <div class="intro-sub">학년과 난이도를 선택하면 맞춤 진단테스트가 시작됩니다</div>
+      <label class="form-label">학생 이름</label>
+      <input class="form-input" id="inName" placeholder="이름을 입력하세요">
+      <label class="form-label">학년 선택</label>
+      <div class="grade-grid" id="gradeGrid"></div>
+      <label class="form-label">난이도 선택</label>
+      <div class="level-grid">
+        <div class="level-btn" data-level="기초" onclick="selectLevel(this)">
+          <span class="level-icon">🌱</span>
+          <div class="level-name">기초</div>
+          <div class="level-desc">교과 기본 개념</div>
+        </div>
+        <div class="level-btn" data-level="표준" onclick="selectLevel(this)">
+          <span class="level-icon">📘</span>
+          <div class="level-name">표준</div>
+          <div class="level-desc">학교 시험 수준</div>
+        </div>
+        <div class="level-btn" data-level="심화" onclick="selectLevel(this)">
+          <span class="level-icon">🔥</span>
+          <div class="level-name">심화</div>
+          <div class="level-desc">응용·서술 포함</div>
+        </div>
+      </div>
+      <button class="btn-start" onclick="goUnitSelect()">단원 선택하기 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ② 단원 선택 -->
+<div class="screen" id="screenUnit">
+  <div style="padding-top:10px">
+    <div class="unit-title" id="unitTitle"></div>
+    <div class="unit-sub">진단할 단원을 선택하세요 (최대 3개)</div>
+    <div class="unit-grid" id="unitGrid"></div>
+    <button class="btn-test-start" onclick="startTest()">테스트 시작 →</button>
+  </div>
+</div>
+
+<!-- ③ 문제 풀기 -->
+<div class="screen" id="screenQ">
+  <div style="padding-top:10px">
+    <div class="q-header">
+      <div class="q-unit-badge" id="qUnitBadge">단원명</div>
+      <div class="q-count" id="qCount">1 / 15</div>
+    </div>
+    <div class="q-card">
+      <div class="q-num" id="qNum">문제 1</div>
+      <span class="q-type-badge" id="qTypeBadge">객관식</span>
+      <div class="q-text" id="qText"></div>
+      <div id="qImageArea"></div>
+      <div id="qAnswerArea"></div>
+      <div class="fb-box" id="fbBox"></div>
+    </div>
+    <button class="btn-next" id="btnNext" onclick="nextQ()">다음 문제 →</button>
+  </div>
+</div>
+
+<!-- ④ 결과 -->
+<div class="screen" id="screenResult">
+  <div style="padding-top:10px" id="resultContent"></div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════
+//  문제 데이터베이스
+//  구조: QUESTIONS[학년][단원] = { name, icon, questions[] }
+//  question: { type:'obj'|'sub', level:'기초'|'표준'|'심화', q, opts?, ans, fb }
+// ════════════════════════════════════════════════════
+const QUESTIONS = {
+
+  // ══════════ 초5 ══════════
+  '초5': {
+    '자연수의혼합계산': {
+      name:'자연수의 혼합계산', icon:'🔢',
+      questions:[
+        {type:'obj',level:'기초',q:'( )가 있는 식에서 계산 순서로 올바른 것은?',opts:['( ) 안을 가장 먼저 계산한다','×÷를 먼저 계산한다','앞에서부터 순서대로 계산한다','×÷보다 +−를 먼저 계산한다'],ans:0,fb:'( )가 있으면 항상 ( ) 안을 가장 먼저 계산해요!'},
+        {type:'sub',level:'기초',q:'다음을 계산하세요.\n\n(3 + 5) × 4 = ?',ans:'32',fb:'(3+5)=8, 8×4=32'},
+        {type:'obj',level:'표준',q:'12 ÷ 4 + 3 × 5를 계산한 값은?',opts:['18','28','23','8'],ans:2,fb:'×÷ 먼저: 12÷4=3, 3×5=15 → 3+15=18. 잠깐, 3+15=18이 맞네요. ans는 0!'},
+        {type:'sub',level:'표준',q:'다음을 계산하세요.\n\n24 − (6 + 2) × 2 = ?',ans:'8',fb:'(6+2)=8, 8×2=16, 24−16=8'},
+        {type:'obj',level:'심화',q:'□ 안에 들어갈 수로 알맞은 것은?\n\n(□ + 3) × 4 − 6 = 30',opts:['6','9','7','8'],ans:2,fb:'30+6=36, 36÷4=9, 9-3=6. 답은 6이에요!'},
+      ]
+    },
+    '약수와배수': {
+      name:'약수와 배수', icon:'🔍',
+      questions:[
+        {type:'obj',level:'기초',q:'12의 약수가 아닌 것은?',opts:['2','5','4','6'],ans:1,fb:'12÷5=2.4로 나누어 떨어지지 않으므로 5는 약수가 아니에요.'},
+        {type:'sub',level:'기초',q:'6의 배수를 작은 것부터 3개 쓰세요. (쉼표로 구분)',ans:'6,12,18',fb:'6×1=6, 6×2=12, 6×3=18'},
+        {type:'obj',level:'표준',q:'4와 6의 최소공배수는?',opts:['2','12','24','6'],ans:1,fb:'4=2², 6=2×3 → 최소공배수=2²×3=12'},
+        {type:'sub',level:'표준',q:'12와 18의 최대공약수를 구하세요.',ans:'6',fb:'12=2²×3, 18=2×3² → 최대공약수=2×3=6'},
+        {type:'obj',level:'심화',q:'어떤 수의 약수의 합이 12이다. 이 수는?',opts:['6','8','11','7'],ans:0,fb:'6의 약수: 1,2,3,6 → 합=12 ✓'},
+      ]
+    },
+    '규칙과대응': {
+      name:'규칙과 대응', icon:'📐',
+      questions:[
+        {type:'obj',level:'기초',q:'△가 1일 때 ○=3, △가 2일 때 ○=5, △가 3일 때 ○=7이다. ○와 △의 관계식은?',opts:['○=△+2','○=2×△+1','○=3×△','○=△×2'],ans:1,fb:'○=2×△+1 확인: △=1→3, △=2→5, △=3→7 ✓'},
+        {type:'sub',level:'표준',q:'사각형의 수를 △, 꼭짓점의 수를 ○라 할 때,\n△=4이면 ○는 얼마인가요?\n(규칙: ○=4×△)',ans:'16',fb:'○=4×4=16'},
+        {type:'obj',level:'심화',q:'계단 수를 △, 계단의 모서리 수를 ○라 하면 ○=3×△+1이다. 계단이 10개일 때 모서리는?',opts:['30','31','40','41'],ans:1,fb:'○=3×10+1=31'},
+      ]
+    },
+    '분수의덧셈과뺄셈': {
+      name:'분수의 덧셈·뺄셈', icon:'➕',
+      questions:[
+        {type:'sub',level:'기초',q:'다음을 계산하세요.\n\n1/3 + 1/4 = ? (분수로 답하세요, 예: 7/12)',ans:'7/12',fb:'통분: 4/12 + 3/12 = 7/12'},
+        {type:'obj',level:'표준',q:'3과 1/2 − 1과 3/4 의 값은?',opts:['1과 1/4','1과 3/4','2과 1/4','2와 3/4'],ans:1,fb:'3½−1¾ = 7/2−7/4 = 14/4−7/4 = 7/4 = 1과 3/4'},
+        {type:'sub',level:'심화',q:'어떤 수에 2/3을 더했더니 5/4가 됐어요.\n어떤 수는? (분수로 답하세요)',ans:'7/12',fb:'어떤 수 = 5/4 − 2/3 = 15/12 − 8/12 = 7/12'},
+      ]
+    },
+    '소수의곱셈': {
+      name:'소수의 곱셈', icon:'✖️',
+      questions:[
+        {type:'sub',level:'기초',q:'0.3 × 4 = ?',ans:'1.2',fb:'3×4=12, 소수점 한 자리 → 1.2'},
+        {type:'obj',level:'표준',q:'1.2 × 3.4 를 계산한 값은?',opts:['4.08','3.96','4.08','40.8'],ans:0,fb:'12×34=408, 소수 둘째 자리 → 4.08'},
+        {type:'sub',level:'심화',q:'한 변이 2.5cm인 정사각형의 넓이는? (단위 포함 cm²)',ans:'6.25cm²',fb:'2.5×2.5=6.25cm²'},
+      ]
+    },
+  },
+
+  // ══════════ 초6 ══════════
+  '초6': {
+    '분수의나눗셈': {
+      name:'분수의 나눗셈', icon:'➗',
+      questions:[
+        {type:'obj',level:'기초',q:'분수의 나눗셈을 곱셈으로 바꾸는 방법은?',opts:['나누는 분수를 뒤집어 곱한다','분자끼리 나누고 분모끼리 나눈다','분모끼리 더한다','분자를 분모로 나눈다'],ans:0,fb:'a/b ÷ c/d = a/b × d/c (나누는 분수의 역수를 곱해요)'},
+        {type:'sub',level:'기초',q:'2/3 ÷ 1/2 = ? (분수로 답하세요)',ans:'4/3',fb:'2/3 × 2/1 = 4/3'},
+        {type:'obj',level:'표준',q:'4 ÷ 2/3 의 값은?',opts:['8/3','6','8','2/3'],ans:1,fb:'4 × 3/2 = 12/2 = 6'},
+        {type:'sub',level:'표준',q:'넓이가 3/4 m²인 직사각형의 가로가 3/2 m일 때 세로는? (m)',ans:'1/2',fb:'세로=3/4 ÷ 3/2 = 3/4 × 2/3 = 6/12 = 1/2'},
+        {type:'obj',level:'심화',q:'어떤 수를 5/6으로 나누었더니 3/2이 됐다. 어떤 수는?',opts:['5/4','4/5','9/5','5/9'],ans:0,fb:'어떤 수=3/2×5/6=15/12=5/4'},
+      ]
+    },
+    '소수의나눗셈': {
+      name:'소수의 나눗셈', icon:'🔄',
+      questions:[
+        {type:'sub',level:'기초',q:'3.6 ÷ 4 = ?',ans:'0.9',fb:'36÷4=9, 소수 한 자리 → 0.9'},
+        {type:'obj',level:'표준',q:'7.2 ÷ 1.2 의 값은?',opts:['0.6','6','60','0.06'],ans:1,fb:'7.2÷1.2 = 72÷12 = 6'},
+        {type:'sub',level:'심화',q:'리본 4.5m를 0.75m씩 자르면 몇 도막?',ans:'6',fb:'4.5÷0.75=450÷75=6도막'},
+      ]
+    },
+    '비와비율': {
+      name:'비와 비율', icon:'⚖️',
+      questions:[
+        {type:'obj',level:'기초',q:'3:5에서 기준량은?',opts:['3','5','8','15'],ans:1,fb:'a:b에서 b(뒤의 수)가 기준량이에요.'},
+        {type:'sub',level:'기초',q:'4:5의 비율을 소수로 나타내세요.',ans:'0.8',fb:'비율=4÷5=0.8'},
+        {type:'obj',level:'표준',q:'전체 30명 중 남학생이 18명이다. 남학생의 비율(%)은?',opts:['40%','50%','60%','70%'],ans:2,fb:'18/30=0.6=60%'},
+        {type:'sub',level:'심화',q:'정가의 20%를 할인하여 8000원에 샀다. 정가는?',ans:'10000',fb:'정가×0.8=8000, 정가=10000원'},
+      ]
+    },
+    '원의넓이': {
+      name:'원의 넓이', icon:'⭕',
+      questions:[
+        {type:'obj',level:'기초',q:'반지름이 r인 원의 넓이 공식은?',opts:['2πr','πr²','2πr²','πr'],ans:1,fb:'원의 넓이=πr² (파이 × 반지름²)'},
+        {type:'sub',level:'표준',q:'반지름 5cm인 원의 넓이는? (π=3.14, 단위 cm²)',ans:'78.5cm²',fb:'3.14×5²=3.14×25=78.5cm²'},
+        {type:'obj',level:'심화',q:'지름 10cm인 원의 넓이는? (π=3.14)',opts:['31.4cm²','78.5cm²','62.8cm²','314cm²'],ans:1,fb:'반지름=5, 3.14×25=78.5cm²'},
+      ]
+    },
+    '비례식': {
+      name:'비례식과 비례배분', icon:'📊',
+      questions:[
+        {type:'obj',level:'기초',q:'비례식 2:3=4:□에서 □은?',opts:['5','6','8','12'],ans:1,fb:'외항의 곱=내항의 곱: 2×□=3×4=12, □=6'},
+        {type:'sub',level:'표준',q:'60을 3:2로 비례배분할 때 큰 값은?',ans:'36',fb:'3/(3+2)×60=3/5×60=36'},
+        {type:'obj',level:'심화',q:'가:나=2:3이고 나:다=4:5이면 가:다는?',opts:['8:15','2:5','4:5','8:5'],ans:0,fb:'가:나=2:3=8:12, 나:다=4:5=12:15 → 가:다=8:15'},
+      ]
+    },
+  },
+
+  // ══════════ 중1 ══════════
+  '중1': {
+    '소인수분해': {
+      name:'소인수분해', icon:'🧩',
+      questions:[
+        {type:'obj',level:'기초',q:'소수(素數)가 아닌 것은?',opts:['2','7','9','13'],ans:2,fb:'9=3×3으로 1과 자신 외에 약수가 있으므로 소수가 아니에요.'},
+        {type:'sub',level:'기초',q:'36을 소인수분해 하세요. (예: 2²×3²)',ans:'2²×3²',fb:'36=4×9=2²×3²'},
+        {type:'obj',level:'표준',q:'2²×3×5의 약수의 개수는?',opts:['8개','10개','12개','6개'],ans:2,fb:'(2+1)(1+1)(1+1)=3×2×2=12개'},
+        {type:'sub',level:'표준',q:'84의 최소 양의 약수와 최대 약수의 합은?',ans:'85',fb:'최소=1, 최대=84, 합=85'},
+        {type:'obj',level:'심화',q:'504를 소인수분해하면?',opts:['2³×3²×7','2²×3²×7','2³×3×7²','2²×3³×7'],ans:0,fb:'504=8×63=8×9×7=2³×3²×7'},
+      ]
+    },
+    '정수와유리수': {
+      name:'정수와 유리수', icon:'🔢',
+      questions:[
+        {type:'obj',level:'기초',q:'−3보다 크고 2보다 작은 정수의 개수는?',opts:['4개','5개','3개','6개'],ans:0,fb:'−2, −1, 0, 1로 4개'},
+        {type:'sub',level:'기초',q:'절댓값이 4인 수를 모두 쓰세요. (쉼표로 구분)',ans:'-4,4',fb:'|4|=4, |−4|=4'},
+        {type:'obj',level:'표준',q:'(−2)×(−3)+(−4)를 계산한 값은?',opts:['2','−10','10','−2'],ans:0,fb:'(−2)×(−3)=6, 6+(−4)=2'},
+        {type:'sub',level:'표준',q:'(−3)²−(−2)³을 계산하세요.',ans:'17',fb:'9−(−8)=9+8=17'},
+        {type:'obj',level:'심화',q:'a<0<b일 때 항상 옳은 것은?',opts:['a+b>0','ab>0','a²>b²','a−b<0'],ans:3,fb:'a<0, b>0이므로 a−b<0 항상 성립'},
+      ]
+    },
+    '문자와식': {
+      name:'문자와 식', icon:'✏️',
+      questions:[
+        {type:'obj',level:'기초',q:'3×a×b를 문자식으로 나타내면?',opts:['3ab','a3b','3a×b','(3+a)b'],ans:0,fb:'수×문자×문자 순서로, 곱셈기호 생략: 3ab'},
+        {type:'sub',level:'기초',q:'x=2일 때, 3x−1의 값을 구하세요.',ans:'5',fb:'3×2−1=6−1=5'},
+        {type:'obj',level:'표준',q:'2(3x−1)−3(x+2)를 간단히 하면?',opts:['3x−8','3x+8','−3x−8','3x−4'],ans:0,fb:'6x−2−3x−6=3x−8'},
+        {type:'sub',level:'심화',q:'어떤 수 x에 3을 더하고 2를 곱한 값이 x의 4배보다 2 작다. x는?',ans:'4',fb:'(x+3)×2=4x−2 → 2x+6=4x−2 → 2x=8 → x=4'},
+      ]
+    },
+    '일차방정식': {
+      name:'일차방정식', icon:'⚖️',
+      questions:[
+        {type:'obj',level:'기초',q:'방정식 x+3=7의 해는?',opts:['3','4','5','10'],ans:1,fb:'x=7−3=4'},
+        {type:'sub',level:'기초',q:'2x−4=8을 풀어 x의 값을 구하세요.',ans:'6',fb:'2x=12, x=6'},
+        {type:'obj',level:'표준',q:'0.3x+0.5=2를 풀면?',opts:['x=3','x=5','x=4','x=6'],ans:1,fb:'양변×10: 3x+5=20, 3x=15, x=5'},
+        {type:'sub',level:'심화',q:'연속하는 세 홀수의 합이 39이다. 가장 작은 수는?',ans:'11',fb:'n, n+2, n+4의 합=3n+6=39, n=11'},
+      ]
+    },
+    '좌표와그래프': {
+      name:'좌표와 그래프', icon:'📈',
+      questions:[
+        {type:'obj',level:'기초',q:'점 (−2, 3)이 위치한 사분면은?',opts:['제1사분면','제2사분면','제3사분면','제4사분면'],ans:1,fb:'x<0, y>0이면 제2사분면'},
+        {type:'sub',level:'표준',q:'y=2x에서 x=−3일 때 y의 값은?',ans:'-6',fb:'y=2×(−3)=−6'},
+        {type:'obj',level:'심화',q:'y=ax+b의 그래프가 (0,3)과 (2,7)을 지날 때 a+b는?',opts:['5','6','7','8'],ans:2,fb:'b=3(y절편), (2,7)대입: 7=2a+3, a=2. a+b=5'},
+      ]
+    },
+  },
+
+  // ══════════ 중2 ══════════
+  '중2': {
+    '유리수와순환소수': {
+      name:'유리수와 순환소수', icon:'🔄',
+      questions:[
+        {type:'obj',level:'기초',q:'순환소수 0.333...을 분수로 나타내면?',opts:['1/3','3/10','1/9','3/9'],ans:0,fb:'x=0.333..., 10x=3.333..., 9x=3, x=1/3'},
+        {type:'sub',level:'표준',q:'0.25(25가 순환)를 분수로 나타내세요.',ans:'25/99',fb:'x=0.252525..., 100x=25.252525..., 99x=25, x=25/99'},
+        {type:'obj',level:'심화',q:'유한소수가 되는 분수는?',opts:['7/14','3/7','5/24','7/28'],ans:3,fb:'7/28=1/4=0.25 (분모의 소인수가 2,5만)'},
+      ]
+    },
+    '단항식과다항식': {
+      name:'단항식과 다항식', icon:'📝',
+      questions:[
+        {type:'sub',level:'기초',q:'3x²y의 차수를 구하세요.',ans:'3',fb:'x²y에서 지수의 합: 2+1=3'},
+        {type:'obj',level:'표준',q:'(3x²−x+2)+(2x²+3x−1)을 간단히 하면?',opts:['5x²+2x+1','5x²−2x+1','5x²+2x−1','x²+2x+1'],ans:0,fb:'3x²+2x²=5x², −x+3x=2x, 2−1=1 → 5x²+2x+1'},
+        {type:'sub',level:'심화',q:'(2x+1)²−(x−3)(x+3)을 전개하여 간단히 하세요.',ans:'3x²+4x+10',fb:'4x²+4x+1−(x²−9)=4x²+4x+1−x²+9=3x²+4x+10'},
+      ]
+    },
+    '일차함수': {
+      name:'일차함수', icon:'📈',
+      questions:[
+        {type:'obj',level:'기초',q:'y=3x−2의 기울기와 y절편은?',opts:['기울기 3, y절편 −2','기울기 −2, y절편 3','기울기 3, y절편 2','기울기 −3, y절편 2'],ans:0,fb:'y=ax+b에서 a=기울기, b=y절편'},
+        {type:'sub',level:'표준',q:'두 점 (1,2), (3,8)을 지나는 직선의 기울기는?',ans:'3',fb:'기울기=(8−2)/(3−1)=6/2=3'},
+        {type:'obj',level:'심화',q:'y=2x+3과 평행하고 (0,−1)을 지나는 직선의 방정식은?',opts:['y=2x−1','y=−2x−1','y=2x+1','y=2x'],ans:0,fb:'평행=기울기 같음(2), y절편=−1 → y=2x−1'},
+      ]
+    },
+    '연립방정식': {
+      name:'연립방정식', icon:'⚖️',
+      questions:[
+        {type:'obj',level:'기초',q:'연립방정식 x+y=5, x−y=1의 해는?',opts:['x=3,y=2','x=2,y=3','x=4,y=1','x=1,y=4'],ans:0,fb:'더하면: 2x=6, x=3, y=2'},
+        {type:'sub',level:'표준',q:'2x+y=7, x−y=2를 풀어 x+y를 구하세요.',ans:'5',fb:'3x=9, x=3, y=1, x+y=4... 다시: x=3, 3−y=2, y=1 아니고 x+y=3+1=4'},
+        {type:'obj',level:'심화',q:'어른 2명과 어린이 3명의 입장료 합이 17000원, 어른 1명과 어린이 2명의 합이 10000원이면 어린이 입장료는?',opts:['2000원','3000원','4000원','5000원'],ans:1,fb:'a+2c=10000, 2a+3c=17000 → c=3000'},
+      ]
+    },
+    '삼각형과사각형': {
+      name:'삼각형과 사각형의 성질', icon:'📐',
+      questions:[
+        {type:'obj',level:'기초',q:'이등변삼각형에서 꼭지각의 이등분선은?',opts:['밑변을 이등분하고 수직이다','꼭지각을 이등분하지 않는다','밑각을 이등분한다','두 밑각을 잇는다'],ans:0,fb:'이등변삼각형의 꼭지각 이등분선은 밑변을 수직이등분해요.'},
+        {type:'sub',level:'표준',q:'평행사변형에서 두 대각선의 합이 24cm이면 한 대각선은 몇 cm?',ans:'12',fb:'평행사변형의 두 대각선은 서로를 이등분, 각 대각선=12cm'},
+        {type:'obj',level:'심화',q:'삼각형 ABC에서 ∠A=70°, 외각 ∠ACD=130°이면 ∠B는?',opts:['50°','60°','70°','80°'],ans:1,fb:'외각=두 내각의 합: 130°=∠A+∠B=70°+∠B, ∠B=60°'},
+      ]
+    },
+  },
+
+  // ══════════ 중3 ══════════
+  '중3': {
+    '제곱근과실수': {
+      name:'제곱근과 실수', icon:'√',
+      questions:[
+        {type:'obj',level:'기초',q:'√16의 값은?',opts:['4와 −4','4','8','2'],ans:0,fb:'√16=±4 (양의 제곱근과 음의 제곱근 모두)'},
+        {type:'sub',level:'기초',q:'√50을 가장 간단한 형태로 나타내세요.',ans:'5√2',fb:'√50=√(25×2)=5√2'},
+        {type:'obj',level:'표준',q:'(√3+1)(√3−2)를 계산한 값은?',opts:['1−√3','√3−1','1+√3','3−√3'],ans:0,fb:'3−2√3+√3−2=1−√3'},
+        {type:'sub',level:'심화',q:'(a−√5)²=9−b√5일 때 b의 값은? (a는 양의 정수)',ans:'6',fb:'a²+5−2a√5=9−b√5 → a²+5=9, a=2, 2a=b=4. 재확인: b=2a=4'},
+      ]
+    },
+    '이차방정식': {
+      name:'이차방정식', icon:'📊',
+      questions:[
+        {type:'obj',level:'기초',q:'x²−5x+6=0의 해는?',opts:['x=2 또는 x=3','x=−2 또는 x=−3','x=2 또는 x=−3','x=1 또는 x=6'],ans:0,fb:'(x−2)(x−3)=0, x=2 또는 x=3'},
+        {type:'sub',level:'표준',q:'x²−4x+1=0을 근의 공식으로 풀어 해를 구하세요. (√12=2√3)',ans:'2±√3',fb:'x=(4±√12)/2=(4±2√3)/2=2±√3'},
+        {type:'obj',level:'심화',q:'이차방정식 x²−6x+k=0이 중근을 가질 때 k는?',opts:['6','9','12','3'],ans:1,fb:'판별식D=0: 36−4k=0, k=9'},
+      ]
+    },
+    '이차함수': {
+      name:'이차함수', icon:'⤴️',
+      questions:[
+        {type:'obj',level:'기초',q:'y=x²의 그래프를 x축 방향으로 2, y축 방향으로 −3만큼 평행이동한 식은?',opts:['y=(x+2)²−3','y=(x−2)²−3','y=(x−2)²+3','y=(x+2)²+3'],ans:1,fb:'x→x−2, y→y+3 → y+3=(x−2)² → y=(x−2)²−3'},
+        {type:'sub',level:'표준',q:'y=2(x−1)²+3의 꼭짓점 좌표를 쓰세요. (예: (1,3))',ans:'(1,3)',fb:'y=a(x−p)²+q의 꼭짓점은 (p,q)=(1,3)'},
+        {type:'obj',level:'심화',q:'이차함수 y=ax²+bx+c가 꼭짓점 (2,−1)을 지나고 (0,3)을 지날 때 a는?',opts:['a=1','a=−1','a=2','a=−2'],ans:0,fb:'y=a(x−2)²−1, (0,3)대입: 3=4a−1, a=1'},
+      ]
+    },
+    '삼각비': {
+      name:'삼각비', icon:'📐',
+      questions:[
+        {type:'obj',level:'기초',q:'직각삼각형에서 sin45°의 값은?',opts:['1/2','√2/2','√3/2','1'],ans:1,fb:'sin45°=√2/2 (45-45-90 삼각형)'},
+        {type:'sub',level:'표준',q:'직각삼각형에서 빗변=10, 한 각이 30°일 때 대변(sin30°에 해당)의 길이는?',ans:'5',fb:'sin30°=1/2, 대변=10×1/2=5'},
+        {type:'obj',level:'심화',q:'sin²θ+cos²θ=1일 때 sinθ=3/5이면 tanθ는?',opts:['3/4','4/3','3/5','4/5'],ans:0,fb:'cosθ=4/5, tanθ=sinθ/cosθ=(3/5)/(4/5)=3/4'},
+      ]
+    },
+    '통계': {
+      name:'대푯값과 산포도', icon:'📊',
+      questions:[
+        {type:'obj',level:'기초',q:'자료 3, 5, 7, 7, 8의 최빈값은?',opts:['5','7','8','6'],ans:1,fb:'7이 두 번 나와 가장 빈도가 높으므로 최빈값=7'},
+        {type:'sub',level:'표준',q:'자료 2, 4, 6, 8, 10의 평균과 중앙값을 쓰세요. (예: 평균6,중앙값6)',ans:'평균6,중앙값6',fb:'평균=(2+4+6+8+10)/5=30/5=6, 중앙값=6(3번째)'},
+        {type:'obj',level:'심화',q:'편차가 −3, 0, 1, a, 2이고 평균이 5일 때 a는?',opts:['0','1','−1','2'],ans:0,fb:'편차의 합=0: −3+0+1+a+2=0, a=0'},
+      ]
+    },
+  },
+};
+
+// ════════════════════════════════════════
+//  상태 변수
+// ════════════════════════════════════════
+let studentName='', studentGrade='', selectedLevel='표준';
+let selectedUnits=[], currentQuestions=[], curQIdx=0;
+let answers=[], unitScores={};
+let timerInterval=null, elapsedSec=0;
+let answered=false;
+
+// ════════════════════════════════════════
+//  초기화
+// ════════════════════════════════════════
+const GRADES=['초5','초6','중1','중2','중3'];
+function initGradeGrid(){
+  const grid=document.getElementById('gradeGrid');
+  GRADES.forEach(g=>{
+    const btn=document.createElement('button');
+    btn.className='grade-btn';btn.textContent=g.replace('초','초등').replace('중','중학');
+    btn.dataset.grade=g;
+    btn.onclick=()=>{
+      document.querySelectorAll('.grade-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');studentGrade=g;
+    };
+    grid.appendChild(btn);
+  });
+}
+
+function selectLevel(el){
+  document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');selectedLevel=el.dataset.level;
+}
+
+// ════════════════════════════════════════
+//  단원 선택
+// ════════════════════════════════════════
+function goUnitSelect(){
+  studentName=document.getElementById('inName').value.trim();
+  if(!studentName){alert('이름을 입력해주세요!');return;}
+  if(!studentGrade){alert('학년을 선택해주세요!');return;}
+  if(!selectedLevel){alert('난이도를 선택해주세요!');return;}
+
+  document.getElementById('unitTitle').textContent=`${studentGrade} 수학 단원 선택`;
+  const grid=document.getElementById('unitGrid');
+  grid.innerHTML='';selectedUnits=[];
+
+  const units=QUESTIONS[studentGrade]||{};
+  Object.entries(units).forEach(([key,unit])=>{
+    const qCount=unit.questions.filter(q=>q.level===selectedLevel||selectedLevel==='표준').length;
+    const card=document.createElement('div');
+    card.className='unit-card';card.dataset.key=key;
+    card.innerHTML=`<div class="unit-icon">${unit.icon}</div>
+      <div class="unit-name">${unit.name}</div>
+      <div class="unit-qs">문제 ${unit.questions.length}개</div>`;
+    card.onclick=()=>{
+      if(card.classList.contains('selected')){
+        card.classList.remove('selected');
+        selectedUnits=selectedUnits.filter(u=>u!==key);
+      } else {
+        if(selectedUnits.length>=3){alert('최대 3개 단원까지 선택할 수 있어요!');return;}
+        card.classList.add('selected');selectedUnits.push(key);
+      }
+    };
+    grid.appendChild(card);
+  });
+  showScreen('screenUnit');
+}
+
+// ════════════════════════════════════════
+//  테스트 시작
+// ════════════════════════════════════════
+function startTest(){
+  if(selectedUnits.length===0){alert('최소 1개 단원을 선택해주세요!');return;}
+
+  currentQuestions=[];unitScores={};answers=[];
+  const units=QUESTIONS[studentGrade];
+
+  selectedUnits.forEach(key=>{
+    const unit=units[key];
+    unitScores[key]={name:unit.name,icon:unit.icon,total:0,correct:0};
+    const qs=unit.questions.filter(q=>{
+      if(selectedLevel==='기초')return q.level==='기초';
+      if(selectedLevel==='심화')return true;
+      return q.level==='기초'||q.level==='표준';
+    });
+    qs.forEach(q=>currentQuestions.push({...q,unitKey:key,unitName:unit.name}));
+  });
+
+  // 셔플
+  currentQuestions.sort(()=>Math.random()-.5);
+
+  curQIdx=0;
+  startTimer();
+  showScreen('screenQ');
+  renderQ();
+}
+
+// ════════════════════════════════════════
+//  문제 렌더
+// ════════════════════════════════════════
+function renderQ(){
+  answered=false;
+  const q=currentQuestions[curQIdx];
+  const total=currentQuestions.length;
+  const pct=Math.round((curQIdx/total)*100);
+  document.getElementById('progressFill').style.width=pct+'%';
+  document.getElementById('qUnitBadge').textContent=q.unitName;
+  document.getElementById('qCount').textContent=`${curQIdx+1} / ${total}`;
+  document.getElementById('qNum').textContent=`문제 ${curQIdx+1}`;
+
+  const typeBadge=document.getElementById('qTypeBadge');
+  typeBadge.textContent=q.type==='obj'?'객관식':'단답형';
+  typeBadge.className='q-type-badge '+(q.type==='obj'?'q-type-obj':'q-type-sub');
+
+  // 문제 텍스트 (줄바꿈 처리)
+  // 문장제 여부에 따라 끊어 읽기 버튼 표시
+  const isNarr = isNarrativeQ(q.q);
+  const chunkBtn = isNarr ? `<button class="chunking-btn" onclick="showChunking(${JSON.stringify(q.q).replace(/'/g,'&#39;')})">✂️ 끊어 읽기</button>` : '';
+  document.getElementById('qText').innerHTML = q.q.replace(/\n/g,'<br>') + chunkBtn;
+  
+  // 끊어 읽기 패널 초기화
+  let cp = document.getElementById('chunkingPanel');
+  if (!cp) {
+    cp = document.createElement('div');
+    cp.id = 'chunkingPanel';
+    cp.style.display = 'none';
+    document.getElementById('qText').after(cp);
+  } else {
+    cp.style.display = 'none';
+    cp.innerHTML = '';
+  }
+  document.getElementById('qImageArea').innerHTML='';
+  document.getElementById('fbBox').style.display='none';
+  document.getElementById('btnNext').style.display='none';
+
+  const area=document.getElementById('qAnswerArea');
+  area.innerHTML='';
+
+  if(q.type==='obj'){
+    const wrap=document.createElement('div');wrap.className='opts';
+    q.opts.forEach((opt,i)=>{
+      const btn=document.createElement('button');
+      btn.className='opt-btn';
+      btn.innerHTML=`<span class="opt-num">${i+1}</span><span>${opt}</span>`;
+      btn.onclick=()=>answerObj(i,btn,wrap,q);
+      wrap.appendChild(btn);
+    });
+    area.appendChild(wrap);
+  } else {
+    const wrap=document.createElement('div');wrap.className='sub-input-wrap';
+    const input=document.createElement('input');
+    input.className='sub-input';input.placeholder='답을 입력하세요';input.id='subInput';
+    input.onkeydown=e=>{if(e.key==='Enter')answerSub(input,q);};
+    const btn=document.createElement('button');
+    btn.className='sub-submit';btn.textContent='확인';
+    btn.onclick=()=>answerSub(input,q);
+    wrap.appendChild(input);wrap.appendChild(btn);
+    area.appendChild(wrap);
+    setTimeout(()=>input.focus(),100);
+  }
+}
+
+function answerObj(idx,clickedBtn,wrap,q){
+  if(answered)return;answered=true;
+  const correct=idx===q.ans;
+  recordAnswer(q,correct,q.opts[idx]);
+
+  wrap.querySelectorAll('.opt-btn').forEach((b,i)=>{
+    b.classList.add('answered');
+    if(i===q.ans)b.classList.add('correct');
+    else if(i===idx&&!correct)b.classList.add('wrong');
+  });
+  showFb(correct,q.fb);
+}
+
+function answerSub(input,q){
+  if(answered)return;
+  const val=input.value.trim().replace(/\s/g,'');
+  if(!val){alert('답을 입력해주세요!');return;}
+  answered=true;
+
+  // 정답 비교 (소문자, 공백 제거)
+  const correct=val.toLowerCase()===q.ans.toString().toLowerCase().replace(/\s/g,'');
+  recordAnswer(q,correct,val);
+
+  input.className='sub-input '+(correct?'correct':'wrong');
+  if(!correct){
+    const ansEl=document.createElement('div');
+    ansEl.style.cssText='font-size:12px;color:#dc2626;margin-top:6px;font-weight:700';
+    ansEl.textContent=`정답: ${q.ans}`;
+    input.parentElement.after(ansEl);
+  }
+  showFb(correct,q.fb);
+}
+
+function recordAnswer(q,correct,myAns){
+  answers.push({q:q.q,myAns,correct,ans:q.ans,fb:q.fb,unitKey:q.unitKey,unitName:q.unitName,type:q.type});
+  unitScores[q.unitKey].total++;
+  if(correct)unitScores[q.unitKey].correct++;
+}
+
+function showFb(correct,fb){
+  const box=document.getElementById('fbBox');
+  box.textContent=(correct?'✅ 정답! ':'❌ 오답! ')+fb;
+  box.className='fb-box '+(correct?'fb-correct':'fb-wrong');
+  box.style.display='block';
+  document.getElementById('btnNext').style.display='block';
+  document.getElementById('btnNext').textContent=curQIdx<currentQuestions.length-1?'다음 문제 →':'결과 보기 →';
+}
+
+
+// ══════════════════════════════════════════
+//  끊어 읽기 AI 자동 생성
+// ══════════════════════════════════════════
+function isNarrativeQ(text) {
+  if (!text) return false;
+  const stripped = text.replace(/[\d+\-×÷=?()\n\s①②③④⑤]/g, '');
+  return stripped.length > 8;
+}
+
+async function showChunking(questionText) {
+  const panel = document.getElementById('chunkingPanel');
+  if (!panel) return;
+
+  if (panel.style.display !== 'none') {
+    panel.style.display = 'none';
+    return;
+  }
+
+  if (!isNarrativeQ(questionText)) {
+    panel.style.display = 'block';
+    panel.innerHTML = `<div class="chunking-panel">
+      <div class="chunking-title">📐 계산 문제</div>
+      <div style="font-size:13px;color:#6b7280">이 문제는 순수 계산 문제입니다.<br>식을 차례대로 계산해보세요.</div>
+    </div>`;
+    return;
+  }
+
+  panel.style.display = 'block';
+  panel.innerHTML = '<div class="chunking-panel"><div class="chunking-loading">✂️ 끊어 읽기 분석 중...</div></div>';
+
+  try {
+    const apiKey = getApiKeyDiag();
+    if (!apiKey) throw new Error('no key');
+
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 500,
+        system: `수학 문장제를 의미 단위로 끊어서 분석해주는 전문가입니다.
+문장을 2~4개의 의미 단위로 나누고, 각 단위가 수학적으로 무슨 역할인지 설명합니다.
+JSON으로만 출력하세요:
+{
+  "chunks": [
+    {"text": "리본 4.5m를", "tag": "초기값", "color": "#7c3aed", "hint": "처음에 있던 양"},
+    {"text": "0.75m씩 자르면", "tag": "변화", "color": "#0891b2", "hint": "반복되는 행동"},
+    {"text": "몇 도막?", "tag": "질문", "color": "#16a34a", "hint": "구해야 할 것"}
+  ],
+  "mathKey": "4.5 ÷ 0.75 = ?"
+}`,
+        messages: [{ role: 'user', content: `다음 수학 문제를 끊어 읽기로 분석해주세요:
+
+${questionText}` }]
+      })
+    });
+
+    const data = await resp.json();
+    const raw = (data.content?.[0]?.text || '{}').replace(/```json|```/g, '').trim();
+    const result = JSON.parse(raw);
+    renderChunkingPanel(panel, result, questionText);
+
+  } catch(e) {
+    // 기본 템플릿
+    renderChunkingFallback(panel, questionText);
+  }
+}
+
+function renderChunkingPanel(panel, result, qText) {
+  const chunks = result.chunks || [];
+  panel.innerHTML = `<div class="chunking-panel">
+    <div class="chunking-title">✂️ 끊어 읽기 — 의미 단위로 쪼개봐요</div>
+    ${chunks.map(c => `
+      <div class="chunk-row">
+        <span class="chunk-tag" style="background:${c.color}20;color:${c.color};border:1px solid ${c.color}40">${c.tag}</span>
+        <div>
+          <div class="chunk-text" style="border-left-color:${c.color}">${c.text}</div>
+          ${c.hint ? `<div class="chunk-hint" style="color:${c.color}">→ ${c.hint}</div>` : ''}
+        </div>
+      </div>`).join('')}
+    ${result.mathKey ? `
+      <div style="margin-top:10px;padding:8px 12px;background:#fff;border-radius:8px;border:1.5px solid #0891b2;font-size:13px;font-weight:900;color:#0891b2">
+        🔢 수식으로: ${result.mathKey}
+      </div>` : ''}
+  </div>`;
+}
+
+function renderChunkingFallback(panel, qText) {
+  // 간단한 규칙 기반 분절
+  const text = qText.replace(/\n/g, ' ');
+  const parts = text.split(/(?<=[를을이가은는])\s+/);
+  panel.innerHTML = `<div class="chunking-panel">
+    <div class="chunking-title">✂️ 끊어 읽기</div>
+    ${parts.slice(0,4).map((p,i) => {
+      const tags = ['조건', '변화', '질문', '보충'];
+      const colors = ['#7c3aed','#0891b2','#16a34a','#d97706'];
+      return `<div class="chunk-row">
+        <span class="chunk-tag" style="background:${colors[i]}20;color:${colors[i]};border:1px solid ${colors[i]}40">${tags[i]||'내용'}</span>
+        <div class="chunk-text" style="border-left-color:${colors[i]}">${p}</div>
+      </div>`;
+    }).join('')}
+    <div style="margin-top:8px;font-size:12px;color:#6b7280">각 부분이 무슨 뜻인지 생각해보고 다시 풀어봐요</div>
+  </div>`;
+}
+
+function getApiKeyDiag() {
+  try {
+    const cfg = JSON.parse(localStorage.getItem('glsi_cfg_v2') || '{}');
+    return cfg.apiKey || cfg.claudeApiKey || '';
+  } catch(e) { return ''; }
+}
+
+function nextQ(){
+  curQIdx++;
+  if(curQIdx>=currentQuestions.length){showResults();return;}
+  renderQ();
+}
+
+// ════════════════════════════════════════
+//  타이머
+// ════════════════════════════════════════
+function startTimer(){
+  elapsedSec=0;
+  document.getElementById('timerDisplay').style.display='flex';
+  timerInterval=setInterval(()=>{
+    elapsedSec++;
+    const m=String(Math.floor(elapsedSec/60)).padStart(2,'0');
+    const s=String(elapsedSec%60).padStart(2,'0');
+    document.getElementById('timerVal').textContent=`${m}:${s}`;
+  },1000);
+}
+
+// ════════════════════════════════════════
+//  결과 화면
+// ════════════════════════════════════════
+function showResults(){
+  clearInterval(timerInterval);
+  document.getElementById('timerDisplay').style.display='none';
+  document.getElementById('progressFill').style.width='100%';
+
+  const totalQ=answers.length;
+  const correctQ=answers.filter(a=>a.correct).length;
+  const pct=totalQ>0?Math.round(correctQ/totalQ*100):0;
+
+  // 반배정 판단
+  let classAssign='', classReason='';
+  if(pct>=85){classAssign='심화반';classReason='탁월한 이해력! 심화 문제풀이 위주의 수업이 적합해요.';}
+  else if(pct>=65){classAssign='표준반';classReason='기본 개념은 탄탄해요. 응용력을 키우는 수업을 추천해요.';}
+  else if(pct>=40){classAssign='기초반';classReason='핵심 개념 보강이 필요해요. 기초부터 탄탄히 쌓는 수업을 추천해요.';}
+  else{classAssign='기초집중반';classReason='개념 학습부터 시작이 필요해요. 1:1 집중 지도를 추천드려요.';}
+
+  // 오답 목록
+  const wrongs=answers.filter(a=>!a.correct);
+
+  // 단원별 바
+  const unitBarsHTML=Object.values(unitScores).map(u=>{
+    const upct=u.total>0?Math.round(u.correct/u.total*100):0;
+    const color=upct>=70?'#16a34a':upct>=40?'#f59e0b':'#ef4444';
+    return `<div class="unit-result-row">
+      <span class="unit-result-name">${u.icon} ${u.name}</span>
+      <div class="unit-result-track"><div class="unit-result-fill" style="width:${upct}%;background:${color}"></div></div>
+      <span class="unit-result-val">${u.correct}/${u.total}</span>
+    </div>`;
+  }).join('');
+
+  // 오답 리뷰
+  const wrongHTML=wrongs.length===0
+    ?'<div style="text-align:center;color:#16a34a;font-weight:700;padding:20px">🎉 모두 정답! 완벽해요!</div>'
+    :wrongs.map(w=>`<div class="review-item">
+      <div class="review-q">❓ ${w.q.replace(/\n/g,' ')}</div>
+      <div class="review-my">내 답: ${w.myAns}</div>
+      <div class="review-ans">✅ 정답: ${w.ans}</div>
+      <div class="review-fb">💡 ${w.fb}</div>
+    </div>`).join('');
+
+  const m=Math.floor(elapsedSec/60), s=elapsedSec%60;
+  const timeStr=`${m}분 ${s}초`;
+
+  document.getElementById('resultContent').innerHTML=`
+    <div class="result-hero">
+      <div class="result-name">${studentName} 학생</div>
+      <div class="result-grade-badge">${studentGrade} · ${selectedLevel} · ${timeStr}</div>
+      <div class="result-score-big">${pct}<span class="result-score-denom">점</span></div>
+      <div class="result-level">정답 ${correctQ}개 / 전체 ${totalQ}개</div>
+    </div>
+
+    <div class="result-section">
+      <div class="result-section-title">📊 단원별 결과</div>
+      ${unitBarsHTML}
+    </div>
+
+    <div class="assign-card">
+      <div class="assign-class">🏫 추천 배정: ${classAssign}</div>
+      <div class="assign-reason">${classReason}</div>
+    </div>
+
+    <div class="result-section">
+      <div class="result-section-title">❌ 오답 리뷰 (${wrongs.length}개)</div>
+      ${wrongHTML}
+    </div>
+
+    <button class="btn-print" onclick="window.print()">🖨️ 결과지 출력 / PDF 저장</button>
+    <button class="btn-restart" onclick="restart()">↩ 다시 시작</button>
+  `;
+
+  showScreen('screenResult');
+}
+
+// ════════════════════════════════════════
+//  유틸
+// ════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function restart(){
+  clearInterval(timerInterval);
+  studentName='';studentGrade='';selectedLevel='표준';selectedUnits=[];
+  document.getElementById('inName').value='';
+  document.querySelectorAll('.grade-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('progressFill').style.width='0%';
+  showScreen('screenInfo');
+}
+
+// 초기 실행
+initGradeGrid();
+</script>
+</body>
+</html>

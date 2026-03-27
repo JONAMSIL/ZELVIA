@@ -1,0 +1,2702 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>젤비아 에듀센터 · 입회 레벨 테스트 v12</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#f26c1b;--orange2:#ff9a5c;--navy:#0d1f3c;--navy2:#1a3260;
+  --blue:#2563eb;--green:#16a34a;--red:#dc2626;--gold:#d97706;--teal:#0891b2;
+  --purple:#7c3aed;
+  --gray:#6b7280;--gray2:#9ca3af;--border:#e5e7eb;--bg:#f0ede8;--white:#fff;
+  /* GLSI 도메인 색상 */
+  --habit:#f26c1b;--cog:#7c3aed;--time:#0891b2;--ach:#16a34a;--growth:#d97706;
+}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#1a1a2e;min-height:100vh}
+
+/* ── 헤더 ── */
+.hdr{background:var(--navy);position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.hdr-inner{max-width:920px;margin:0 auto;padding:12px 28px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#fff;letter-spacing:.5px}
+.brand span{color:var(--orange)}
+.brand-sub{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:2px;display:block;margin-top:1px}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.glsi-badge{background:linear-gradient(135deg,var(--purple),#a855f7);color:#fff;font-size:10px;font-weight:900;padding:4px 12px;border-radius:20px;letter-spacing:1px}
+.prog-wrap{height:3px;background:rgba(255,255,255,.08)}
+.prog-bar{height:3px;background:linear-gradient(90deg,var(--orange),var(--orange2));transition:width .5s ease;width:0%}
+
+/* ── 공통 ── */
+.main{max-width:920px;margin:0 auto;padding:36px 22px 100px}
+.screen{display:none}
+.screen.active{display:block}
+.btn{border:none;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-weight:700;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--orange),var(--orange2));color:#fff;font-size:15px;padding:14px 48px;border-radius:50px;box-shadow:0 6px 24px rgba(242,108,27,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(242,108,27,.45)}
+.btn-sm{font-size:13px;padding:9px 22px;border-radius:28px}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--navy);font-size:13px;padding:9px 22px;border-radius:28px}
+.btn-outline:hover{border-color:var(--orange);color:var(--orange)}
+.btn-ghost{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:13px;padding:8px 20px;border-radius:24px}
+
+/* ── 시작 화면 ── */
+.start-hero{text-align:center;padding:50px 0 36px}
+.logo-wrap{position:relative;display:inline-block;margin-bottom:6px}
+.logo-big{font-family:'Noto Serif KR',serif;font-size:42px;font-weight:900;color:var(--navy)}
+.logo-big span{color:var(--orange)}
+.logo-glsi{font-size:11px;font-weight:900;color:var(--purple);letter-spacing:3px;margin-bottom:4px;display:block}
+.sub-title{font-size:12px;color:var(--gray);letter-spacing:1.5px;margin-bottom:44px}
+.notice-banner{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;border-radius:14px;padding:16px 22px;margin-bottom:28px;font-size:13px;line-height:1.7;text-align:left}
+.notice-banner strong{font-size:14px;display:block;margin-bottom:4px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:30px}
+.info-card{background:#fff;border-radius:16px;padding:22px;border:1.5px solid var(--border);text-align:left;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.ic-icon{font-size:28px;margin-bottom:8px}
+.ic-title{font-family:'Noto Serif KR',serif;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:5px}
+.ic-desc{font-size:12px;color:var(--gray);line-height:1.7}
+.ic-tag{margin-top:8px;display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px}
+.tag-glsi-a{background:#dcfce7;color:var(--green)}
+.tag-glsi-c{background:#ede9fe;color:var(--purple)}
+.tag-glsi-t{background:#e0f2fe;color:var(--teal)}
+
+.form-box{background:#fff;border-radius:16px;padding:22px 18px;margin-bottom:24px;border:1.5px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.form-label{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;display:block}
+.form-row{display:flex;gap:10px;flex-wrap:wrap}
+.form-box input,.form-box select{flex:1;min-width:0;padding:11px 15px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'Noto Sans KR',sans-serif;background:#fafafa;outline:none;transition:border .2s;box-sizing:border-box;width:100%}
+.form-box input:focus,.form-box select:focus{border-color:var(--orange);background:#fff}
+
+.glsi-map-box{background:linear-gradient(135deg,#faf5ff,#ede9fe);border-radius:16px;padding:20px 24px;margin-bottom:24px;border:1.5px solid #ddd6fe}
+.glsi-map-title{font-size:13px;font-weight:700;color:var(--purple);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.glsi-domains{display:flex;gap:8px;flex-wrap:wrap}
+.glsi-domain-chip{display:flex;align-items:center;gap:6px;background:#fff;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:700;box-shadow:0 1px 6px rgba(0,0,0,.08)}
+.chip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── 섹션 전환 ── */
+.sec-intro{text-align:center;padding:70px 20px}
+.sec-icon{font-size:60px;margin-bottom:16px}
+.sec-title{font-family:'Noto Serif KR',serif;font-size:26px;font-weight:900;color:var(--navy);margin-bottom:10px}
+.sec-desc{font-size:13.5px;color:var(--gray);line-height:1.9;margin-bottom:22px}
+.sec-glsi-hint{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:10px 18px;font-size:12px;color:var(--gray);margin-bottom:28px}
+.sec-glsi-hint strong{color:var(--purple)}
+.diff-badge{display:inline-block;padding:5px 18px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:28px}
+.diff-m{background:#dbeafe;color:var(--blue)}
+
+/* ── 타이머 바 ── */
+.timer-wrap{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.timer-label{font-size:12px;color:var(--gray);font-weight:700;flex-shrink:0}
+.timer-bar-track{flex:1;height:6px;background:#f3f4f6;border-radius:6px;overflow:hidden}
+.timer-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold),var(--red));border-radius:6px;transition:width .5s linear;width:100%}
+.timer-num{font-size:13px;font-weight:900;color:var(--navy);flex-shrink:0;min-width:40px;text-align:right}
+
+/* ── 퀴즈 화면 ── */
+.quiz-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px}
+.dot-math{background:var(--blue)}.dot-read{background:var(--green)}
+.quiz-label{font-size:12.5px;font-weight:700;color:var(--gray);display:flex;align-items:center}
+.diff-pill{font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;margin-left:7px}
+.pill-easy{background:#dcfce7;color:var(--green)}
+.pill-medium{background:#dbeafe;color:var(--blue)}
+.pill-hard{background:#fef3c7;color:var(--gold)}
+.glsi-indicator{display:flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--purple);background:#ede9fe;padding:3px 10px;border-radius:10px;margin-left:6px}
+
+.quiz-counter{font-size:12.5px;color:var(--gray)}
+.quiz-counter strong{color:var(--navy);font-size:14px}
+
+.quiz-card{background:#fff;border-radius:20px;padding:34px 38px;border:1.5px solid var(--border);box-shadow:0 4px 24px rgba(0,0,0,.06);margin-bottom:14px;animation:fadeUp .3s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.q-tag{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;margin-bottom:12px}
+.tag-math{background:#dbeafe;color:var(--blue)}
+.tag-read{background:#dcfce7;color:var(--green)}
+.tag-sub{background:#fef9c3;color:var(--gold)}
+
+.q-passage{background:#f8f9fa;border-left:4px solid var(--orange);padding:14px 18px;border-radius:0 10px 10px 0;font-size:13.5px;line-height:1.9;color:#333;margin-bottom:18px;word-break:keep-all}
+.q-text{font-size:16.5px;font-weight:700;color:var(--navy);line-height:1.7;margin-bottom:20px;word-break:keep-all;white-space:pre-wrap}
+
+.options{display:grid;gap:9px}
+.opt-btn{width:100%;text-align:left;padding:13px 18px;border-radius:11px;border:1.5px solid var(--border);background:#fafafa;font-size:14px;color:#333;display:flex;align-items:center;gap:11px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .18s}
+.opt-btn:hover:not(:disabled){border-color:var(--orange);background:#fff8f4}
+.opt-num{width:24px;height:24px;border-radius:50%;background:var(--border);color:var(--gray);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s}
+.opt-btn.correct{border-color:var(--green);background:#f0fdf4}.opt-btn.correct .opt-num{background:var(--green);color:#fff}
+.opt-btn.wrong{border-color:var(--red);background:#fef2f2}.opt-btn.wrong .opt-num{background:var(--red);color:#fff}
+
+.feedback-box{border-radius:11px;padding:14px 18px;font-size:13px;line-height:1.7;margin-bottom:14px;display:none}
+.fb-correct{background:#f0fdf4;border:1px solid #86efac;color:#15803d}
+.fb-wrong{background:#fef2f2;border:1px solid #fca5a5;color:#991b1b}
+
+.sub-area .sub-hint{font-size:12px;color:var(--gray);margin-bottom:8px;font-style:italic}
+.sub-area textarea{width:100%;padding:13px;border:1.5px solid var(--border);border-radius:11px;font-size:13.5px;font-family:'Noto Sans KR',sans-serif;line-height:1.7;resize:vertical;min-height:80px;outline:none;transition:border .2s}
+.sub-area textarea:focus{border-color:var(--orange)}
+.sample-ans{margin-top:8px;font-size:12px;color:var(--gray);background:#f9fafb;padding:10px 13px;border-radius:8px;display:none}
+
+.btn-wrap{display:flex;justify-content:flex-end;gap:8px}
+
+/* ── 관찰 체크리스트 화면 ── */
+.check-screen-title{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:900;color:var(--navy);margin-bottom:4px}
+.check-screen-sub{font-size:13px;color:var(--gray);margin-bottom:6px}
+.check-student-info{display:inline-flex;align-items:center;gap:8px;background:#fff;border-radius:10px;padding:8px 16px;border:1.5px solid var(--border);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:24px}
+.check-section{background:#fff;border-radius:16px;padding:24px;border:1.5px solid var(--border);margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.check-section-header{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.csh-dot{width:12px;height:12px;border-radius:50%}
+.csh-title{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;color:var(--navy)}
+.csh-domain{font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px}
+.csh-weight{font-size:11px;color:var(--gray);margin-left:auto}
+.check-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.check-item:last-child{border-bottom:none}
+.ci-label{font-size:13.5px;color:#333;flex:1}
+.ci-scale{display:flex;gap:6px}
+.scale-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);background:#fafafa;font-size:12px;font-weight:700;color:var(--gray);cursor:pointer;transition:all .15s;font-family:'Noto Sans KR',sans-serif}
+.scale-btn:hover{border-color:var(--orange);color:var(--orange)}
+.scale-btn.active-1{background:#fef2f2;border-color:var(--red);color:var(--red)}
+.scale-btn.active-2{background:#fff7ed;border-color:var(--gold);color:var(--gold)}
+.scale-btn.active-3{background:#eff6ff;border-color:var(--blue);color:var(--blue)}
+.scale-btn.active-4{background:#f0fdf4;border-color:var(--green);color:var(--green)}
+.scale-hint{display:flex;justify-content:flex-end;gap:6px;margin-top:4px;font-size:10px;color:var(--gray2)}
+
+.ei-section{background:linear-gradient(135deg,#faf5ff,#ede9fe);border-radius:16px;padding:24px;border:1.5px solid #ddd6fe;margin-bottom:16px}
+.ei-title{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;color:var(--purple);margin-bottom:4px}
+.ei-desc{font-size:12px;color:#7c3aed;margin-bottom:16px}
+.ei-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #ddd6fe}
+.ei-item:last-child{border-bottom:none}
+.ei-slider{width:160px;accent-color:var(--purple)}
+
+/* ── 결과 화면 ── */
+.result-hero{text-align:center;padding:44px 0 26px}
+.result-name{font-size:14px;color:var(--gray);margin-bottom:4px}
+.result-name strong{color:var(--navy)}
+.result-emoji{font-size:50px;margin-bottom:10px}
+.result-done{font-family:'Noto Serif KR',serif;font-size:24px;font-weight:900;color:var(--navy);margin-bottom:8px}
+.result-level-badge{display:inline-block;font-size:14px;font-weight:700;padding:7px 24px;border-radius:28px;margin-bottom:14px}
+.level-S{background:#fef3c7;color:var(--gold)}.level-A{background:#dcfce7;color:var(--green)}
+.level-B{background:#dbeafe;color:var(--blue)}.level-C{background:#fee2e2;color:var(--red)}
+.result-comment{font-size:13.5px;color:var(--gray);line-height:1.8;margin-bottom:26px}
+
+/* 점수 요약 */
+.score-row{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.s-box{flex:1;min-width:100px;background:#fff;border-radius:14px;padding:18px 12px;text-align:center;border:1.5px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.s-box.math{border-color:#bfdbfe;background:#eff6ff}
+.s-box.read{border-color:#bbf7d0;background:#f0fdf4}
+.s-box .s-label{font-size:10.5px;font-weight:700;color:var(--gray);margin-bottom:5px}
+.s-box.math .s-label{color:var(--blue)}.s-box.read .s-label{color:var(--green)}
+.s-box .s-num{font-family:'Noto Serif KR',serif;font-size:32px;font-weight:900;color:var(--navy)}
+.s-box .s-denom{font-size:12px;color:var(--gray2)}
+
+/* GLSI 결과 카드 */
+.glsi-result-card{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:20px;padding:28px;margin-bottom:20px;color:#fff;position:relative;overflow:hidden}
+.glsi-result-card::before{content:'GLSI';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-family:'Noto Serif KR',serif;font-size:80px;font-weight:900;color:rgba(255,255,255,.05);letter-spacing:-2px}
+.grc-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:2px;margin-bottom:6px}
+.grc-title{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;margin-bottom:16px}
+.grc-score-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:6px}
+.grc-num{font-family:'Noto Serif KR',serif;font-size:56px;font-weight:900;color:var(--orange);line-height:1}
+.grc-denom{font-size:18px;color:rgba(255,255,255,.5);margin-bottom:8px}
+.grc-notice{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:20px}
+.glsi-domain-bars{display:grid;gap:10px}
+.gdb-row{display:grid;grid-template-columns:80px 1fr 48px;align-items:center;gap:10px}
+.gdb-label{font-size:11px;font-weight:700;color:rgba(255,255,255,.7)}
+.gdb-track{height:8px;background:rgba(255,255,255,.12);border-radius:8px;overflow:hidden}
+.gdb-fill{height:100%;border-radius:8px;transition:width 1.2s ease}
+.gdb-val{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);text-align:right}
+.grc-partial-notice{font-size:11px;color:rgba(255,255,255,.35);margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);line-height:1.6}
+
+/* 영역별 분석 */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.chart-card{background:#fff;border-radius:16px;padding:22px;border:1.5px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.chart-title{font-family:'Noto Serif KR',serif;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px;text-align:center}
+.chart-canvas-wrap{position:relative;width:100%;padding-bottom:100%}
+.chart-canvas-wrap canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}
+.domain-bars{margin-top:14px}
+.d-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.d-bar-label{font-size:11.5px;font-weight:700;color:var(--navy);width:64px;flex-shrink:0}
+.d-bar-track{flex:1;height:8px;background:#f3f4f6;border-radius:8px;overflow:hidden}
+.d-bar-fill{height:100%;border-radius:8px;transition:width 1s ease}
+.d-bar-val{font-size:11px;font-weight:700;color:var(--gray);width:34px;text-align:right;flex-shrink:0}
+
+/* 전후 비교 */
+.compare-section{background:#fff;border-radius:16px;padding:24px;border:1.5px solid var(--border);margin-bottom:16px}
+.compare-title{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.ct-badge{font-size:10px;background:var(--orange);color:#fff;padding:2px 9px;border-radius:9px}
+.history-table{width:100%;border-collapse:collapse;font-size:12.5px}
+.history-table th{background:var(--navy);color:#fff;padding:9px 12px;text-align:center;font-weight:700}
+.history-table th:first-child{border-radius:8px 0 0 0}.history-table th:last-child{border-radius:0 8px 0 0}
+.history-table td{padding:9px 12px;text-align:center;border-bottom:1px solid var(--border)}
+.history-table tr:last-child td{border-bottom:none}
+.history-table tr:nth-child(even) td{background:#f9fafb}
+.trend-up{color:var(--green);font-weight:700}.trend-down{color:var(--red);font-weight:700}.trend-same{color:var(--gray)}
+
+.improve-banner{background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-radius:14px;padding:20px 24px;text-align:center;margin-bottom:16px}
+.ib-emoji{font-size:32px;margin-bottom:6px}
+.ib-text{font-size:15px;font-weight:700;margin-bottom:3px}
+.ib-sub{font-size:12px;color:rgba(255,255,255,.7)}
+
+.cta-box{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:16px;padding:24px;text-align:center;color:#fff;margin-bottom:16px}
+.cta-title{font-family:'Noto Serif KR',serif;font-size:16px;font-weight:700;margin-bottom:5px}
+.cta-desc{font-size:12.5px;color:rgba(255,255,255,.6);margin-bottom:12px;line-height:1.7}
+.cta-phone{font-size:20px;font-weight:900;color:var(--orange)}
+.cta-sub{font-size:10.5px;color:rgba(255,255,255,.35);margin-top:3px}
+.retry-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+
+/* ── 반배정 + 상담멘트 카드 ── */
+.consult-card{background:#fff;border-radius:18px;padding:26px;border:1.5px solid var(--border);margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.consult-section-title{font-family:'Noto Serif KR',serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.class-recommend-box{border-radius:14px;padding:18px 20px;margin-bottom:16px;border:2px solid}
+.class-level-A{background:#fefce8;border-color:#fde047}
+.class-level-B{background:#f0fdf4;border-color:#86efac}
+.class-level-C{background:#eff6ff;border-color:#93c5fd}
+.class-name{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:var(--navy);margin-bottom:4px}
+.class-reason{font-size:12.5px;color:var(--gray);line-height:1.7}
+.plan-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.plan-chip{font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;background:#f3f4f6;color:var(--navy)}
+.opening-box{background:linear-gradient(135deg,#f8f5ff,#ede9fe);border-radius:12px;padding:16px 18px;margin-bottom:14px;font-size:13px;line-height:1.8;color:#4c1d95;border-left:4px solid var(--purple)}
+.domain-ment-list{display:grid;gap:10px}
+.domain-ment-item{border-radius:12px;padding:14px 16px;font-size:13px;line-height:1.7}
+.dm-label{font-size:11px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.dm-status{font-size:10px;padding:2px 8px;border-radius:8px;font-weight:700}
+.status-strength{background:#dcfce7;color:#16a34a}
+.status-stable{background:#dbeafe;color:#2563eb}
+.status-dev{background:#fef3c7;color:#d97706}
+.status-need{background:#fee2e2;color:#dc2626}
+.dm-text{color:#374151}
+.dm-plan{font-size:11.5px;color:var(--gray);margin-top:6px;padding-top:6px;border-top:1px solid rgba(0,0,0,.06)}
+.closing-box{background:var(--navy);border-radius:12px;padding:16px 18px;color:#fff;font-size:13px;line-height:1.8;margin-top:14px}
+.closing-box strong{color:var(--orange)}
+.hist-title{font-family:'Noto Serif KR',serif;font-size:20px;font-weight:900;color:var(--navy);margin-bottom:4px}
+.hist-sub{font-size:13px;color:var(--gray);margin-bottom:20px}
+.student-list{display:grid;gap:10px}
+.student-card{background:#fff;border-radius:13px;padding:16px 20px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all .2s}
+.student-card:hover{border-color:var(--orange);box-shadow:0 4px 16px rgba(242,108,27,.12)}
+.sc-name{font-size:15px;font-weight:700;color:var(--navy)}
+.sc-meta{font-size:12px;color:var(--gray);margin-top:2px}
+.sc-right{text-align:right}
+.sc-glsi{font-size:18px;font-weight:900;color:var(--purple)}
+.sc-total{font-size:11px;color:var(--gray)}
+.empty-state{text-align:center;padding:60px 20px;color:var(--gray)}
+.empty-icon{font-size:44px;margin-bottom:10px}
+
+@media(max-width:600px){
+  .main{padding:24px 14px 100px}
+  .form-box{padding:18px 14px}
+  .form-row{flex-direction:column}
+  .info-grid{grid-template-columns:1fr}
+  .charts-grid{grid-template-columns:1fr}
+  .score-row{flex-wrap:wrap}
+  .quiz-card{padding:22px 18px}
+  .grc-num{font-size:44px}
+}
+
+/* ── 패드/태블릿 최적화 ── */
+@media(min-width:601px) and (max-width:1024px){
+  .main{padding:30px 28px 100px}
+  .opt-btn{padding:16px 20px;font-size:15px}
+  .opt-num{width:28px;height:28px;font-size:13px}
+  .q-text{font-size:18px}
+  .btn-primary{font-size:16px;padding:16px 52px}
+  .form-box input,.form-box select{font-size:15px;padding:13px 16px}
+  .ci-scale button,.ci-scale label{min-width:44px;min-height:44px}
+}
+/* 터치 타겟 최소 44px (Apple HIG) */
+.opt-btn{min-height:52px}
+.btn-primary{min-height:52px}
+.ei-slider{height:32px;cursor:pointer}
+.nav-item,.check-item{min-height:44px}
+
+/* ✅ 인쇄/PDF 저장용: 결과 화면만 출력 */
+@media print{
+  body{background:#fff !important;}
+  header.hdr, .prog-wrap, .retry-row{display:none !important;}
+  .main{padding:0 !important; max-width:100% !important;}
+  .screen{display:none !important;}
+  #resultScreen{display:block !important;}
+  #resultScreen .chart-card, #resultScreen .compare-section, #resultScreen .consult-card{
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+}
+
+</style>
+<script>
+window.onerror = function(msg, src, line, col, err) {
+  document.body.insertAdjacentHTML('afterbegin',
+    '<div style="position:fixed;top:0;left:0;right:0;background:red;color:#fff;z-index:99999;padding:12px;font-size:13px;word-break:break-all">' +
+    '🚨 JS오류: ' + msg + ' (줄:' + line + ')</div>');
+  return false;
+};
+</script>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-inner">
+    <div class="brand">
+      젤<span>비아</span> 에듀센터
+      <span class="brand-sub">GROWTH LEARNING SYSTEM INDEX</span>
+    </div>
+    <div class="hdr-right" style="display:flex;gap:8px;align-items:center"><div class="glsi-badge">GLSI v4</div><button class="btn btn-outline btn-sm" onclick="teacherLogin()" style="padding:6px 10px">선생님</button><button class="btn btn-outline btn-sm" onclick="teacherLogout()" style="padding:6px 10px">OFF</button></div>
+  </div>
+  <div class="prog-wrap"><div class="prog-bar" id="progBar"></div></div>
+</header>
+
+<div class="main">
+
+<!-- ① 시작 화면 -->
+<div class="screen active" id="startScreen">
+  <div class="start-hero">
+    <div class="logo-glsi">GROWTH LEARNING SYSTEM INDEX</div>
+    <div class="logo-big">젤<span>비아</span></div>
+    <div class="sub-title">ZELVIA EDUTECH · 입회 레벨 테스트 v4</div>
+    <div class="notice-banner">
+      <strong>🔗 이 테스트는 GLSI와 연동됩니다</strong>
+      테스트 결과(정답률·서술력·응시시간)가 자동으로 GLSI의 <strong>A(Achievement)·C(Cognitive)·T(Time)</strong> 초기값으로 저장됩니다. 테스트 후 선생님의 관찰 체크리스트 입력이 완료되면 GLSI 지수가 최종 산출됩니다.
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-icon">🧮</div>
+        <div class="ic-title">창의수학 · 15문항</div>
+        <div class="ic-desc">수감각 · 연산·규칙 · 도형·공간 · 사고력<br>난이도 자동 조정</div>
+        <div class="ic-tag tag-glsi-a">→ GLSI A 반영</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">📚</div>
+        <div class="ic-title">독서·문해력 · 15문항</div>
+        <div class="ic-desc">어휘 · 이해 · 추론 · 표현<br>지문 독해 포함</div>
+        <div class="ic-tag tag-glsi-a">→ GLSI A 반영</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">✍️</div>
+        <div class="ic-title">서술형 풀이</div>
+        <div class="ic-desc">풀이 과정 직접 작성<br>메타인지·설명 능력 측정</div>
+        <div class="ic-tag tag-glsi-c">→ GLSI C 반영</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">⏱️</div>
+        <div class="ic-title">응시 시간 측정</div>
+        <div class="ic-desc">문항별 소요 시간 자동 기록<br>집중력·시간 효율 분석</div>
+        <div class="ic-tag tag-glsi-t">→ GLSI T 반영</div>
+      </div>
+    </div>
+    <div class="glsi-map-box">
+      <div class="glsi-map-title">🧬 GLSI 5대 도메인 연동 구조</div>
+      <div class="glsi-domains">
+        <div class="glsi-domain-chip"><span class="chip-dot" style="background:var(--habit)"></span>H · HABIT <span style="color:var(--gray);font-weight:400">관찰 입력</span></div>
+        <div class="glsi-domain-chip"><span class="chip-dot" style="background:var(--cog)"></span>C · COGNITIVE <span style="color:var(--gray);font-weight:400">서술형</span></div>
+        <div class="glsi-domain-chip"><span class="chip-dot" style="background:var(--time)"></span>T · TIME <span style="color:var(--gray);font-weight:400">응시시간</span></div>
+        <div class="glsi-domain-chip"><span class="chip-dot" style="background:var(--ach)"></span>A · ACHIEVEMENT <span style="color:var(--gray);font-weight:400">정답률</span></div>
+        <div class="glsi-domain-chip"><span class="chip-dot" style="background:var(--growth)"></span>G · GROWTH <span style="color:var(--gray);font-weight:400">회차 비교</span></div>
+      </div>
+    </div>
+    <div class="form-box">
+      <label class="form-label">학생 정보 입력</label>
+      <div class="form-row">
+        <input type="text" id="inputName" placeholder="학생 이름" maxlength="10">
+        <select id="inputGrade">
+          <option value="">학년 선택</option>
+          <option value="초1">초등 1학년</option><option value="초2">초등 2학년</option>
+          <option value="초3">초등 3학년</option><option value="초4">초등 4학년</option>
+          <option value="초5">초등 5학년</option><option value="초6">초등 6학년</option>
+          <option value="중1">중학 1학년</option><option value="중2">중학 2학년</option>
+          <option value="중3">중학 3학년</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="startTest()">테스트 시작 →</button>
+    <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="showHistory()">📊 성장 기록</button>
+    </div>
+  </div>
+</div>
+
+<!-- ② 상황형 미니진단 섹션 전환 -->
+<div class="screen" id="secSituation">
+  <div class="sec-intro">
+    <div class="sec-icon">🧠</div>
+    <div class="sec-title">GLSI 상황형 미니진단</div>
+    <div class="sec-desc">실제 학습 상황에서 내가 어떻게 행동하는지<br>솔직하게 골라주세요. 정답은 없어요!</div>
+    <div class="sec-glsi-hint">🔗 <strong>H · C · T · G</strong> 4개 도메인 · 총 24문항 (EI 행동형 포함)</div><br>
+    <div class="diff-badge diff-m">약 5~7분 소요</div><br>
+    <button class="btn btn-primary" onclick="startSituation()">시작하기 →</button>
+  </div>
+</div>
+
+<!-- 상황형 퀴즈 화면 -->
+<div class="screen" id="sitScreen">
+  <div class="quiz-meta">
+    <div class="quiz-label">
+      <span class="section-dot" style="background:var(--purple)"></span>
+      <span>GLSI 상황형 진단</span>
+      <span class="glsi-indicator" id="sitDomainInd"></span>
+    </div>
+    <div class="quiz-counter"><strong id="sitCurr">1</strong> / 24</div>
+  </div>
+  <div class="quiz-card" id="sitCard">
+    <div class="q-tag" id="sitTag" style="background:#ede9fe;color:#7c3aed;display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px;margin-bottom:12px"></div>
+    <div class="q-text" id="sitText"></div>
+    <div class="options" id="sitOpts"></div>
+  </div>
+  <div class="feedback-box fb-correct" id="sitFeedback" style="display:none">✅ 선택 완료! 다음 문항으로 넘어가요.</div>
+  <div class="btn-wrap">
+    <button class="btn btn-primary btn-sm" id="sitBtnNext" onclick="nextSit()" style="display:none">다음 →</button>
+  </div>
+</div>
+
+<!-- ③ 수학 섹션 전환 -->
+<div class="screen" id="secMath">
+  <div class="sec-intro">
+    <div class="sec-icon">🧮</div>
+    <div class="sec-title">창의수학 영역</div>
+    <div class="sec-desc">수감각 · 연산·규칙 · 도형·공간 · 사고력<br>총 15문항 · 난이도 자동 조정</div>
+    <div class="sec-glsi-hint">🔗 결과가 <strong>GLSI A(Achievement)</strong> 초기값으로 저장됩니다</div><br>
+    <div class="diff-badge diff-m">보통 난이도에서 시작</div><br>
+    <button class="btn btn-primary" onclick="startSection('math')">시작하기 →</button>
+  </div>
+</div>
+
+<!-- ③ 독서 섹션 전환 -->
+<div class="screen" id="secRead">
+  <div class="sec-intro">
+    <div class="sec-icon">📚</div>
+    <div class="sec-title">독서·문해력 영역</div>
+    <div class="sec-desc">어휘 · 이해 · 추론 · 표현<br>총 15문항 · 지문 독해 포함</div>
+    <div class="sec-glsi-hint">🔗 결과가 <strong>GLSI A(Achievement)</strong> 초기값으로 저장됩니다</div><br>
+    <div class="diff-badge diff-m">보통 난이도에서 시작</div><br>
+    <button class="btn btn-primary" onclick="startSection('read')">시작하기 →</button>
+  </div>
+</div>
+
+<!-- ④ 퀴즈 화면 -->
+<div class="screen" id="quizScreen">
+  <div class="timer-wrap">
+    <div class="timer-label">⏱ 집중</div>
+    <div class="timer-bar-track"><div class="timer-bar-fill" id="timerBar"></div></div>
+    <div class="timer-num" id="timerNum">60</div>
+  </div>
+  <div class="quiz-meta">
+    <div class="quiz-label">
+      <span class="section-dot" id="secDot"></span>
+      <span id="secName"></span>
+      <span class="diff-pill" id="diffPill"></span>
+      <span class="glsi-indicator" id="glsiInd"></span>
+    </div>
+    <div class="quiz-counter"><strong id="qCurr">1</strong> / <span id="qTotal">15</span></div>
+  </div>
+  <div class="quiz-card" id="quizCard">
+    <div class="q-tag" id="qTag"></div>
+    <div class="q-passage" id="qPassage" style="display:none"></div>
+    <div class="q-text" id="qText"></div>
+    <div id="qBody"></div>
+  </div>
+  <div class="feedback-box" id="feedbackBox"></div>
+  <div class="btn-wrap">
+    <button class="btn btn-primary btn-sm" id="btnNext" onclick="nextQ()" style="display:none">다음 →</button>
+    <button class="btn btn-primary btn-sm" id="btnSubmitSub" onclick="submitSub()" style="display:none">제출</button>
+  </div>
+</div>
+
+<!-- ⑤ 선생님 관찰 체크리스트 -->
+<div class="screen" id="checkScreen">
+  <div class="check-screen-title">👁 선생님 관찰 체크리스트</div>
+  <div class="check-screen-sub">입회 시 관찰 내용을 입력해주세요. GLSI H·C·T 도메인에 반영됩니다.</div>
+  <div class="check-student-info">
+    <span>👤</span><span id="checkStudentName">-</span>
+    <span style="color:var(--gray)">|</span>
+    <span id="checkStudentGrade" style="color:var(--gray)">-</span>
+  </div>
+
+  <!-- H: HABIT -->
+  <div class="check-section">
+    <div class="check-section-header">
+      <div class="csh-dot" style="background:var(--habit)"></div>
+      <div class="csh-title">H · HABIT</div>
+      <div class="csh-domain" style="background:#fff3eb;color:var(--habit)">학습 루틴 · 준비도</div>
+      <div class="csh-weight">가중치 20%</div>
+    </div>
+    <div class="check-item"><span class="ci-label">학습 준비물을 갖추고 왔다</span><div class="ci-scale" data-key="h1"></div></div>
+    <div class="check-item"><span class="ci-label">자리에 착석 후 바로 집중했다</span><div class="ci-scale" data-key="h2"></div></div>
+    <div class="check-item"><span class="ci-label">지시사항을 잘 따랐다</span><div class="ci-scale" data-key="h3"></div></div>
+    <div class="check-item"><span class="ci-label">포기하지 않고 끝까지 응시했다</span><div class="ci-scale" data-key="h4"></div></div>
+    <div class="scale-hint"><span>1=매우부족</span><span>2=부족</span><span>3=보통</span><span>4=우수</span></div>
+  </div>
+
+  <!-- C: COGNITIVE -->
+  <div class="check-section">
+    <div class="check-section-header">
+      <div class="csh-dot" style="background:var(--cog)"></div>
+      <div class="csh-title">C · COGNITIVE</div>
+      <div class="csh-domain" style="background:#ede9fe;color:var(--purple)">메타인지 · 사고력</div>
+      <div class="csh-weight">가중치 25%</div>
+    </div>
+    <div class="check-item"><span class="ci-label">모르는 문제에서 시도를 했다</span><div class="ci-scale" data-key="c1"></div></div>
+    <div class="check-item"><span class="ci-label">서술형에 풀이 과정을 작성했다</span><div class="ci-scale" data-key="c2"></div></div>
+    <div class="check-item"><span class="ci-label">문제를 읽는 속도가 적절했다</span><div class="ci-scale" data-key="c3"></div></div>
+    <div class="scale-hint"><span>1=매우부족</span><span>2=부족</span><span>3=보통</span><span>4=우수</span></div>
+  </div>
+
+  <!-- T: TIME -->
+  <div class="check-section">
+    <div class="check-section-header">
+      <div class="csh-dot" style="background:var(--time)"></div>
+      <div class="csh-title">T · TIME</div>
+      <div class="csh-domain" style="background:#e0f2fe;color:var(--teal)">집중 · 시간 효율</div>
+      <div class="csh-weight">가중치 20%</div>
+    </div>
+    <div class="check-item"><span class="ci-label">산만한 행동(두리번·핸드폰 등)이 없었다</span><div class="ci-scale" data-key="t1"></div></div>
+    <div class="check-item"><span class="ci-label">한 문제에 너무 오래 멈추지 않았다</span><div class="ci-scale" data-key="t2"></div></div>
+    <div class="check-item"><span class="ci-label">전체 응시 시간이 적절했다</span><div class="ci-scale" data-key="t3"></div></div>
+    <div class="scale-hint"><span>1=매우부족</span><span>2=부족</span><span>3=보통</span><span>4=우수</span></div>
+  </div>
+
+  <!-- EI: 정서 보조지수 -->
+  <div class="ei-section">
+    <div class="ei-title">EI · 정서 보조지수</div>
+    <div class="ei-desc">학습 동기 · 자기효능감 · 학습 불안 (최대 ±5점 보정)</div>
+    <div class="ei-item">
+      <span class="ci-label">학습 동기가 느껴졌다</span>
+      <input type="range" class="ei-slider" id="ei1" min="1" max="5" value="3">
+      <span id="ei1v" style="font-size:13px;font-weight:700;color:var(--purple);width:20px;text-align:right">3</span>
+    </div>
+    <div class="ei-item">
+      <span class="ci-label">자신감이 있어 보였다</span>
+      <input type="range" class="ei-slider" id="ei2" min="1" max="5" value="3">
+      <span id="ei2v" style="font-size:13px;font-weight:700;color:var(--purple);width:20px;text-align:right">3</span>
+    </div>
+    <div class="ei-item">
+      <span class="ci-label">불안/긴장이 적었다</span>
+      <input type="range" class="ei-slider" id="ei3" min="1" max="5" value="3">
+      <span id="ei3v" style="font-size:13px;font-weight:700;color:var(--purple);width:20px;text-align:right">3</span>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:8px">
+    <button class="btn btn-primary" onclick="submitChecklist()">GLSI 지수 산출하기 →</button>
+  </div>
+</div>
+
+<!-- ⑥ 결과 화면 -->
+<div class="screen" id="resultScreen">
+  <div id="saveNudge" style="display:none;background:linear-gradient(135deg,#0D1F3C,#1a3a6b);border-radius:14px;padding:14px 18px;margin-bottom:16px;text-align:center;">
+    <div style="color:#F26C1B;font-weight:900;font-size:14px;margin-bottom:6px;">⚠️ 기록이 자동 저장되지 않는 환경이에요!</div>
+    <div style="color:rgba(255,255,255,0.85);font-size:12px;margin-bottom:10px;">성장 기록을 유지하거나 GLSI로 업로드하려면 아래 버튼으로 JSON 파일을 저장해 주세요.</div>
+    <button onclick="exportData()" style="background:#F26C1B;color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;">📥 업로드용 JSON 파일 저장</button>
+  </div>
+  <!-- 구글 시트 연결 상태 배너 -->
+  <div id="sheetStatusBanner" style="border-radius:14px;padding:12px 18px;margin-bottom:14px;font-size:12.5px;font-weight:700;text-align:center;display:none"></div>
+
+  <div class="result-hero">
+    <div class="result-name" id="resName"></div>
+    <div class="result-emoji" id="resEmoji"></div>
+    <div class="result-done">테스트 + GLSI 분석 완료</div>
+    <div class="result-level-badge" id="resLevel"></div>
+    <div class="result-comment" id="resComment"></div>
+  </div>
+
+  <div class="score-row">
+    <div class="s-box math"><div class="s-label">🧮 창의수학</div><div class="s-num" id="sMath">-</div><div class="s-denom">/ 12점</div></div>
+    <div class="s-box read"><div class="s-label">📚 독서·문해력</div><div class="s-num" id="sRead">-</div><div class="s-denom">/ 12점</div></div>
+    <div class="s-box"><div class="s-label">✨ 총점</div><div class="s-num" id="sTotal">-</div><div class="s-denom">/ 24점</div></div>
+  </div>
+
+  <!-- 상황형 진단 요약 -->
+  <div id="sitSummaryCard" style="background:#fff;border-radius:16px;padding:22px 24px;border:1.5px solid #ddd6fe;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.04)">
+    <div style="font-family:'Noto Serif KR',serif;font-size:14px;font-weight:700;color:#7c3aed;margin-bottom:14px">🧠 상황형 미니진단 결과</div>
+    <div id="sitSummaryBars"></div>
+  </div>
+
+  <!-- GLSI 지수 카드 -->
+  <div class="glsi-result-card">
+    <div class="grc-label">GROWTH LEARNING SYSTEM INDEX</div>
+    <div class="grc-title">GLSI 초기 지수 (입회 기준)</div>
+    <div class="grc-score-row">
+      <div class="grc-num" id="glsiNum">-</div>
+      <div class="grc-denom">/ 100</div>
+    </div>
+    <div class="grc-notice">* 이 지수는 입회 시 첫 측정값입니다. 수업 중 H·G 데이터 축적으로 정확도가 높아집니다.</div>
+    <div class="glsi-domain-bars" id="glsiDomainBars"></div>
+    <div class="grc-partial-notice">📌 H(HABIT)·G(GROWTH)는 수업 진행 후 GLSI 측정 도구에서 업데이트하세요.<br>이 입회 테스트에서는 A·C·T·EI를 기반으로 초기 추정값이 산출됩니다.</div>
+  </div>
+
+  <!-- ✅ GLSI 도메인별 개선방법 -->
+  <div id="glsiImproveSec" style="margin-bottom:20px">
+    <div style="font-family:'Noto Serif KR',serif;font-size:16px;font-weight:900;color:#0d1f3c;margin-bottom:4px">
+      🎯 GLSI 도메인별 개선 방법
+    </div>
+    <div style="font-size:12px;color:#6b7280;margin-bottom:14px">점수 기반으로 지금 당장 실천할 수 있는 처방을 안내해 드려요</div>
+    <div id="glsiImproveCards"></div>
+  </div>
+
+  <!-- 수학/독서 영역 차트 -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">🧮 수학 영역별</div>
+      <div class="chart-canvas-wrap"><canvas id="mathRadar"></canvas></div>
+      <div class="domain-bars" id="mathBars"></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">📚 독서·문해력 영역별</div>
+      <div class="chart-canvas-wrap"><canvas id="readRadar"></canvas></div>
+      <div class="domain-bars" id="readBars"></div>
+    </div>
+  </div>
+
+  <div class="compare-section" id="compareSection" style="display:none">
+    <div class="compare-title">📈 성장 기록 <span class="ct-badge">전·후 비교</span></div>
+    <div id="compareContent"></div>
+  </div>
+  <div class="improve-banner" id="improveBanner" style="display:none">
+    <div class="ib-emoji" id="impEmoji"></div>
+    <div class="ib-text" id="impText"></div>
+    <div class="ib-sub" id="impSub"></div>
+  </div>
+
+  <!-- 반배정 + 학부모 상담 멘트 -->
+  <div class="consult-card" id="consultCard">
+    <div class="consult-section-title">🏫 반 배정 추천 <span style="font-size:11px;background:var(--orange);color:#fff;padding:2px 9px;border-radius:9px;font-weight:700">자동 산출</span></div>
+    <div id="classRecommendBox"></div>
+
+    <div class="consult-section-title" style="margin-top:20px">💬 학부모 상담 멘트 <span style="font-size:11px;background:#7c3aed;color:#fff;padding:2px 9px;border-radius:9px;font-weight:700">자동 생성</span></div>
+    <div class="opening-box" id="consultOpening"></div>
+    <div class="domain-ment-list" id="domainMentList"></div>
+    <div class="closing-box" id="consultClosing"></div>
+  </div>
+
+
+  <!-- ✅ 선생님 전용: 오답/서술형 리뷰 -->
+  <div class="consult-card" id="teacherReviewCard" style="display:none">
+    <div class="consult-section-title">🧑‍🏫 선생님 전용 · 오답/서술형 리뷰</div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+      <button class="btn btn-outline btn-sm" onclick="toggleTeacherReview()">펼치기/접기</button>
+      <button class="btn btn-outline btn-sm" onclick="copyTeacherReview()">내용 복사</button>
+    </div>
+
+    <div id="teacherReviewBody" style="display:none"></div>
+  </div>
+
+  <div class="cta-box">
+    <div class="cta-title">상담 예약 및 반 배정 안내 😊</div>
+    <div class="cta-desc">GLSI 초기 지수와 영역별 분석을 바탕으로<br>우리 아이 맞춤 학습 플랜을 안내해 드립니다.</div>
+    <div class="cta-phone">010-4373-2021</div>
+    <div class="cta-sub">젤비아 에듀센터 · 리드인해밀학원 | 상담 예약 필수</div>
+  </div>
+  <!-- GLSI 연동 내보내기 버튼 -->
+  <div id="glsiExportBanner" style="background:linear-gradient(135deg,#1a3260,#0d1f3c);border-radius:16px;padding:18px 20px;margin-bottom:14px;border:2px solid #3b5fa0;">
+    <div style="font-size:13px;font-weight:900;color:#fff;margin-bottom:4px;">🔗 GLSI 관리시스템으로 전송</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:12px;line-height:1.6;">이 결과를 GLSI 선생님 시스템에 바로 반영할 수 있어요.<br>JSON 파일을 저장 후 GLSI 시스템에서 가져오기 하세요.</div>
+    <button onclick="exportCurrentResult()" style="width:100%;background:linear-gradient(135deg,#f26c1b,#ff9a5c);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:900;cursor:pointer;letter-spacing:.3px;">📥 이 학생 결과 저장 (GLSI 연동용)</button>
+  </div>
+
+  <div class="retry-row" style="margin-bottom:10px">
+    <button class="btn btn-outline" onclick="printResult()">🖨 결과지 출력(PDF)</button>
+    <button class="btn btn-outline" onclick="shareResult()">📤 학부모 공유</button>
+  </div>
+
+<div class="retry-row">
+    <button class="btn btn-outline" onclick="showHistory()">📊 성장 기록</button>
+    <button class="btn btn-outline" onclick="restartAll()">🔄 다시 테스트</button>
+  </div>
+</div>
+
+<!-- ⑦ 기록 화면 -->
+<div class="screen" id="histScreen">
+  <div class="hist-title">📊 학생 성장 기록</div>
+  <div class="hist-sub">학생 이름을 선택하면 회차별 GLSI 기록을 확인할 수 있어요.</div>
+
+  <div style="display:flex;gap:10px;margin-bottom:12px;">
+    <button class="btn" style="flex:1;background:linear-gradient(135deg,#0D1F3C,#1a3a6b);color:#fff;border:none;font-size:13px;padding:13px;border-radius:12px;font-weight:700;" onclick="exportData()">
+      📥 기록 저장 (JSON)
+    </button>
+    <label style="flex:1;cursor:pointer;display:block;">
+      <div class="btn" style="background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border:none;font-size:13px;padding:13px;text-align:center;border-radius:12px;font-weight:700;">
+        📂 기록 불러오기
+      </div>
+      <input type="file" accept=".json" style="display:none;" onchange="importData(this.files[0])"/>
+    </label>
+  </div>
+
+  <div style="background:#FFF7ED;border:1px solid #FFD0A0;border-radius:10px;padding:10px 14px;font-size:12px;color:#92400e;margin-bottom:14px;line-height:1.7;">
+    💡 <b>기록이 안 보이면</b> → <b>기록 불러오기</b>로 이전에 저장한 JSON 파일을 가져오세요.<br>
+    시험 완료 후 <b>기록 저장</b>을 눌러 백업해 두세요!
+  </div>
+
+  <div class="student-list" id="studentList"></div>
+  <div style="margin-top:16px;text-align:center">
+    <button class="btn btn-outline" onclick="showScreen('startScreen')">← 돌아가기</button>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- Chart.js: CDN 로드 실패 시 캔버스 막대 폴백 사용 -->
+<script>
+// Chart.js 폴백 - CDN 없이도 동작하는 간단한 차트 구현
+window._chartFallback = false;
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" onerror="window._chartFallback=true;window.Chart=window._FallbackChart;"></script>
+<script>
+// ── Chart.js 로드 실패 시 대체 차트 ──
+window._FallbackChart = function(ctx, config) {
+  const canvas = ctx.canvas || ctx;
+  const container = canvas.parentElement;
+  const labels = config.data.labels || [];
+  const vals = (config.data.datasets[0]||{}).data || [];
+  const max = Math.max(...vals, 1);
+  let html = '<div style="padding:12px;font-size:12px;">';
+  labels.forEach((l,i) => {
+    const pct = Math.round((vals[i]||0)/max*100);
+    html += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <span style="min-width:60px;font-size:11px;font-weight:700;color:#333">${l}</span>
+      <div style="flex:1;background:#eee;border-radius:4px;height:14px;">
+        <div style="width:${pct}%;background:#f26c1b;border-radius:4px;height:14px;"></div>
+      </div>
+      <span style="font-size:11px;color:#666;min-width:30px">${vals[i]||0}</span>
+    </div>`;
+  });
+  html += '</div>';
+  canvas.style.display = 'none';
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  container.appendChild(div);
+  this.destroy = ()=>{};
+};
+window._FallbackChart.getChart = ()=>null;
+if(window._chartFallback) window.Chart = window._FallbackChart;
+
+document.addEventListener('DOMContentLoaded', ()=>{ applyTeacherModeUI(); });
+</script>
+<script>
+// ══════════════════════════════════════════
+//  문항 데이터 (GLSI 도메인 매핑 포함)
+//  mathDomain: 0=수감각, 1=연산규칙, 2=도형공간, 3=사고력
+//  readDomain: 0=어휘, 1=이해, 2=추론, 3=표현
+//  glsiDomain: 'A'=Achievement, 'C'=Cognitive
+// ══════════════════════════════════════════
+const MATH_Q = {
+  easy:[
+    {tag:'수감각',md:0,gd:'A',q:'다음 중 가장 큰 수는?',opts:['3,405','3,450','3,504','3,540'],ans:3,fb:'백·십·일의 자리를 차례로 비교해요. 3,540이 가장 커요!'},
+    {tag:'수감각',md:0,gd:'A',q:'다음 중 가장 작은 수는?',opts:['2,018','2,081','2,108','2,180'],ans:0,fb:'2,018은 십의 자리가 1로 가장 작아요.'},
+    {tag:'연산규칙',md:1,gd:'A',q:'407에서 90을 빼면?',opts:['317','327','337','347'],ans:0,fb:'407−90=317. 받아내림에 주의!'},
+    {tag:'연산규칙',md:1,gd:'A',q:'8+7+5는?',opts:['18','19','20','21'],ans:2,fb:'8+7=15, 15+5=20!'},
+    {tag:'연산규칙',md:1,gd:'A',q:'6×4는?',opts:['20','22','24','26'],ans:2,fb:'6×4=24. 6을 4번 더해도 같아요!'},
+    {tag:'연산규칙',md:1,gd:'A',q:'24÷6은?',opts:['3','4','5','6'],ans:1,fb:'6×4=24이므로 24÷6=4!'},
+    {tag:'연산규칙',md:1,gd:'A',q:'5, 10, 15, 20, □',opts:['22','24','25','30'],ans:2,fb:'5씩 더하는 규칙, 20+5=25!'},
+    {tag:'도형공간',md:2,gd:'A',q:'삼각형의 꼭짓점 수는?',opts:['2개','3개','4개','5개'],ans:1,fb:'삼각형은 꼭짓점 3개!'},
+    {tag:'도형공간',md:2,gd:'A',q:'1m는 몇 cm?',opts:['10cm','50cm','100cm','1000cm'],ans:2,fb:'1m=100cm!'},
+    {tag:'도형공간',md:2,gd:'A',q:'네 변의 길이가 모두 같은 사각형은?',opts:['직사각형','평행사변형','정사각형','마름모'],ans:2,fb:'정사각형은 네 변 길이 같고 네 각 직각!'},
+    {tag:'사고력',md:3,gd:'A',q:'사탕 18개를 6명이 똑같이 나누면?',opts:['2개','3개','4개','6개'],ans:1,fb:'18÷6=3!'},
+    {tag:'사고력',md:3,gd:'C',q:'500원짜리 빵을 3,000원으로 최대 몇 개 살 수 있나요? 풀이와 답을 쓰세요.',type:'sub',hint:'3,000÷500=?',sample:'3,000÷500=6이므로 최대 6개를 살 수 있습니다.',md:3,gd:'C'},
+    {tag:'사고력',md:3,gd:'A',q:'15+9−4는?',opts:['18','19','20','21'],ans:2,fb:'15+9=24, 24−4=20!'},
+    {tag:'연산규칙',md:1,gd:'A',q:'★●★●★□ — □에 들어갈 것은?',opts:['★','●','▲','■'],ans:1,fb:'★●가 반복되는 패턴! 다음은 ●'},
+    {tag:'연산규칙',md:1,gd:'A',q:'1시간은 몇 분?',opts:['30분','60분','90분','120분'],ans:1,fb:'1시간=60분!'},
+  ],
+  medium:[
+    {tag:'수감각',md:0,gd:'A',q:'다음 중 가장 큰 수는?',opts:['304','340','403','430'],ans:3,fb:'430이 가장 커요. 백의 자리→십의 자리 순서로 비교!'},
+    {tag:'수감각',md:0,gd:'A',q:'1/2와 1/4 중 더 큰 것은?',opts:['1/2','1/4','같다','비교불가'],ans:0,fb:'분모가 클수록 조각이 작아요. 1/2 > 1/4!'},
+    {tag:'연산규칙',md:1,gd:'A',q:'346+278은?',opts:['614','624','634','644'],ans:1,fb:'일의 자리부터 받아올림에 주의! 624.'},
+    {tag:'연산규칙',md:1,gd:'A',q:'600-258은?',opts:['332','342','352','362'],ans:1,fb:'600−258=342!'},
+    {tag:'연산규칙',md:1,gd:'A',q:'9×7은?',opts:['56','63','72','79'],ans:1,fb:'9×7=63!'},
+    {tag:'연산규칙',md:1,gd:'A',q:'2, 4, 8, 16, □',opts:['18','24','32','36'],ans:2,fb:'2배씩! 16×2=32.'},
+    {tag:'연산규칙',md:1,gd:'A',q:'1, 3, 6, 10, □',opts:['12','13','14','15'],ans:3,fb:'+2,+3,+4,+5 규칙! 10+5=15.'},
+    {tag:'도형공간',md:2,gd:'A',q:'직사각형의 넓이 구하는 식은?',opts:['가로+세로','가로×세로','(가로+세로)×2','가로÷세로'],ans:1,fb:'넓이=가로×세로, 둘레=(가로+세로)×2!'},
+    {tag:'도형공간',md:2,gd:'A',q:'원의 특징으로 알맞은 것은?',opts:['모서리가 4개','모서리가 없다','꼭짓점이 3개','변의 길이가 모두 다르다'],ans:1,fb:'원은 꼭짓점도 모서리도 없어요!'},
+    {tag:'사고력',md:3,gd:'A',q:'연필 한 자루 700원, 3자루 가격은?',opts:['1,400원','2,000원','2,100원','2,700원'],ans:2,fb:'700×3=2,100원!'},
+    {tag:'사고력',md:3,gd:'A',q:'24명을 4명씩 모둠으로 나누면 몇 모둠?',opts:['4모둠','5모둠','6모둠','8모둠'],ans:2,fb:'24÷4=6모둠!'},
+    {tag:'사고력',md:3,gd:'A',q:'10보다 작은 짝수(자연수) 개수는?',opts:['3개','4개','5개','6개'],ans:1,fb:'2,4,6,8 → 4개!'},
+    {tag:'사고력',md:3,gd:'A',q:'주사위 1개를 던질 때 나올 수 있는 눈의 수?',opts:['4가지','5가지','6가지','7가지'],ans:2,fb:'주사위는 1~6, 총 6가지!'},
+    {tag:'사고력',md:3,gd:'C',q:'가로 8cm, 세로 5cm인 직사각형의 넓이를 구하고 풀이를 쓰세요.',type:'sub',hint:'넓이=가로×세로',sample:'8×5=40이므로 넓이는 40cm²입니다.',md:3,gd:'C'},
+    {tag:'수감각',md:0,gd:'A',q:'0.5와 0.8 중 더 작은 것은?',opts:['0.5','0.8','같다','비교불가'],ans:0,fb:'소수점 아래 자리 비교: 0.5 < 0.8!'},
+  ],
+  hard:[
+    {tag:'수감각',md:0,gd:'A',q:'1000보다 작은 세 자리 수 중 가장 큰 짝수는?',opts:['998','999','996','990'],ans:0,fb:'999는 홀수, 998이 가장 큰 짝수!'},
+    {tag:'수감각',md:0,gd:'A',q:'45의 약수의 개수는?',opts:['4개','5개','6개','8개'],ans:2,fb:'1,3,5,9,15,45 → 6개!'},
+    {tag:'연산규칙',md:1,gd:'A',q:'25×4−30의 값은?',opts:['40','50','60','70'],ans:3,fb:'곱셈 먼저! 25×4=100, 100−30=70.'},
+    {tag:'연산규칙',md:1,gd:'A',q:'(12+8)×3의 값은?',opts:['30','50','60','90'],ans:2,fb:'괄호 먼저! 20×3=60.'},
+    {tag:'연산규칙',md:1,gd:'A',q:'3, 6, 12, 24, □',opts:['36','40','48','60'],ans:2,fb:'2배씩! 24×2=48.'},
+    {tag:'연산규칙',md:1,gd:'A',q:'1, 1, 2, 3, 5, □ (피보나치)',opts:['6','7','8','9'],ans:2,fb:'앞 두 수의 합! 3+5=8.'},
+    {tag:'도형공간',md:2,gd:'A',q:'정사각형 한 변 둘레 12cm → 4개 2×2 붙인 큰 정사각형 둘레는?',opts:['24cm','36cm','48cm','60cm'],ans:0,fb:'한 변=3cm, 2배→6cm, 둘레=24cm!'},
+    {tag:'도형공간',md:2,gd:'A',q:'넓이 36cm² 직사각형. 가로 6→9cm로 늘면 세로는?',opts:['같아진다','늘어난다','줄어든다','알 수 없다'],ans:2,fb:'36÷6=6, 36÷9=4, 세로가 줄었어요!'},
+    {tag:'사고력',md:3,gd:'A',q:'사탕 3개=900원, 5개는?',opts:['1,200원','1,500원','1,800원','2,000원'],ans:1,fb:'한 개=300원, 5개=1,500원!'},
+    {tag:'사고력',md:3,gd:'A',q:'2시간에 60쪽, 4시간에는?',opts:['90쪽','100쪽','120쪽','180쪽'],ans:2,fb:'시간 2배→쪽수 2배! 120쪽.'},
+    {tag:'사고력',md:3,gd:'A',q:'3명이 서로 한 번씩 악수하면 총 몇 번?',opts:['2번','3번','4번','6번'],ans:1,fb:'AB, AC, BC → 3번!'},
+    {tag:'사고력',md:3,gd:'A',q:'1부터 10까지의 합은?',opts:['45','50','55','60'],ans:2,fb:'(1+10)×10÷2=55!'},
+    {tag:'사고력',md:3,gd:'A',q:'4×4 격자에서 1×1 정사각형 개수는?',opts:['8개','12개','16개','20개'],ans:2,fb:'4×4=16개!'},
+    {tag:'사고력',md:3,gd:'C',q:'어떤 수에 7을 곱하면 84가 됩니다. 그 수를 구하고 풀이를 쓰세요.',type:'sub',hint:'84÷7=?',sample:'84÷7=12이므로 그 수는 12입니다.',md:3,gd:'C'},
+    {tag:'연산규칙',md:1,gd:'A',q:'두 자리 수 AB에서 AB−BA가 가장 작으려면?',opts:['A와 B가 같아야 한다','A가 B보다 1 커야 한다','A가 9여야 한다','B가 0여야 한다'],ans:0,fb:'A=B이면 AB=BA, 차이가 0으로 최소!'},
+  ]
+};
+
+const READ_Q = {
+  easy:[
+    {tag:'어휘',rd:0,gd:'A',q:'"부지런하다"와 반대되는 뜻의 낱말은?',opts:['열심히','게으르다','성실하다','꼼꼼하다'],ans:1,fb:'"부지런하다"의 반대는 "게으르다"!'},
+    {tag:'어휘',rd:0,gd:'A',q:'"기쁘다"와 비슷한 뜻은?',opts:['즐겁다','슬프다','화나다','무섭다'],ans:0,fb:'"기쁘다"와 "즐겁다"는 둘 다 좋은 감정!'},
+    {tag:'어휘',rd:0,gd:'A',q:'"반납"의 뜻으로 알맞은 것은?\n"도서관에 책을 반납했다."',opts:['빌려 오다','돌려주다','새로 사다','잃어버리다'],ans:1,fb:'"반납"은 빌린 것을 돌려주는 것!'},
+    {tag:'어휘',rd:0,gd:'A',q:'"약속"과 어울리는 동사는?',opts:['약속을 먹다','약속을 지키다','약속을 부수다','약속을 달리다'],ans:1,fb:'"약속을 지키다"가 자연스러운 표현!'},
+    {tag:'이해',rd:1,gd:'A',q:'다음 글의 중심 내용은?',pass:'봄이 되면 나무에 새싹이 돋아납니다. 날씨가 따뜻해지면서 꽃들도 피어납니다. 새들도 돌아와 노래를 부릅니다.',opts:['봄에는 날씨가 춥다','봄에는 여러 가지 변화가 생긴다','봄에는 비가 오지 않는다','봄에는 눈이 온다'],ans:1,fb:'새싹·꽃·새 모두 봄의 변화! 중심 내용은 "봄의 여러 변화".'},
+    {tag:'이해',rd:1,gd:'A',q:'농부가 새벽부터 일하는 이유는?',pass:'어느 마을에 부지런한 농부가 살았습니다. 농부는 새벽부터 밭을 갈고 씨를 뿌렸습니다. 농부는 말했습니다. "지금 열심히 일해야 나중에 풍성한 수확을 거둘 수 있지요."',opts:['이웃을 이기려고','나중에 풍성한 수확을 위해서','밭이 무서워서','잠이 안 와서'],ans:1,fb:'농부가 직접 이유를 말했어요!'},
+    {tag:'이해',rd:1,gd:'A',q:'민준이의 기분으로 가장 알맞은 것은?',pass:'민준이는 학교에서 돌아오자마자 가방을 던지고 소파에 누웠습니다. 엄마가 간식을 물었지만 고개를 저었습니다. 창문 밖을 멍하니 보며 눈물이 맺혔습니다.',opts:['신나고 기쁘다','슬프거나 속상하다','배가 고파서 화나다','무섭고 두렵다'],ans:1,fb:'눈물, 고개를 젓는 행동 → 슬프거나 속상한 표현!'},
+    {tag:'추론',rd:2,gd:'A',q:'문어에 대한 설명으로 옳지 않은 것은?',pass:'문어는 다리가 8개입니다. 위험할 때 먹물을 뿌려 적을 피합니다. 또한 피부 색깔을 바꿔 숨을 수도 있습니다.',opts:['다리가 8개이다','먹물을 뿌린다','피부 색을 바꾼다','다리가 10개이다'],ans:3,fb:'문어 다리는 8개! 10개는 틀린 정보.'},
+    {tag:'표현',rd:3,gd:'A',q:'높임말이 바르게 쓰인 문장은?',opts:['선생님이 오셨다.','선생님이 왔다.','선생님이 먹었다.','선생님이 자다.'],ans:0,fb:'"오셨다"는 "오다"의 높임말!'},
+    {tag:'표현',rd:3,gd:'A',q:'"오늘 몇 시에 만나" — 알맞은 문장 부호는?',opts:['.','!','?','…'],ans:2,fb:'물어보는 문장 끝에는 물음표(?).'},
+    {tag:'표현',rd:3,gd:'A',q:'"정확하다"의 뜻으로 알맞은 것은?',opts:['대충 맞다','틀리다','바르고 틀림이 없다','느리다'],ans:2,fb:'"정확하다"는 바르고 틀림이 없다는 뜻!'},
+    {tag:'이해',rd:1,gd:'A',q:'다음 글의 제목으로 알맞은 것은?',pass:'문어는 다리가 8개입니다. 위험할 때 먹물을 뿌립니다. 피부 색을 바꿔 숨을 수 있습니다.',opts:['비 오는 날','문어의 특징','컴퓨터 사용법','겨울 놀이'],ans:1,fb:'글 전체가 문어의 특징을 설명해요!'},
+    {tag:'표현',rd:3,gd:'C',q:'봄에 일어나는 변화를 두 가지 이상 자신의 말로 써보세요.',pass:'봄이 되면 나무에 새싹이 돋아납니다. 씨앗들도 싹을 틔웁니다. 날씨가 따뜻해지면서 꽃이 피고, 새들도 돌아옵니다.',type:'sub',hint:'지문에서 봄에 생기는 변화를 찾아요.',sample:'새싹이 돋아나고 꽃이 핍니다. 날씨가 따뜻해지고 새들이 돌아옵니다.',rd:3,gd:'C'},
+    {tag:'표현',rd:3,gd:'C',q:'"습관"이라는 낱말을 사용하여 짧은 문장 2개를 만드세요.',type:'sub',hint:'"습관"을 넣어서 두 문장을 써요.',sample:'아침에 일찍 일어나는 습관을 기르자. 좋은 습관은 꾸준히 만들 수 있다.',rd:3,gd:'C'},
+    {tag:'어휘',rd:0,gd:'A',q:'문장에서 띄어쓰기가 바른 것은?',opts:['책을읽었다','책을 읽었다','책 을읽었다','책을읽 었다'],ans:1,fb:'낱말 사이는 띄어써야 해요!'},
+  ],
+  medium:[
+    {tag:'어휘',rd:0,gd:'A',q:'"공평하다"와 가장 가까운 뜻은?',opts:['치우치다','똑같이 대하다','서두르다','따라가다'],ans:1,fb:'"공평하다"는 어느 쪽으로도 치우치지 않고 똑같이 대한다는 뜻!'},
+    {tag:'어휘',rd:0,gd:'A',q:'"비슷하다"의 반대말은?',opts:['같다','다르다','빠르다','조용하다'],ans:1,fb:'"비슷하다"의 반대는 "다르다"!'},
+    {tag:'어휘',rd:0,gd:'A',q:'"아껴 쓰다"와 가장 가까운 뜻은?',opts:['낭비하다','절약하다','버리다','자랑하다'],ans:1,fb:'"아껴 쓰다" = "절약하다"!'},
+    {tag:'어휘',rd:0,gd:'A',q:'"원인"과 "결과"를 바르게 짝지은 것은?',opts:['원인:비가 온다/결과:우산을 쓴다','원인:우산을 쓴다/결과:비가 온다','원인:신발/결과:바지','원인:배/결과:하늘'],ans:0,fb:'비가 오기 때문에(원인) 우산을 쓴다(결과)!'},
+    {tag:'이해',rd:1,gd:'A',q:'글의 중심 생각으로 알맞은 것은?',pass:'민지는 줄넘기를 처음에는 잘 못했습니다. 하지만 매일 조금씩 연습하자 점점 더 오래 뛸 수 있었습니다. "꾸준히 하면 실력이 늘어난다"고 느꼈습니다.',opts:['준비는 필요 없다','꾸준한 연습이 중요하다','친구가 최고다','게임이 재미있다'],ans:1,fb:'"꾸준히 하면 실력이 늘어난다"는 교훈!'},
+    {tag:'이해',rd:1,gd:'A',q:'할아버지의 마음으로 알맞은 것은?',pass:'할아버지는 손자 생일을 맞아 작은 선물을 준비했습니다. 손자가 좋아할 모습을 떠올리며 할아버지는 미소를 지었습니다.',opts:['화가 났다','걱정했다','기뻤다','무서웠다'],ans:2,fb:'"미소를 지었다"에서 기쁜 마음을 알 수 있어요!'},
+    {tag:'이해',rd:1,gd:'A',q:'"나"가 가장 먼저 해야 할 일은?',pass:'갑자기 바람이 세게 불어 커튼이 흔들렸습니다. 창문 틈으로 빗방울이 들어오기 시작했습니다.',opts:['창문을 닫는다','불을 끈다','물을 마신다','가방을 정리한다'],ans:0,fb:'빗방울이 들어오니 창문부터 닫아야 해요!'},
+    {tag:'추론',rd:2,gd:'A',q:'문어에 대한 사실로 맞는 것은?',pass:'문어는 바닷속에 살며 위험할 때 먹물을 뿌려 적을 피합니다.',opts:['문어는 다리가 6개이다','문어는 먹물을 뿌릴 수 있다','문어는 하늘에 산다','문어는 날개가 있다'],ans:1,fb:'지문에서 먹물을 뿌린다고 했어요!'},
+    {tag:'추론',rd:2,gd:'A',q:'문장의 순서가 자연스러운 것은?\n(가)비가 오기 시작했다. (나)나는 우산을 챙겼다. (다)나는 밖에 나갔다.',opts:['가-다-나','나-가-다','가-나-다','다-가-나'],ans:2,fb:'비(가)→우산챙김(나)→밖에 나감(다)!'},
+    {tag:'추론',rd:2,gd:'A',q:'속담의 뜻이 알맞게 연결된 것은?',opts:['"호랑이도 제 말 하면 온다"=노력하면 된다','"가는 말이 고와야 오는 말이 곱다"=말은 예쁘게 해야 한다','"세 살 버릇 여든까지 간다"=밥을 많이 먹어라','"꿩 대신 닭"=무조건 포기하라'],ans:1,fb:'"가는 말이 고와야 오는 말이 곱다" — 친절한 말이 친절한 말을 부른다!'},
+    {tag:'표현',rd:3,gd:'A',q:'부사가 들어 있는 문장은?',opts:['나는 학생이다.','나는 빨리 달렸다.','연필은 길다.','책상은 네모이다.'],ans:1,fb:'"빨리"가 부사예요! 동사를 꾸며줘요.'},
+    {tag:'표현',rd:3,gd:'C',q:'민지가 실력이 늘어난 이유를 한 문장으로 써보세요.',pass:'민지는 줄넘기를 처음에는 잘 못했습니다. 하지만 매일 조금씩 연습하자 점점 더 오래 뛸 수 있었습니다.',type:'sub',hint:'왜 실력이 늘었는지 이유를 써요.',sample:'민지가 매일 조금씩 꾸준히 연습했기 때문에 실력이 늘었습니다.',rd:3,gd:'C'},
+    {tag:'표현',rd:3,gd:'C',q:'다음 문장의 주어를 찾아 쓰세요.\n"꽃이 예쁘게 피었다."',type:'sub',hint:'누가/무엇이 피었나요?',sample:'꽃이',rd:3,gd:'C'},
+    {tag:'이해',rd:1,gd:'A',q:'같은 뜻이 되도록 바꾼 문장은?',opts:['나는 밥을 먹었다=나는 밥을 안 먹었다','나는 책을 읽었다=나는 책을 읽지 않았다','나는 뛰었다=나는 달렸다','나는 잤다=나는 공부했다'],ans:2,fb:'"뛰다"와 "달리다"는 비슷한 뜻이에요!'},
+    {tag:'표현',rd:3,gd:'C',q:'도서관 안내문을 읽고 해야 할 일을 두 가지 이상 적으세요.',pass:'[도서관 이용 안내]\n· 도서관에서는 조용히 합니다.\n· 책을 빌린 뒤에는 기한 안에 반납합니다.\n· 음식은 지정된 곳에서만 먹습니다.',type:'sub',hint:'안내문에서 "해야 할 일"을 찾아요.',sample:'① 도서관에서 조용히 하기 ② 책을 기한 안에 반납하기',rd:3,gd:'C'},
+  ],
+  hard:[
+    {tag:'어휘',rd:0,gd:'A',q:'"가능성"과 가장 가까운 뜻은?',opts:['확률','규칙','감정','속도'],ans:0,fb:'"가능성" = 어떤 일이 일어날 수 있는 확률!'},
+    {tag:'어휘',rd:0,gd:'A',q:'"주장"과 가장 가까운 뜻은?',opts:['사실','의견','장소','시간'],ans:1,fb:'"주장"은 자신의 생각이나 의견을 강하게 말하는 것!'},
+    {tag:'어휘',rd:0,gd:'A',q:'"예방"의 뜻으로 알맞은 것은?',opts:['미리 막다','늦게 하다','크게 하다','새로 만들다'],ans:0,fb:'"예방"은 문제가 생기기 전에 미리 막는 것!'},
+    {tag:'이해',rd:1,gd:'A',q:'글의 목적이 "설명"인 것은?',opts:['친구에게 편지','동물의 특징을 소개하는 글','그림 일기','감상문'],ans:1,fb:'설명문은 어떤 대상의 특징이나 정보를 알려주는 글!'},
+    {tag:'이해',rd:1,gd:'A',q:'글의 중심 생각으로 알맞은 것은?',pass:'규칙적으로 운동하면 몸이 튼튼해지고 마음도 건강해집니다. 조금씩이라도 꾸준히 움직이는 것이 중요합니다.',opts:['운동은 해롭다','규칙적인 운동은 건강에 도움이 된다','운동은 숙제다','운동은 돈이 든다'],ans:1,fb:'글 전체가 운동의 긍정적 효과를 말해요!'},
+    {tag:'이해',rd:1,gd:'A',q:'"나"가 창문을 닫아야 하는 까닭은?',pass:'바람이 세게 불더니 창문 틈으로 빗방울이 들어오기 시작했습니다.',opts:['햇빛이 강해서','비가 들어와서','손님이 와서','배가 고파서'],ans:1,fb:'빗방울이 들어오니까 창문을 닫아야 해요!'},
+    {tag:'추론',rd:2,gd:'A',q:'문어에 대한 사실로 맞는 것은?',pass:'문어는 위험할 때 먹물을 뿌리고, 피부 색을 바꿔 주변 환경에 숨을 수도 있습니다.',opts:['문어는 먹물을 뿌리지 못한다','문어는 주변 색과 비슷하게 숨을 수 있다','문어는 나무에 산다','문어는 다리가 4개이다'],ans:1,fb:'피부 색을 바꿔 숨는다 — 지문에 나온 사실!'},
+    {tag:'추론',rd:2,gd:'A',q:'"나"의 생각으로 알맞은 것은?',pass:'처음에는 실수했지만, 나는 다시 한 번 천천히 해 보기로 했다. 연습하면 더 잘할 수 있을 것 같았다.',opts:['실수해도 괜찮다','노력해도 소용없다','포기하는 게 낫다','남 탓이 중요하다'],ans:0,fb:'"다시 해보기로 했다"에서 도전하는 마음!'},
+    {tag:'추론',rd:2,gd:'A',q:'접속어가 알맞게 쓰인 것은?',opts:['비가 왔다. 그래서 우산을 썼다.','비가 왔다. 그러나 우산을 썼다.','비가 왔다. 그리고 배가 고팠다.','비가 왔다. 그래서 책이 무겁다.'],ans:0,fb:'"그래서"는 원인→결과 연결에 써요!'},
+    {tag:'추론',rd:2,gd:'A',q:'주장-근거 관계가 바른 것은?',opts:['주장:물은 젖는다/근거:물은 액체다','주장:독서는 중요하다/근거:어휘와 이해력이 자란다','주장:숙제는 싫다/근거:맛있다','주장:하늘은 파랗다/근거:책상은 크다'],ans:1,fb:'"독서가 중요하다" → "어휘·이해력 향상"은 논리적 근거!'},
+    {tag:'표현',rd:3,gd:'C',q:'"꾸준히 해야 하는 이유"를 한 문장으로 써보세요.',pass:'처음에는 잘 못해도, 매일 조금씩 꾸준히 하면 실력이 늘어납니다.',type:'sub',hint:'왜 꾸준히 해야 하는지 근거를 넣어 써요.',sample:'꾸준히 하면 조금씩 실력이 쌓여 더 잘할 수 있기 때문입니다.',rd:3,gd:'C'},
+    {tag:'표현',rd:3,gd:'C',q:'글쓴이가 말하고 싶은 교훈을 써보세요.',pass:'농부는 말했습니다. "지금 열심히 일해야 나중에 풍성한 수확을 거둘 수 있지요."',type:'sub',hint:'"무엇이 중요하다"를 중심으로 써요.',sample:'지금 열심히 노력하면 나중에 좋은 결과를 얻을 수 있다는 것이 중요합니다.',rd:3,gd:'C'},
+    {tag:'표현',rd:3,gd:'C',q:'다음 상황을 보고 따옴표를 넣어 문장을 완성하세요.\n엄마가 말했다 오늘은 일찍 자자',type:'sub',hint:'말한 내용을 나타내는 "따옴표"를 생각해요.',sample:'엄마가 말했다. "오늘은 일찍 자자."',rd:3,gd:'C'},
+    {tag:'이해',rd:1,gd:'A',q:'다음 글을 한 문장으로 요약한 것은?',pass:'봄이 되면 새싹이 돋고 꽃이 핍니다. 날씨가 따뜻해지고 새들도 돌아옵니다.',opts:['봄은 춥다','봄에는 자연에 여러 변화가 생긴다','봄에는 눈이 온다','봄에는 밤이 길다'],ans:1,fb:'새싹·꽃·날씨·새 — 모두 봄의 자연 변화!'},
+    {tag:'어휘',rd:0,gd:'A',q:'"주장"과 "근거" 중 더 객관적인 것은?',opts:['주장','근거','둘 다 같다','알 수 없다'],ans:1,fb:'근거는 사실이나 증거를 기반으로 하므로 더 객관적이에요!'},
+  ]
+};
+
+// ══════════════════════════════════════════
+//  상태
+// ══════════════════════════════════════════
+let studentName='', studentGrade='';
+let curSection='';
+let curQIdx=0;
+let curDiff='medium';
+let consRight=0, consWrong=0;
+let mathScores={수감각:0,연산규칙:0,도형공간:0,사고력:0};
+let readScores={어휘:0,이해:0,추론:0,표현:0};
+let glsiRaw={A:0,A_max:0,C:0,C_max:0,T_time:0};
+let sectionQList=[];
+let answered=false;
+let qStartTime=0;
+let totalTime=0;
+let timerInterval=null;
+let timeLimit=90;
+let timeLeft=90;
+let checklistData={};
+let TEACHER_MODE=false;   // 선생님 모드 플래그 (기본: 학생 모드)
+
+function teacherLogin(){
+  const pw = prompt('선생님 비밀번호를 입력하세요');
+  if(pw === '1234'){ // ← 비밀번호 여기서 변경 가능
+    TEACHER_MODE = true;
+    document.getElementById('teacherReviewCard').style.display = 'block';
+    alert('✅ 선생님 모드 ON — 해설·오답이 표시됩니다');
+  } else if(pw !== null){
+    alert('비밀번호가 틀렸어요');
+  }
+}
+function teacherLogout(){
+  TEACHER_MODE = false;
+  document.getElementById('teacherReviewCard').style.display = 'none';
+  alert('선생님 모드 OFF');
+}
+let WRONG_LOG=[];         // 오답 기록
+let SUB_LOG=[];           // 서술형 기록
+
+const MATH_DOMS=['수감각','연산규칙','도형공간','사고력'];
+const READ_DOMS=['어휘','이해','추론','표현'];
+const M_COLORS=['#2563eb','#7c3aed','#0891b2','#d97706'];
+const R_COLORS=['#16a34a','#f26c1b','#dc2626','#0891b2'];
+const GLSI_COLORS={H:'#f26c1b',C:'#7c3aed',T:'#0891b2',A:'#16a34a',G:'#d97706'};
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════════════════
+//  시작
+// ══════════════════════════════════════════
+function applyTeacherModeUI(){
+  // 선생님 체크리스트 화면 표시 여부 처리 (기본값: 표시)
+  try {
+    const checkScreen = document.getElementById('checkScreen');
+    if(checkScreen) checkScreen.style.display = '';
+  } catch(e) {}
+}
+
+function resetLogs(){
+  // 로그/타이머 초기화 (재시작 시 호출)
+  try{ clearTimer(); }catch(e){}
+  totalTime = 0;
+  curQIdx = 0;
+  curDiff = 'medium';
+  sitIdx = 0;
+}
+
+function startTest(){
+  try {
+  resetLogs();
+  studentName=document.getElementById('inputName').value.trim();
+  studentGrade=document.getElementById('inputGrade').value;
+  if(!studentName){alert('학생 이름을 입력해주세요!');return;}
+  if(!studentGrade){alert('학년을 선택해주세요!');return;}
+  // 모든 상태 초기화 (재시작 시 이전 데이터 누적 방지)
+  mathScores={수감각:0,연산규칙:0,도형공간:0,사고력:0};
+  readScores={어휘:0,이해:0,추론:0,표현:0};
+  glsiRaw={A:0,A_max:0,C:0,C_max:0,T_time:0};
+  sitScores={H:0,T:0,C:0,G:0};
+  sitTagCounts={SELF:0,HELP:0,AVOID:0,BLAME:0};
+  sitIdx=0;
+  checklistData={};
+  totalTime=0;
+  curQIdx=0;
+  curDiff='medium';
+  WRONG_LOG=[];
+  SUB_LOG=[];
+  clearTimer();
+  showScreen('secSituation');
+  updateProg(0);
+  } catch(e) { 
+    alert('오류: '+e.message+' / '+e.stack); 
+  }
+}
+
+// ══════════════════════════════════════════
+//  상황형 미니진단 데이터 (JSON 직접 포함)
+// ══════════════════════════════════════════
+// ── 상황형 상수 (패치 01: 20→24문항)
+const SIT_TOTAL = 24;                          // 총 문항 수
+const SIT_PER_DOMAIN = 6;                      // 도메인별 문항 수
+const SIT_MAX_PER_DOMAIN = SIT_PER_DOMAIN * 3; // 도메인 최대 점수 18점
+
+const SIT_Q = [
+  {id:'H01',domain:'H',tag:'수업준비',q:'수업 시작 3분 전. 책상 위가 어수선하고 준비물이 섞여 있어요. 당신의 첫 행동은?',opts:['필기구/교재를 정리하고 오늘 목표를 한 줄 적는다','필요한 것만 꺼내고 바로 문제를 푼다','선생님이 말하면 그때 정리한다','일단 앉아 있다가 주변을 본다'],scores:[3,2,1,0],tags:['SELF','SELF','HELP','AVOID']},
+  {id:'H02',domain:'H',tag:'밀린과제',q:'숙제나 복습이 밀렸을 때, 가장 현실적인 선택은?',opts:['오늘 꼭 할 1~2개만 정하고 끝낸다(작게라도 완료)','한 번에 다 끝내려고 밤늦게까지 한다','내일로 미룬다','하지 않고 넘어간다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'H03',domain:'H',tag:'오답루틴',q:'틀린 문제를 봤을 때 당신의 기본 루틴은?',opts:['오답 이유를 한 줄로 정리하고 유사 문제 1개 더 푼다','정답만 확인하고 넘어간다','시간이 없어서 표시만 해둔다','틀렸는지 맞았는지도 잘 보지 않는다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'H04',domain:'H',tag:'실수대응',q:'수업 중 실수를 여러 번 하면?',opts:['메모해두고 쉬는 시간에 바로 수정한다','수업 끝나면 몰아서 보려고 한다','창피해서 숨긴다','그냥 넘어간다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'H05',domain:'H',tag:'시작루틴',q:'집에서 공부를 시작하려고 할 때 제일 먼저?',opts:['타이머/계획을 켜고 10분만 시작한다','일단 책상에 앉는다','휴대폰을 조금 보고 시작한다','시작이 잘 안 된다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'T01',domain:'T',tag:'막힘대응',q:'어려운 문제에서 1분 이상 막히면?',opts:['표시하고 다음으로 넘어가서 전체를 먼저 완주한다','조금 더 생각해보고 3분까지는 붙잡는다','끝날 때까지 계속 붙잡는다','그만두고 멍해진다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'T02',domain:'T',tag:'시간배분',q:'시험/테스트 시간 배분을 할 때 가장 가까운 방식은?',opts:['쉬운 문제 먼저 풀고, 남은 시간에 어려운 문제를 공략한다','앞에서부터 순서대로 끝까지 푼다','어려운 문제부터 먼저 푼다','시간 배분을 생각하지 않는다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'T03',domain:'T',tag:'집중회복',q:'수업 중 집중이 흐트러질 때(두리번·딴생각) 바로 하는 행동은?',opts:['호흡 3번 + 자세/필기구 정리 후 다시 시작한다','조금 쉬었다가 다시 한다','친구/주변을 더 본다','휴대폰/딴짓을 한다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'T04',domain:'T',tag:'시간조정',q:'숙제 시간 예상이 빗나갈 때(생각보다 오래 걸림)?',opts:['남은 시간에 맞춰 우선순위를 조정한다','끝낼 때까지 계속 한다','포기하고 미룬다','대충 끝낸다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'T05',domain:'T',tag:'직전전략',q:'시험 직전 30분이 남았을 때?',opts:['오답/약점만 빠르게 확인한다','새로운 문제를 더 풀어본다','친구와 얘기한다','아무것도 안 한다'],scores:[3,2,1,0],tags:['SELF','SELF','HELP','AVOID']},
+  {id:'C01',domain:'C',tag:'조건정리',q:'문제를 풀기 전에 가장 자주 하는 것은?',opts:['조건을 표시(밑줄/동그라미)하고 핵심을 정리한다','바로 계산/풀이를 시작한다','대충 읽고 감으로 푼다','문제를 끝까지 읽지 않는다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'C02',domain:'C',tag:'검산',q:'내 풀이가 맞는지 확인할 때 주로?',opts:['다른 방법/역산으로 한 번 더 검산한다','정답만 확인한다','확인은 거의 안 한다','맞을 때도 틀릴 때도 모르겠다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','BLAME']},
+  {id:'C03',domain:'C',tag:'서술전략',q:'서술형에서 풀이 과정을 쓰라고 하면?',opts:['왜 그렇게 했는지(이유)까지 적으려고 한다','계산만 적는다','답만 적는다','아예 안 적는다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'C04',domain:'C',tag:'긴지문',q:'긴 지문 문제를 풀 때 주로?',opts:['핵심 문장 표시 후 문제를 먼저 보고 다시 읽는다','처음부터 끝까지 정독 후 문제를 푼다','대충 훑고 감으로 푼다','읽는 게 힘들어 포기한다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'C05',domain:'C',tag:'실수방지',q:'풀이가 복잡할 때 실수 방지 방법은?',opts:['단계를 나눠 쓰고 중간값을 체크한다','머릿속으로 한다','빠르게 한 번에 한다','실수를 자주 한다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','BLAME']},
+  {id:'G01',domain:'G',tag:'실패후',q:'시험 결과가 기대보다 낮게 나왔을 때?',opts:['원인을 찾고 다음 주에 바꿀 행동 1개를 정한다','속상하지만 다음엔 잘 될 거라 생각한다','운이 나빴다고 생각한다','공부 자체를 포기하고 싶다'],scores:[3,2,1,0],tags:['SELF','SELF','BLAME','AVOID']},
+  {id:'G02',domain:'G',tag:'피드백',q:'선생님이 피드백을 주면?',opts:['바로 수정해보고 다음에 적용한다','일단 듣고 넘어간다','기분이 나빠서 잘 듣지 않는다','피드백을 피한다'],scores:[3,2,1,0],tags:['SELF','SELF','BLAME','AVOID']},
+  {id:'G03',domain:'G',tag:'목표설정',q:'목표를 세울 때 가장 가까운 방식은?',opts:['작고 구체적으로(예: 오답 5개 정리) 세운다','크고 멋지게(예: 전교 1등) 세운다','목표를 잘 안 세운다','목표가 없고 그때그때 한다'],scores:[3,2,1,0],tags:['SELF','SELF','AVOID','AVOID']},
+  {id:'G04',domain:'G',tag:'단원대응',q:'어려운 단원을 만났을 때?',opts:['기본부터 다시 쌓고 조금씩 난도를 올린다','어려우니까 건너뛴다','운에 맡기고 문제만 많이 푼다','그 단원은 포기한다'],scores:[3,2,1,0],tags:['SELF','AVOID','BLAME','AVOID']},
+  {id:'G05',domain:'G',tag:'목표실패',q:'목표를 지키지 못했을 때?',opts:['원인을 점검하고 목표를 더 현실적으로 조정한다','자책만 한다','그냥 잊는다','목표를 세우지 않는다'],scores:[3,2,1,0],tags:['SELF','BLAME','AVOID','AVOID']},
+
+  // ── 패치 01 추가 4문항 ─────────────────────────────
+  // C06: 감정인식 (EI-Behavioral → C 도메인)
+  {id:'C06',domain:'C',tag:'감정인식',
+    q:'문제를 틀렸을 때 내 기분을 가장 잘 알아차리는 방법은?',
+    opts:['기분(화남/속상함)을 바로 말로 표현하고 원인을 정리한다','기분이 불편한 건 느끼지만 이유는 나중에 생각한다','그냥 넘어가고 신경 쓰지 않으려 한다','모르겠다/생각하기 싫다'],
+    scores:[3,2,1,0], tags:['SELF','HELP','AVOID','AVOID']},
+
+  // H06: 도움요청 타이밍 (HELP 편향 완화 → H 도메인)
+  {id:'H06',domain:'H',tag:'도움요청',
+    q:'혼자 10분 이상 막히면 보통 어떻게 하나요?',
+    opts:['질문할 내용을 정리해서 선생님/친구에게 도움을 요청한다','조금 더 시도해보고 그래도 안 되면 도움을 요청한다','그냥 넘어가고 비슷한 문제도 피한다','내가 못해서 그렇다며 포기한다'],
+    scores:[3,2,1,0], tags:['HELP','SELF','AVOID','BLAME']},
+
+  // T06: 긴장조절 (EI-Behavioral → T 도메인)
+  {id:'T06',domain:'T',tag:'긴장조절',
+    q:'시험/테스트 전에 긴장될 때 가장 가까운 행동은?',
+    opts:['호흡/타이머로 마음을 가라앉히고, 쉬운 문제부터 시작한다','긴장을 느끼지만 일단 하던 대로 진행한다','긴장 때문에 집중이 깨져서 시작이 늦어진다','아예 하기 싫어지고 포기하고 싶어진다'],
+    scores:[3,2,1,0], tags:['SELF','HELP','AVOID','AVOID']},
+
+  // G06: 동기유지 (EI-Behavioral → G 도메인)
+  {id:'G06',domain:'G',tag:'동기유지',
+    q:'최근 성적이 잘 안 오를 때 가장 가까운 생각/행동은?',
+    opts:['원인을 점검하고 목표를 더 현실적으로 조정한다','누군가와 계획을 다시 세우고 점검받으면 더 잘 된다','그냥 잊고 아무 것도 하지 않는다','나는 원래 안 된다며 포기한다'],
+    scores:[3,2,1,0], tags:['SELF','HELP','AVOID','BLAME']},
+];
+
+const DOMAIN_COLORS_SIT={H:'#f26c1b',T:'#0891b2',C:'#7c3aed',G:'#d97706'};
+const DOMAIN_LABELS_SIT={H:'H · HABIT',T:'T · TIME',C:'C · COGNITIVE',G:'G · GROWTH'};
+
+let sitIdx=0;
+let sitScores={H:0,T:0,C:0,G:0};
+let sitTagCounts={SELF:0,HELP:0,AVOID:0,BLAME:0};
+
+// ── 상황형 4유형 분류 데이터 ──
+const SIT_TYPES={
+  SELF:{
+    emoji:'💪',name:'도전형',
+    color:'#16a34a',bg:'#f0fdf4',border:'#86efac',
+    opening:'우리 아이는 어려운 문제에서도 "시도→분석→재도전" 흐름이 좋아요. 이 강점을 살려 성취 속도를 빠르게 만들 수 있어요.',
+    w1:'행동 루틴 — 착석 후 오늘 목표 1줄 + 작은 과제 완주 경험',
+    w2:'전략 루틴 — 오답 1개 이유 분석 + 서술형 1문장 설명',
+    tip:'칭찬은 "결과"보다 "시도·지속·점검" 행동에 초점',
+    glsiNote:'자기주도(SELF) 패턴 → GLSI 보정 +5점 기준 적용'
+  },
+  HELP:{
+    emoji:'🤝',name:'안정형',
+    color:'#2563eb',bg:'#eff6ff',border:'#93c5fd',
+    opening:'우리 아이는 루틴과 시간 운영이 안정적이라 꾸준히 성적이 올라가는 타입이에요. 계획을 붙이면 성과가 잘 납니다.',
+    w1:'자립 시간 설계 — 혼자 해결 5분 타이머 후 질문 허용',
+    w2:'전략 확장 — 질문 전 스스로 시도한 내용 1줄 정리 후 질문',
+    tip:'스스로 해결한 순간을 구체적으로 언급해 자신감 강화',
+    glsiNote:'도움요청(HELP) 패턴 → 자립 전략 훈련 병행 권장'
+  },
+  AVOID:{
+    emoji:'🌱',name:'회피형',
+    color:'#ea580c',bg:'#fff7ed',border:'#fdba74',
+    opening:'어려운 상황에서 회피/포기 반응이 먼저 나와요. 작은 성공 경험을 설계하면 자신감이 빠르게 회복됩니다.',
+    w1:'초소형 목표 설계 — 하루 1문제만 완료 경험 쌓기',
+    w2:'루틴 안정화 — 시작 10분 타이머 + 완료 체크(시작/진행/마무리)',
+    tip:'시작한 것 자체를 먼저 인정한 후 내용 피드백',
+    glsiNote:'회피(AVOID) 패턴 → G(성장) 도메인 집중 코칭 필요'
+  },
+  BLAME:{
+    emoji:'🔍',name:'귀인형',
+    color:'#dc2626',bg:'#fef2f2',border:'#fca5a5',
+    opening:'결과를 외부 원인(운·난이도)으로 돌리는 경향이 있어요. 행동 중심 피드백으로 내적 귀인을 키울 수 있어요.',
+    w1:'원인 분석 훈련 — 틀린 문제 "왜 틀렸나" 1줄 쓰기',
+    w2:'행동 변화 계획 — 다음엔 뭘 다르게 할지 1가지 정하기',
+    tip:'외부 탓 대신 "내가 한 것"에 초점 맞추기',
+    glsiNote:'외부귀인(BLAME) 패턴 → 내적 귀인 코칭 우선 권장'
+  },
+};
+
+function classifySitType(){
+  const max=Math.max(...Object.values(sitTagCounts));
+  for(const t of['SELF','HELP','AVOID','BLAME']){
+    if(sitTagCounts[t]===max) return t;
+  }
+  return 'SELF';
+}
+let sitAnswered=false;
+
+function startSituation(){
+  sitIdx=0;
+  sitScores={H:0,T:0,C:0,G:0};
+  sitTagCounts={SELF:0,HELP:0,AVOID:0,BLAME:0};
+  showScreen('sitScreen');
+  renderSit();
+}
+
+function renderSit(){
+  sitAnswered=false;
+  const q=SIT_Q[sitIdx];
+  document.getElementById('sitCurr').textContent=sitIdx+1;
+  document.getElementById('sitTag').textContent=q.tag;
+  document.getElementById('sitText').textContent=q.q;
+
+  const ind=document.getElementById('sitDomainInd');
+  const col=DOMAIN_COLORS_SIT[q.domain];
+  ind.textContent=DOMAIN_LABELS_SIT[q.domain];
+  ind.style.background=col+'22';
+  ind.style.color=col;
+
+  const optsEl=document.getElementById('sitOpts');
+  optsEl.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt-btn';
+    btn.innerHTML=`<span class="opt-num">${i+1}</span><span>${opt}</span>`;
+    btn.onclick=()=>selectSit(i,q,btn);
+    optsEl.appendChild(btn);
+  });
+
+  document.getElementById('sitFeedback').style.display='none';
+  document.getElementById('sitBtnNext').style.display='none';
+
+  const pct=Math.round((sitIdx+1)/SIT_TOTAL*20); // 상황형 0~20%
+  updateProg(pct);
+}
+
+function selectSit(i,q,btn){
+  if(sitAnswered)return;
+  sitAnswered=true;
+  sitScores[q.domain]+=q.scores[i];
+  // 4유형 태그 집계
+  if(q.tags&&q.tags[i]) sitTagCounts[q.tags[i]]=(sitTagCounts[q.tags[i]]||0)+1;
+  document.querySelectorAll('#sitOpts .opt-btn').forEach((b,bi)=>{
+    b.disabled=true;
+    if(bi===i){b.style.borderColor=DOMAIN_COLORS_SIT[q.domain];b.querySelector('.opt-num').style.background=DOMAIN_COLORS_SIT[q.domain];b.querySelector('.opt-num').style.color='#fff';}
+  });
+  document.getElementById('sitFeedback').style.display='block';
+  document.getElementById('sitBtnNext').style.display='inline-flex';
+}
+
+function nextSit(){
+  sitIdx++;
+  if(sitIdx>=SIT_TOTAL){
+    // 상황형 완료 → 수학 섹션으로
+    showScreen('secMath');
+    updateProg(20);
+  } else {
+    renderSit();
+  }
+}
+
+// ══════════════════════════════════════════
+//  기존 startSection 함수
+// ══════════════════════════════════════════
+function startSection(section){
+  curSection=section;
+  curQIdx=0;
+  curDiff='medium';
+  consRight=0; consWrong=0;
+  sectionQList=buildAdaptiveList(section);
+  showScreen('quizScreen');
+  renderQ();
+}
+
+function buildAdaptiveList(sec){
+  const pool=sec==='math'?MATH_Q:READ_Q;
+  // 첫 문항만 medium으로 시작, 나머지는 renderQ/adjustDiff에서 실시간으로 채움
+  const list=[];
+  const diff='medium';
+  const arr=pool[diff];
+  const q={...arr[Math.floor(Math.random()*arr.length)],_diff:diff};
+  list.push(q);
+  // 나머지 14개는 placeholder (adjustDiff가 다음 문항을 덮어씀)
+  for(let i=1;i<15;i++){
+    list.push({...arr[Math.floor(Math.random()*arr.length)],_diff:diff});
+  }
+  return list;
+}
+
+// ══════════════════════════════════════════
+//  문제 렌더링
+// ══════════════════════════════════════════
+function renderQ(){
+  answered=false;
+  if(_selectTimer){clearTimeout(_selectTimer);_selectTimer=null;}
+  clearTimer();
+  const q=sectionQList[curQIdx];
+  const isMath=curSection==='math';
+  qStartTime=Date.now();
+
+  // 메타
+  const dot=document.getElementById('secDot');
+  dot.className='section-dot '+(isMath?'dot-math':'dot-read');
+  document.getElementById('secName').textContent=isMath?'창의수학':'독서·문해력';
+  const pill=document.getElementById('diffPill');
+  const dmap={easy:'쉬움',medium:'보통',hard:'어려움'};
+  const dcmap={easy:'pill-easy',medium:'pill-medium',hard:'pill-hard'};
+  pill.textContent=dmap[q._diff]; pill.className='diff-pill '+dcmap[q._diff];
+  const gi=document.getElementById('glsiInd');
+  gi.textContent='GLSI '+(q.gd||'A');
+  gi.style.background=q.gd==='C'?'#ede9fe':'#dcfce7';
+  gi.style.color=q.gd==='C'?'#7c3aed':'#16a34a';
+  document.getElementById('qCurr').textContent=curQIdx+1;
+  document.getElementById('qTotal').textContent=15;
+
+  const tag=document.getElementById('qTag');
+  tag.className='q-tag '+(q.type==='sub'?'tag-sub':isMath?'tag-math':'tag-read');
+  tag.textContent=q.tag;
+
+  const pass=document.getElementById('qPassage');
+  if(q.pass){pass.style.display='block';pass.textContent=q.pass;}
+  else pass.style.display='none';
+
+  document.getElementById('qText').textContent=q.q;
+
+  const body=document.getElementById('qBody');
+  body.innerHTML='';
+
+  if(q.type==='sub'){
+    body.innerHTML=`<div class="sub-area">
+      <div class="sub-hint">💡 힌트: ${q.hint}</div>
+      <textarea id="subInput" placeholder="여기에 풀이와 답을 써주세요..." rows="4"></textarea>
+      <div class="sample-ans" id="sampleAns" style="display:none">✅ 모범답: </div>
+    </div>`;
+    document.getElementById('btnNext').style.display='none';
+    document.getElementById('btnSubmitSub').style.display='inline-flex';
+  } else {
+    const grid=document.createElement('div');
+    grid.className='options';
+    q.opts.forEach((opt,i)=>{
+      const btn=document.createElement('button');
+      btn.className='opt-btn';
+      btn.innerHTML=`<span class="opt-num">${i+1}</span><span>${opt}</span>`;
+      btn.onclick=()=>selectOpt(i,q,btn);
+      grid.appendChild(btn);
+    });
+    body.appendChild(grid);
+    document.getElementById('btnNext').style.display='none';
+    document.getElementById('btnSubmitSub').style.display='none';
+  }
+
+  const fb=document.getElementById('feedbackBox');
+  fb.style.display='none';
+
+  startTimer(q.type==='sub'?120:90);
+  const pct=curSection==='read'
+    ? Math.round(50+(curQIdx+1)/15*30)   // 독서: 50~80%
+    : Math.round(20+(curQIdx+1)/15*30);  // 수학: 20~50%
+  updateProg(pct);
+}
+
+function startTimer(sec){
+  timeLimit=sec; timeLeft=sec;
+  updateTimerUI();
+  timerInterval=setInterval(()=>{
+    timeLeft--;
+    updateTimerUI();
+    if(timeLeft<=0){
+      clearTimer();
+      // 시간 초과 처리
+      document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);
+      const fb=document.getElementById('feedbackBox');
+      fb.style.display='block';
+      fb.className='feedback-box fb-wrong';
+      fb.textContent='⏰ 시간 초과! 다음 문제로 넘어가요.';
+      document.getElementById('btnNext').style.display='inline-flex';
+      document.getElementById('btnSubmitSub').style.display='none';
+      recordTime(timeLimit);
+    }
+  },1000);
+}
+function clearTimer(){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+}
+function updateTimerUI(){
+  const pct=timeLeft/timeLimit*100;
+  document.getElementById('timerBar').style.width=pct+'%';
+  document.getElementById('timerNum').textContent=timeLeft;
+}
+function recordTime(used){
+  totalTime+=used;
+}
+
+let _selectTimer=null;
+let _pendingOpt={i:null,q:null,btn:null};
+
+function selectOpt(i,q,btn){
+  if(answered)return;
+  // 이전 선택 표시 초기화
+  document.querySelectorAll('.opt-btn').forEach(b=>{
+    b.style.borderColor='';
+    b.style.background='';
+    b.querySelector('.opt-num').style.background='';
+    b.querySelector('.opt-num').style.color='';
+  });
+  // 현재 선택 하이라이트
+  btn.style.borderColor='var(--orange)';
+  btn.style.background='#fff8f4';
+  btn.querySelector('.opt-num').style.background='var(--orange)';
+  btn.querySelector('.opt-num').style.color='#fff';
+  // 이전 타이머 취소 후 새로 설정
+  if(_selectTimer) clearTimeout(_selectTimer);
+  _pendingOpt={i,q,btn};
+  _selectTimer=setTimeout(()=>_confirmSelect(_pendingOpt.i,_pendingOpt.q,_pendingOpt.btn),600);
+}
+
+function _confirmSelect(i,q,btn){
+  if(answered)return;
+  answered=true;
+  clearTimer();
+  const elapsed=Math.round((Date.now()-qStartTime)/1000);
+  recordTime(elapsed);
+  const isCorrect=i===q.ans;
+  document.querySelectorAll('.opt-btn').forEach((b,bi)=>{
+    b.disabled=true;
+    if(bi===q.ans) b.classList.add('correct');
+  });
+  if(!isCorrect) btn.classList.add('wrong');
+  recordScore(q,isCorrect,elapsed);
+  adjustDiff(isCorrect);
+  const fb=document.getElementById('feedbackBox');
+  fb.style.display='block';
+  fb.className='feedback-box '+(isCorrect?'fb-correct':'fb-wrong');
+  // 오답 저장
+  if(!isCorrect){
+    try{
+      WRONG_LOG.push({
+        section: curSection,
+        tag: q.tag,
+        question: q.q,
+        passage: q.pass || '',
+        options: q.opts || [],
+        picked: i,
+        answer: q.ans,
+        explain: q.fb || '',
+        elapsed
+      });
+    }catch(e){}
+  }
+
+  // ✅ 학생: 해설 숨김 / 선생님: 해설 표시
+  fb.textContent = TEACHER_MODE
+    ? ((isCorrect?'✅ 정답! ':'❌ 오답! ') + (q.fb || ''))
+    : '✅ 선택 완료! 다음 문제로 넘어가요.';
+  document.getElementById('btnNext').style.display='inline-flex';
+}
+
+function submitSub(){
+  clearTimer();
+  const elapsed=Math.round((Date.now()-qStartTime)/1000);
+  recordTime(elapsed);
+  const q=sectionQList[curQIdx];
+  const val=document.getElementById('subInput').value.trim();
+  // ✅ 서술형 답안 저장(선생님 결과지에서만 확인)
+  try{SUB_LOG.push({section:curSection,tag:q.tag,question:q.q,hint:q.hint||'',sample:q.sample||'',answerText:val,elapsed});}catch(e){}
+
+  document.getElementById('sampleAns').style.display = TEACHER_MODE ? 'block' : 'none';
+  document.getElementById('subInput').disabled=true;
+  document.getElementById('btnSubmitSub').style.display='none';
+  document.getElementById('btnNext').style.display='inline-flex';
+  // 서술형: 길이 기반 C 점수 부분 반영
+  const cScore=val.length>10?1:val.length>3?0.5:0;
+  glsiRaw.C+=cScore; glsiRaw.C_max+=1;
+  adjustDiff(false);
+}
+
+function recordScore(q,correct,elapsed){
+  const isMath=curSection==='math';
+  const domKey=isMath?MATH_DOMS[q.md||0]:READ_DOMS[q.rd||0];
+  const scoreObj=isMath?mathScores:readScores;
+  if(q.type!=='sub'){
+    if(correct){
+      scoreObj[domKey]=(scoreObj[domKey]||0)+1;
+      glsiRaw.A++; 
+    }
+    glsiRaw.A_max++;
+  }
+  // 빠른 정답 → T 보정
+  if(correct && elapsed<30) glsiRaw.T_time+=1;
+}
+
+function adjustDiff(correct){
+  // ── 1문제 즉시 조정: 맞으면 한 단계↑, 틀리면 한 단계↓
+  if(correct){
+    if(curDiff==='easy') curDiff='medium';
+    else if(curDiff==='medium') curDiff='hard';
+  } else {
+    if(curDiff==='hard') curDiff='medium';
+    else if(curDiff==='medium') curDiff='easy';
+  }
+  if(curQIdx+1<15){
+    const pool=curSection==='math'?MATH_Q:READ_Q;
+    const arr=pool[curDiff];
+    // 이미 나온 문제 제외
+    const usedQs=new Set(sectionQList.slice(0,curQIdx+1).map(q=>q.q));
+    const fresh=arr.filter(q=>!usedQs.has(q.q));
+    const src=fresh.length ? fresh : arr;
+    sectionQList[curQIdx+1]={...src[Math.floor(Math.random()*src.length)],_diff:curDiff};
+  }
+}
+
+function nextQ(){
+  curQIdx++;
+  if(curQIdx>=15){
+    clearTimer();
+    if(curSection==='math'){showScreen('secRead');updateProg(50);}
+    else goToChecklist();
+  } else renderQ();
+}
+
+function updateProg(pct){document.getElementById('progBar').style.width=pct+'%';}
+
+// ══════════════════════════════════════════
+//  체크리스트
+// ══════════════════════════════════════════
+function goToChecklist(){
+  document.getElementById('checkStudentName').textContent=studentName;
+  document.getElementById('checkStudentGrade').textContent=studentGrade;
+  // 슬라이더 이벤트 (중복 등록 방지: cloneNode 방식)
+  ['ei1','ei2','ei3'].forEach(id=>{
+    const el=document.getElementById(id);
+    const fresh=el.cloneNode(true);
+    el.parentNode.replaceChild(fresh,el);
+    fresh.addEventListener('input',()=>document.getElementById(id+'v').textContent=fresh.value);
+  });
+  // 스케일 버튼 재생성 (중복 방지: 기존 버튼 제거 후 생성)
+  document.querySelectorAll('.ci-scale[data-key]').forEach(el=>{
+    el.innerHTML=''; // 기존 버튼 제거
+    const key=el.dataset.key;
+    for(let v=1;v<=4;v++){
+      const btn=document.createElement('button');
+      btn.className='scale-btn'; btn.textContent=v;
+      btn.dataset.val=v; btn.dataset.key=key;
+      // 이미 저장된 값 있으면 active 표시
+      if(checklistData[key]===v) btn.classList.add('active-'+v);
+      btn.onclick=function(){
+        el.querySelectorAll('.scale-btn').forEach(b=>b.className='scale-btn');
+        this.classList.add('active-'+v);
+        checklistData[key]=parseInt(v);
+      };
+      el.appendChild(btn);
+    }
+  });
+  showScreen('checkScreen');
+  updateProg(80);
+}
+
+function submitChecklist(){
+  const required=['h1','h2','h3','h4','c1','c2','c3','t1','t2','t3'];
+  const missing=required.filter(k=>!checklistData[k]);
+  if(missing.length>0){alert('모든 항목을 선택해 주세요! ('+missing.length+'개 남음)');return;}
+  showResults();
+}
+
+// ══════════════════════════════════════════
+//  반배정 + 학부모 상담 멘트 자동 생성
+// ══════════════════════════════════════════
+const DOMAIN_MENT = {
+  사고력:{
+    label:'사고력 (Thinking)', color:'#2563eb', bgColor:'#eff6ff',
+    strength:'문제의 규칙을 빠르게 찾고, 새로운 유형에도 적응이 좋습니다. 심화·서술형 응용을 늘리면 상위권 사고로 확장됩니다.',
+    stable:'기본 추론은 안정적입니다. 오답 이유를 말로 설명하는 연습을 더하면 실수가 줄고 응용이 빨라집니다.',
+    dev:'규칙은 찾지만 속도/정확도가 흔들릴 수 있어요. 패턴·추론을 짧게 자주(10분) 반복하면 안정화됩니다.',
+    need:'문제 접근 순서가 필요합니다. "조건 정리→계획→계산→검산" 루틴을 고정하면 체감이 빨리 좋아집니다.',
+    plan:'사고력 10분 루틴 (규칙 5문항 + 오답 이유 1문장)'
+  },
+  문해력:{
+    label:'문해력 (Literacy)', color:'#16a34a', bgColor:'#f0fdf4',
+    strength:'어휘/지문 이해가 빠르고 핵심을 잘 잡습니다. 요약/서술로 확장하면 발표·논술에도 강점이 됩니다.',
+    stable:'핵심 파악이 안정적입니다. 요약을 1문장으로 정리하는 훈련을 더하면 긴 지문도 흔들리지 않습니다.',
+    dev:'지문을 읽고 "중심문장"을 잡는 연습이 필요합니다. 3~5문장 지문부터 핵심표시 루틴을 권장합니다.',
+    need:'읽기는 하지만 핵심이 남지 않을 수 있어요. "문장 1개 밑줄→한 문장 요약"부터 시작하면 개선이 빠릅니다.',
+    plan:'핵심문장 표시 → 1문장 요약 (주3회)'
+  },
+  기초학습:{
+    label:'기초학습 (Basics)', color:'#0891b2', bgColor:'#e0f2fe',
+    strength:'연산/개념이 단단합니다. 난도 있는 응용에서도 실수가 적게 나오는 타입입니다.',
+    stable:'기본은 안정적입니다. 속도보다는 정확도 기준(95%)을 유지하면 성적이 꾸준히 오릅니다.',
+    dev:'개념은 아는데 실수가 날 수 있어요. "정확도→속도" 순서로 루틴을 잡는 게 중요합니다.',
+    need:'기초가 흔들리면 응용이 어렵습니다. 연산/개념을 짧고 자주 반복해서 안정화가 우선입니다.',
+    plan:'정확도 95% 달성 후 타이머 속도훈련'
+  },
+  학습습관:{
+    label:'학습습관 (Habits)', color:'#f26c1b', bgColor:'#fff7ed',
+    strength:'시작/지속/오답 처리까지 스스로 운영할 힘이 있습니다. 관리형 루틴을 유지하면 성적 변동이 적습니다.',
+    stable:'대체로 잘 하지만 상황에 따라 흔들릴 수 있어요. "시작 10분"만 고정하면 안정적으로 갑니다.',
+    dev:'할 때는 하지만 "시작"이 느려질 수 있어요. 타이머 10분 + 완료 체크(3칸)로 습관을 잡아봅시다.',
+    need:'미루기/회피 선택이 많으면 성적이 불안정해집니다. 루틴 코칭(시작·마무리·오답)을 먼저 세우는 게 핵심입니다.',
+    plan:'시작(10분) 타이머 + 시작/진행/마무리 체크'
+  },
+  표현력:{
+    label:'표현력 (Expression)', color:'#7c3aed', bgColor:'#faf5ff',
+    strength:'풀이/생각을 문장으로 설명하는 힘이 좋습니다. 서술형에서 강점이 크게 납니다.',
+    stable:'핵심은 전달되지만 문장 다듬기를 하면 더 선명해집니다. "식→말→정리" 구조를 고정하세요.',
+    dev:'답은 맞는데 설명이 짧아 점수를 놓칠 수 있어요. 예시 문장 프레임으로 서술을 안정화합니다.',
+    need:'풀이/설명이 빠지면 서술형에서 점수가 크게 흔들립니다. 주 1회 첨삭으로 구조부터 잡아야 합니다.',
+    plan:'식→말→정리 3단계 + 주1회 서술형 첨삭'
+  }
+};
+// ── 패치 04: 영문 키 별칭 (buildConsultMent H/C/T/G/A 호환)
+DOMAIN_MENT.H = DOMAIN_MENT['학습습관'];
+DOMAIN_MENT.C = DOMAIN_MENT['사고력'];
+DOMAIN_MENT.T = DOMAIN_MENT['기초학습'];
+DOMAIN_MENT.A = DOMAIN_MENT['문해력'];
+DOMAIN_MENT.G = DOMAIN_MENT['표현력'];
+// (G·T 도메인은 성장/시간 특성상 일부 문구가 범용으로 쓰임)
+
+
+function getStatus(score){
+  if(score>=85) return {key:'strength',label:'강점',cls:'status-strength'};
+  if(score>=70) return {key:'stable',label:'양호',cls:'status-stable'};
+  if(score>=50) return {key:'dev',label:'보완',cls:'status-dev'};
+  return {key:'need',label:'주의',cls:'status-need'};
+}
+
+function getClassRecommend(levelKey, domainScores){
+  const {사고력:tScore, 문해력:lScore, 기초학습:bScore, 학습습관:hScore, 표현력:eScore} = domainScores;
+  const habitLow = hScore < 50;
+  let className, reason, plans=[];
+
+  if(levelKey==='A'){
+    if(habitLow){ className='프리미엄 관리형'; reason='심화 역량은 충분하나 학습습관 보완이 필요합니다. 심화 + 루틴 관리를 병행합니다.'; plans=['습관 플랜','사고력 확장']; }
+    else if(lScore<50){ className='심화 + 문해력 보완'; reason='사고력이 우수하나 문해력 보완이 필요합니다. 요약/핵심문장 루틴을 추가합니다.'; plans=['문해력 플랜','심화반']; }
+    else{ className='프리미엄·심화반'; reason='전 영역 우수. 심화 서술·응용 중심으로 상위권을 목표합니다.'; plans=['사고력 확장','서술형 심화']; }
+  } else if(levelKey==='B'){
+    if(bScore<50){ className='기초 강화 관리반'; reason='연산/개념 안정화가 우선입니다. 정확도 95% 루틴을 먼저 잡습니다.'; plans=['기초 플랜','정확도 루틴']; }
+    else if(tScore<50){ className='사고력 보완 관리반'; reason='패턴/추론 루틴 고정이 필요합니다. 10분 사고력 루틴을 매일 배정합니다.'; plans=['사고력 플랜']; }
+    else if(eScore<50){ className='서술형 첨삭 관리반'; reason='서술 구조 확립이 필요합니다. 주 1회 첨삭을 필수로 배정합니다.'; plans=['표현 플랜','주1회 첨삭']; }
+    else{ className='표준 관리반'; reason='균형 잡힌 실력. 꾸준한 관리로 A레벨 진입을 목표합니다.'; plans=['주간 관리 루틴']; }
+  } else {
+    if(bScore<50 && lScore<50){ className='기초+문해 통합 관리반'; reason='기초와 문해력을 동시에 다져야 합니다. 짧은 지문 + 기본개념을 함께 진행합니다.'; plans=['기초 플랜','문해력 플랜']; }
+    else if(habitLow){ className='루틴 코칭 우선반'; reason='시작/지속/오답 루틴부터 세워야 합니다. 습관 안정 후 학습 내용을 쌓습니다.'; plans=['습관 플랜','루틴 코칭']; }
+    else{ className='기초 다지기반'; reason='기초부터 차근차근 쌓아갑니다. 개념 → 연산 → 적용 순서로 진행합니다.'; plans=['기초 플랜','개념 루틴']; }
+  }
+  return {className, reason, plans};
+}
+
+// 유형 + 저점 도메인 기반 추천 플랜 1~2개 압축
+function pickTopPlans(lowKeys, sitType){
+  const plans=[];
+  if(typeof SIT_TYPES==='object' && SIT_TYPES[sitType]?.tip)
+    plans.push('유형 코칭: '+SIT_TYPES[sitType].tip);
+  if(Array.isArray(lowKeys) && lowKeys.length){
+    const m=DOMAIN_MENT[lowKeys[0]];
+    if(m?.plan) plans.push('도메인 플랜: '+m.plan);
+  }
+  return plans.slice(0,2);
+}
+
+// 통합 상담멘트 빌더 (오프닝·도메인아이템·플랜·클로징 반환)
+function buildConsultMent({studentName, className, scores, sitType, lowKeys}){
+  const st=SIT_TYPES[sitType]||SIT_TYPES.SELF;
+
+  const opening=
+    `오늘은 입회 기준으로 아이의 학습 패턴을 빠르게 확인했습니다. `+
+    `특히 <b style="color:${st.color}">${st.name}</b> 성향이 보여서 지도 방향을 명확히 잡을 수 있어요.<br>`+
+    `<span style="color:${st.color};font-weight:800">${st.opening||''}</span>`;
+
+  const domainList=[
+    {key:'H',score:scores.H},{key:'C',score:scores.C},
+    {key:'T',score:scores.T},{key:'G',score:scores.G},{key:'A',score:scores.A},
+  ];
+  const domainItems=domainList.map(d=>{
+    const m=DOMAIN_MENT[d.key]||DOMAIN_MENT['학습습관']; // 안전장치
+    const stt=getStatus(d.score);
+    const isLow=(lowKeys||[]).includes(d.key);
+    const title=`${m.label} <span class="dm-status ${stt.cls}">${stt.label} (${d.score}점)</span>`+
+      (isLow?` <span style="font-size:10px;background:${m.color};color:#fff;padding:1px 7px;border-radius:6px">핵심 보완</span>`:'');
+    const body=m[stt.key]||'';
+    const plan=isLow&&m.plan?`<div class="dm-plan">📌 권장 플랜: ${m.plan}</div>`:'';
+    return {key:d.key,title,body,plan,color:m.color,bg:m.bgColor,isLow};
+  });
+
+  const plans=pickTopPlans(lowKeys||[], sitType);
+
+  const closing=
+    `이번 결과를 바탕으로 <b style="color:var(--orange)">${className}</b>을 권장드립니다.<br>`+
+    `젤비아는 "진단 → 루틴 처방 → 4주 후 재측정"이 한 세트라서, 변화(그래프)를 확실히 보여드릴 수 있어요.<br>`+
+    `<b style="color:var(--orange)">4주 후</b> 같은 방식으로 다시 측정해 성장 추이를 안내드리겠습니다. 💪`;
+
+  return {opening, domainItems, plans, closing};
+}
+// ────────────────────────────────────────────────────────
+
+function renderConsult(levelKey, glsiDomains, grand, sitType){
+  // 도메인 점수 매핑 (GLSI 5도메인 → 상담 5영역)
+  const domainScores = {
+    사고력: glsiDomains.C,
+    문해력: glsiDomains.A,
+    기초학습: glsiDomains.A,
+    학습습관: glsiDomains.H,
+    표현력: glsiDomains.C
+  };
+
+  // 반 추천
+  const {className, reason, plans} = getClassRecommend(levelKey, domainScores);
+  const levelColors = {A:'class-level-A', B:'class-level-B', C:'class-level-C'};
+  document.getElementById('classRecommendBox').innerHTML=`
+    <div class="class-recommend-box ${levelColors[levelKey]}">
+      <div class="class-name">🏫 ${className}</div>
+      <div class="class-reason">${reason}</div>
+      <div class="plan-chips">${plans.map(p=>`<span class="plan-chip">📌 ${p}</span>`).join('')}</div>
+    </div>`;
+
+  // ── 저점 도메인 산출 (H/C/T/G/A 기준)
+  const domsSorted=[
+    {key:'H',score:glsiDomains.H},{key:'C',score:glsiDomains.C},
+    {key:'T',score:glsiDomains.T},{key:'A',score:glsiDomains.A},{key:'G',score:glsiDomains.G},
+  ].sort((a,b)=>a.score-b.score);
+  const lowKeys=domsSorted.slice(0,2).map(d=>d.key);
+
+  // ── 패치 04: buildConsultMent로 통합 생성
+  const out=buildConsultMent({
+    studentName,
+    className,
+    scores:{H:glsiDomains.H,C:glsiDomains.C,T:glsiDomains.T,G:glsiDomains.G,A:glsiDomains.A},
+    sitType: sitType||'SELF',
+    lowKeys
+  });
+
+  // 오프닝
+  document.getElementById('consultOpening').innerHTML=out.opening;
+
+  // 도메인별 멘트 (buildConsultMent domainItems 기반)
+  const mentList=document.getElementById('domainMentList');
+  mentList.innerHTML='';
+  out.domainItems.forEach(it=>{
+    const div=document.createElement('div');
+    div.className='domain-ment-item';
+    div.style.background=it.bg||'#fafafa';
+    div.style.border=it.isLow?`1.5px solid ${it.color}`:'1.5px solid transparent';
+    div.innerHTML=
+      `<div class="dm-label" style="color:${it.color}">${it.title}</div>`+
+      `<div class="dm-text">${it.body}</div>`+
+      (it.plan||'');
+    mentList.appendChild(div);
+  });
+
+  // (선택) 추천 플랜 칩 노출
+  if(out.plans.length){
+    const planDiv=document.createElement('div');
+    planDiv.style.cssText='margin-top:10px;display:flex;flex-wrap:wrap;gap:6px';
+    out.plans.forEach(p=>{
+      const chip=document.createElement('span');
+      chip.className='plan-chip';
+      chip.textContent='📌 '+p;
+      planDiv.appendChild(chip);
+    });
+    mentList.appendChild(planDiv);
+  }
+
+  // 클로징
+  document.getElementById('consultClosing').innerHTML=out.closing;
+}
+
+// ══════════════════════════════════════════
+//  GLSI 도메인별 개선방법 카드 렌더링
+// ══════════════════════════════════════════
+const IMPROVE_DATA = {
+  H:{
+    label:'H · HABIT', emoji:'🟠', color:'#f26c1b', bg:'#fff7ed',
+    title:'학습 습관',
+    levels:[
+      {max:40, grade:'집중 처방', icon:'🚨',
+       prob:'학습 시작이 늦거나 도중에 포기하는 패턴이 있어요.',
+       actions:['⏱ 매일 같은 시간 "10분 시작 타이머" 설정','✅ 시작·진행·마무리 3칸 체크리스트 운영','📵 공부 중 휴대폰/게임 완전 분리'],
+       plan:'2주 루틴 코칭 → 4주 후 H점수 재측정'},
+      {max:65, grade:'보완 필요', icon:'💛',
+       prob:'기본 습관은 있지만 상황에 따라 흔들릴 수 있어요.',
+       actions:['⏱ "시작 10분"만 타이머로 고정 (나머지는 자유)','📓 오답노트 주 2회 이상 쓰기','🎯 주간 목표 1개 설정 → 달성 시 스티커'],
+       plan:'주간 루틴 점검 → 안정화 시 심화 과정 진입'},
+      {max:101, grade:'우수', icon:'✅',
+       prob:'스스로 학습을 운영하는 힘이 충분해요!',
+       actions:['📈 현재 루틴 유지 + 오답 분석 심화','🧠 메타인지 루틴: "왜 틀렸나?" 1문장 기록','🏆 월간 목표 수립 및 자기 평가'],
+       plan:'현행 유지 + 심화 과정 도전'}
+    ]
+  },
+  C:{
+    label:'C · COGNITIVE', emoji:'🟣', color:'#7c3aed', bg:'#faf5ff',
+    title:'인지·사고력',
+    levels:[
+      {max:40, grade:'집중 처방', icon:'🚨',
+       prob:'문제 풀이 순서나 규칙 찾기가 아직 어려워요.',
+       actions:['📋 "조건 정리→계획→계산→검산" 4단계 루틴 고정','🔢 하루 5문항 패턴·규칙 문제 반복','🗣 오답 후 "왜 틀렸는지" 말로 설명하기'],
+       plan:'사고력 기초 루틴 4주 → C점수 재측정'},
+      {max:65, grade:'보완 필요', icon:'💛',
+       prob:'규칙은 찾지만 속도나 정확도가 흔들려요.',
+       actions:['⏰ 문제 유형별 시간 제한 훈련 (10분)','📝 서술형 풀이 1문장으로 정리하는 연습','🔄 틀린 문제 유형 분류 → 집중 반복'],
+       plan:'추론 강화 루틴 2주 → 심화 서술 단계 진입'},
+      {max:101, grade:'우수', icon:'✅',
+       prob:'논리적 사고와 패턴 파악이 우수해요!',
+       actions:['🚀 심화·서술형 응용 문제 주 2회 추가','🧩 창의수학 사고력 문제 (올림피아드 기초)','💬 풀이 설명을 친구에게 가르치듯 말로 표현'],
+       plan:'심화반 도전 + GLSI C 80+ 목표'}
+    ]
+  },
+  T:{
+    label:'T · TIME', emoji:'🔵', color:'#0891b2', bg:'#e0f2fe',
+    title:'시간 관리',
+    levels:[
+      {max:40, grade:'집중 처방', icon:'🚨',
+       prob:'문제 풀이 시간 배분이 어렵거나 느린 편이에요.',
+       actions:['⏱ 문제당 시간 제한 연습 (객관식 90초 목표)','📋 먼저 쉬운 문제 → 어려운 문제 순서 훈련','🔔 시험지 받으면 "30초 훑어보기" 습관'],
+       plan:'타임 어택 연습 3주 → 실전 적용'},
+      {max:65, grade:'보완 필요', icon:'💛',
+       prob:'평소엔 괜찮지만 실전에서 시간이 부족할 수 있어요.',
+       actions:['⏰ 모의 시험 조건으로 주 1회 타임 어택','✏️ 풀이 간소화: 꼭 필요한 과정만 쓰기','🎯 "시간 안에 완료" 성공 체험 누적'],
+       plan:'실전 시간 감각 훈련 2주'},
+      {max:101, grade:'우수', icon:'✅',
+       prob:'시간 안에 풀이를 완료하는 능력이 좋아요!',
+       actions:['🏃 더 어려운 문제로 시간 압박 강도 높이기','📊 문항별 소요시간 스스로 체크 → 단축 목표','💡 빠른 풀이법 + 검산 루틴 완성'],
+       plan:'T 우수 유지 + A(성취) 연동 강화'}
+    ]
+  },
+  A:{
+    label:'A · ACHIEVEMENT', emoji:'🟢', color:'#16a34a', bg:'#f0fdf4',
+    title:'학업 성취',
+    levels:[
+      {max:40, grade:'집중 처방', icon:'🚨',
+       prob:'수학·독서 정답률이 낮아 기초 개념 보완이 필요해요.',
+       actions:['📚 수학: 연산/개념 하루 10문제 정확도 우선','📖 독서: 짧은 지문 1개 → 핵심문장 1개 찾기','❌ 오답 즉시 확인 + "왜 틀렸나" 1줄 기록'],
+       plan:'기초 강화 4주 → A점수 목표 50+'},
+      {max:65, grade:'보완 필요', icon:'💛',
+       prob:'기본은 되지만 응용에서 실수가 날 수 있어요.',
+       actions:['🔁 틀린 문제 3일 후 재풀이 (망각 곡선 활용)','📝 서술형 답 쓰는 연습 주 2회','📊 수학/독서 취약 영역 집중 반복'],
+       plan:'취약 영역 집중 2주 → 정답률 70%+ 목표'},
+      {max:101, grade:'우수', icon:'✅',
+       prob:'수학·독서 전반에서 높은 성취를 보이고 있어요!',
+       actions:['🏆 심화 문제 + 경시대회 기출 도전','📖 독서: 긴 지문 요약 → 논술로 확장','🎯 만점 영역 유지 + 취약 세부 영역 보완'],
+       plan:'심화반 배정 + 상위권 유지 전략'}
+    ]
+  },
+  G:{
+    label:'G · GROWTH', emoji:'🟡', color:'#d97706', bg:'#fffbeb',
+    title:'성장 가능성',
+    levels:[
+      {max:40, grade:'잠재력 개발', icon:'🌱',
+       prob:'아직 성장 경험이 부족해 자신감이 낮을 수 있어요.',
+       actions:['🌟 "작은 성공" 매일 1개 기록 (오늘 잘한 것)','📈 이전 점수 대비 +1점 목표로 부담 줄이기','💬 선생님과 주 1회 짧은 성장 대화'],
+       plan:'4주 성장 체험 코칭 → G점수 재산출'},
+      {max:65, grade:'성장 중', icon:'💛',
+       prob:'조금씩 성장하고 있어요. 계기가 되면 점프합니다!',
+       actions:['📊 지난 회차 대비 성장한 점 구체적으로 확인','🎯 이번 달 목표 1가지 설정 → 달성 시 축하','🔄 잘하는 영역에서 자신감 키운 후 약한 영역 도전'],
+       plan:'2주마다 성장 기록 체크 → 성공 경험 누적'},
+      {max:101, grade:'고성장형', icon:'✅',
+       prob:'빠른 성장 잠재력이 있어요. 방향만 잡으면 점프!',
+       actions:['🚀 도전 난도 한 단계 높이기 (이미 할 준비 됨)','📈 GLSI 성장 그래프 학생과 함께 확인·공유','🏆 심화·대회반 도전으로 잠재력 극대화'],
+       plan:'심화 과정 + 4주 후 GLSI 재측정 비교'}
+    ]
+  }
+};
+
+function getImproveLevel(data, score){
+  return data.levels.find(l => score <= l.max) || data.levels[data.levels.length-1];
+}
+
+function renderGlsiImprove(domains){
+  const container = document.getElementById('glsiImproveCards');
+  if(!container) return;
+  container.innerHTML = '';
+
+  const order = ['H','C','T','A','G'];
+  // 점수 낮은 순 정렬 (개선 필요한 것 먼저)
+  const sorted = order.slice().sort((a,b) => (domains[a]||0) - (domains[b]||0));
+
+  sorted.forEach(key => {
+    const data = IMPROVE_DATA[key];
+    const score = domains[key] || 0;
+    const lv = getImproveLevel(data, score);
+    const isLow = score < 50;
+
+    const card = document.createElement('div');
+    card.style.cssText = `background:${data.bg};border-radius:16px;padding:20px 22px;margin-bottom:12px;border:2px solid ${isLow ? data.color : 'transparent'};position:relative;overflow:hidden`;
+
+    // 헤더
+    const header = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:18px">${data.emoji}</span>
+          <div>
+            <div style="font-size:10px;font-weight:700;color:${data.color};letter-spacing:1px">${data.label}</div>
+            <div style="font-family:'Noto Serif KR',serif;font-size:14px;font-weight:900;color:#0d1f3c">${data.title}</div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:'Noto Serif KR',serif;font-size:26px;font-weight:900;color:${data.color};line-height:1">${score}</div>
+          <div style="font-size:10px;color:#9ca3af">/ 100</div>
+        </div>
+      </div>`;
+
+    // 점수 바
+    const bar = `
+      <div style="height:6px;background:rgba(0,0,0,.08);border-radius:6px;overflow:hidden;margin-bottom:12px">
+        <div style="height:100%;width:${score}%;background:${data.color};border-radius:6px;transition:width 1s ease"></div>
+      </div>`;
+
+    // 등급 뱃지
+    const badge = `<div style="display:inline-flex;align-items:center;gap:5px;background:${data.color};color:#fff;font-size:11px;font-weight:700;padding:3px 11px;border-radius:20px;margin-bottom:10px">${lv.icon} ${lv.grade}</div>`;
+
+    // 문제 진단
+    const prob = `<div style="font-size:12.5px;color:#374151;line-height:1.7;margin-bottom:12px;padding:10px 14px;background:rgba(255,255,255,.7);border-radius:10px">${lv.prob}</div>`;
+
+    // 액션 리스트
+    const actions = `
+      <div style="font-size:11px;font-weight:700;color:${data.color};margin-bottom:6px;letter-spacing:.5px">📋 지금 당장 실천할 것</div>
+      ${lv.actions.map(a=>`<div style="font-size:12.5px;color:#1a1a2e;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:flex-start;gap:6px"><span style="flex-shrink:0">${a.split(' ')[0]}</span><span>${a.split(' ').slice(1).join(' ')}</span></div>`).join('')}`;
+
+    // 처방 플랜
+    const plan = `<div style="margin-top:12px;padding:10px 14px;background:${data.color}18;border-radius:10px;border-left:3px solid ${data.color}">
+      <span style="font-size:10px;font-weight:700;color:${data.color}">🎯 처방 플랜</span>
+      <div style="font-size:12px;color:#374151;margin-top:3px">${lv.plan}</div>
+    </div>`;
+
+    card.innerHTML = header + bar + badge + prob + actions + plan;
+    container.appendChild(card);
+  });
+}
+
+
+// ══════════════════════════════════════════
+//  결과 산출
+// ══════════════════════════════════════════
+function showResults(){
+  updateProg(100);
+
+  // 테스트 점수
+  const mTotal=Object.values(mathScores).reduce((a,b)=>a+b,0);
+  const rTotal=Object.values(readScores).reduce((a,b)=>a+b,0);
+  const grand=mTotal+rTotal;
+
+  // ── 상황형 점수 정규화 (각 도메인 6문항 × 최대3점 = 18점 만점 → 0~100)
+  const sitH=Math.round(sitScores.H/SIT_MAX_PER_DOMAIN*100);
+  const sitT=Math.round(sitScores.T/SIT_MAX_PER_DOMAIN*100);
+  const sitC=Math.round(sitScores.C/SIT_MAX_PER_DOMAIN*100);
+  const sitG=Math.round(sitScores.G/SIT_MAX_PER_DOMAIN*100);
+  // 상황형 총점 + 4유형 분류
+  const sitTotal=Math.round((sitH+sitC+sitT+sitG)/4);
+  const sitType=classifySitType();
+
+  // GLSI 산출
+  // A: 정답률 0~100
+  const A=glsiRaw.A_max>0?Math.round(glsiRaw.A/glsiRaw.A_max*100):0;
+  // C: 상황형(40%) + 서술형(20%) + 선생님체크(40%)
+  const cCheck=checklistData.c1&&checklistData.c2&&checklistData.c3
+    ? Math.round((checklistData.c1+checklistData.c2+checklistData.c3)/12*100) : 50;
+  const cTest=glsiRaw.C_max>0?Math.round(glsiRaw.C/glsiRaw.C_max*100):50;
+  const C=Math.round(sitC*0.4+cTest*0.2+cCheck*0.4);
+  // T: 상황형(40%) + 응시시간(20%) + 선생님체크(40%)
+  const tCheck=checklistData.t1&&checklistData.t2&&checklistData.t3
+    ? Math.round((checklistData.t1+checklistData.t2+checklistData.t3)/12*100) : 50;
+  const tSpeed=Math.min(100,Math.round(glsiRaw.T_time/15*100));
+  const T=Math.round(sitT*0.4+tSpeed*0.2+tCheck*0.4);
+  // H: 상황형(50%) + 선생님체크(50%)
+  const hCheck=checklistData.h1&&checklistData.h2&&checklistData.h3&&checklistData.h4
+    ? Math.round((checklistData.h1+checklistData.h2+checklistData.h3+checklistData.h4)/16*100) : 50;
+  const H=Math.round(sitH*0.5+hCheck*0.5);
+  // G: 상황형으로 초기값, 회차 쌓이면 성장율로 업데이트
+  const G=sitG;
+  // EI
+  const ei1=parseInt(document.getElementById('ei1').value);
+  const ei2=parseInt(document.getElementById('ei2').value);
+  const ei3=parseInt(document.getElementById('ei3').value);
+  const EI=Math.round(((ei1+ei2+ei3)/15-0.5)*10); // -5~+5
+
+  // GLSI 공식: H×0.20 + C×0.25 + T×0.20 + A×0.20 + G×0.15 + EI
+  // + 상황형 총점 10% 보정 (초기 운영 권장값. 데이터 쌓이면 20~30%로 조정)
+  const glsiBase=H*0.20+C*0.25+T*0.20+A*0.20+G*0.15;
+  const glsiWithSit=glsiBase*0.9+sitTotal*0.1;
+  const glsiScore=Math.max(0,Math.min(100,Math.round(glsiWithSit+EI)));
+
+  // 레벨 판정
+  const pct=grand/24*100;
+  let emoji,level,lClass,comment;
+  if(pct>=80){emoji='🌟';level='S — 알고리즘반 추천';lClass='level-S';comment='매우 우수! GLSI 지수도 높게 시작했어요. 심화 과정을 도전해 보세요.';}
+  else if(pct>=60){emoji='😊';level='A — 로직반 추천';lClass='level-A';comment='좋은 실력이에요! 꾸준히 하면 GLSI 지수가 빠르게 올라갈 거예요.';}
+  else if(pct>=40){emoji='💪';level='B — 기본반 추천';lClass='level-B';comment='기초를 탄탄히 하면 금방 성장할 수 있어요. GLSI로 성장을 추적해 드릴게요!';}
+  else{emoji='🌱';level='C — 기초집중반 추천';lClass='level-C';comment='처음부터 차근차근! 젤비아와 함께라면 반드시 성장할 수 있어요.';}
+
+  document.getElementById('resName').innerHTML=`<strong>${studentName}</strong> (${studentGrade}) 학생의 GLSI 초기 분석`;
+  document.getElementById('resEmoji').textContent=emoji;
+  document.getElementById('resLevel').textContent=level;
+  document.getElementById('resLevel').className='result-level-badge '+lClass;
+  document.getElementById('resComment').textContent=comment;
+  document.getElementById('sMath').textContent=mTotal.toFixed(1);
+  document.getElementById('sRead').textContent=rTotal.toFixed(1);
+  document.getElementById('sTotal').textContent=grand.toFixed(1);
+  document.getElementById('glsiNum').textContent=glsiScore;
+
+  // 상황형 요약 바
+  const sitSum=document.getElementById('sitSummaryBars');
+  sitSum.innerHTML='';
+  [{key:'H',label:'H · HABIT',val:sitH},{key:'C',label:'C · COGNITIVE',val:sitC},{key:'T',label:'T · TIME',val:sitT},{key:'G',label:'G · GROWTH',val:sitG}].forEach(d=>{
+    const row=document.createElement('div');
+    row.className='d-bar-row';
+    row.innerHTML=`<div class="d-bar-label" style="width:100px">${d.label}</div><div class="d-bar-track"><div class="d-bar-fill" style="width:0%;background:${DOMAIN_COLORS_SIT[d.key]}" data-p="${d.val}"></div></div><div class="d-bar-val">${d.val}</div>`;
+    sitSum.appendChild(row);
+  });
+  setTimeout(()=>sitSum.querySelectorAll('.d-bar-fill').forEach(f=>f.style.width=f.dataset.p+'%'),300);
+
+  // ── 4유형 배지 + 상담 멘트 카드
+  const td=SIT_TYPES[sitType];
+  const typeCard=document.createElement('div');
+  typeCard.style.cssText=`margin-top:14px;padding:18px 20px;border-radius:14px;background:${td.bg};border:2px solid ${td.border}`;
+  typeCard.innerHTML=`
+    <div style="display:inline-flex;align-items:center;gap:7px;background:${td.color};color:#fff;font-size:12px;font-weight:900;padding:4px 13px;border-radius:20px;margin-bottom:10px">
+      ${td.emoji} ${td.name}
+    </div>
+    <div style="font-family:'Noto Serif KR',serif;font-size:16px;font-weight:900;color:#0d1f3c;margin-bottom:6px">상황형 반응 유형 · ${td.name}</div>
+    <div style="font-size:13px;color:#374151;line-height:1.7;margin-bottom:12px">${td.opening}</div>
+    <div style="background:rgba(255,255,255,.75);border-radius:10px;padding:13px 15px;font-size:12.5px;line-height:1.9;color:#0d1f3c">
+      <div style="font-size:10px;font-weight:700;color:#6b7280;margin-bottom:6px;letter-spacing:.5px">📅 2주 코칭 플랜</div>
+      <b>1주차:</b> ${td.w1}<br>
+      <b>2주차:</b> ${td.w2}<br>
+      <b style="color:${td.color}">🌟</b> ${td.tip}
+    </div>
+    <div style="font-size:11px;color:#9ca3af;margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,.07)">ℹ️ ${td.glsiNote}</div>`;
+  sitSum.after(typeCard);
+
+  // GLSI 도메인 바
+  const domains=[
+    {key:'H',label:'H · HABIT',val:H,color:GLSI_COLORS.H},
+    {key:'C',label:'C · COGNITIVE',val:C,color:GLSI_COLORS.C},
+    {key:'T',label:'T · TIME',val:T,color:GLSI_COLORS.T},
+    {key:'A',label:'A · ACHIEVEMENT',val:A,color:GLSI_COLORS.A},
+    {key:'G',label:'G · GROWTH',val:G,color:GLSI_COLORS.G,note:'(상황형 진단 기반)'},
+  ];
+  const dbEl=document.getElementById('glsiDomainBars');
+  dbEl.innerHTML='';
+  domains.forEach(d=>{
+    const row=document.createElement('div');
+    row.className='gdb-row';
+    row.innerHTML=`
+      <div class="gdb-label">${d.label}${d.note?'<br><span style="font-size:9px;opacity:.5">'+d.note+'</span>':''}</div>
+      <div class="gdb-track"><div class="gdb-fill" style="width:0%;background:${d.color}" data-w="${d.val}"></div></div>
+      <div class="gdb-val">${d.val}</div>`;
+    dbEl.appendChild(row);
+  });
+  setTimeout(()=>dbEl.querySelectorAll('.gdb-fill').forEach(f=>f.style.width=f.dataset.w+'%'),300);
+
+  // 수학/독서 차트
+  setTimeout(()=>{
+    drawRadar('mathRadar',MATH_DOMS,Object.values(mathScores),'rgba(37,99,235,0.2)','#2563eb');
+    drawBars('mathBars',MATH_DOMS,Object.values(mathScores),M_COLORS);
+    drawRadar('readRadar',READ_DOMS,Object.values(readScores),'rgba(22,163,74,0.2)','#16a34a');
+    drawBars('readBars',READ_DOMS,Object.values(readScores),R_COLORS);
+  },200);
+
+  // 저장
+  const record={
+    attemptId: `ATTEMPT_${Date.now()}_${Math.random().toString(36).slice(2,8)}`,
+    studentName,
+    studentGrade,
+    date:new Date().toLocaleDateString('ko-KR'),
+    grade:studentGrade,
+    mathScores:{...mathScores}, readScores:{...readScores},
+    mTotal:+mTotal.toFixed(1), rTotal:+rTotal.toFixed(1), grand:+grand.toFixed(1),
+    glsiScore, glsiDomains:{H,C,T,A,G,EI}, level,
+    totalTime
+  };
+  const studentKey=`${studentName}__${studentGrade||''}`;
+  const hist=loadHistory(studentKey);
+  hist.push(record);
+  saveHistory(studentKey,hist);
+  if(hist.length>1) showCompare(hist);
+
+  // ✅ Google Sheets 자동 전송
+  const sheetPayload = {
+    studentName,
+    studentGrade,
+    mTotal: +mTotal.toFixed(1),
+    rTotal: +rTotal.toFixed(1),
+    grand: +grand.toFixed(1),
+    glsiScore,
+    glsiDomains: {H,C,T,A,G},
+    level,
+    mathScores: {...mathScores},
+    readScores: {...readScores},
+    sitType: classifySitType(),
+    totalTime,
+    className: '' // renderConsult 후 채워짐 (현재는 빈값)
+  };
+  sendToSheet(sheetPayload);
+  // localStorage 불가 환경 감지 → 저장 버튼 안내
+  setTimeout(()=>{
+    let lsOk=false;
+    try{localStorage.setItem('_test','1');lsOk=localStorage.getItem('_test')==='1';localStorage.removeItem('_test');}catch{}
+    const nudge=document.getElementById('saveNudge');
+    if(nudge) nudge.style.display=lsOk?'none':'block';
+  },500);
+
+  // 반배정 + 상담멘트 자동 생성
+  const levelKey = pct>=80?'A':pct>=55?'B':'C';
+  renderConsult(levelKey, {H,C,T,A,G}, grand, sitType);
+  renderGlsiImprove({H,C,T,A,G});
+  renderTeacherReview();
+  showScreen('resultScreen');
+}
+
+function drawRadar(cid,labels,vals,fill,stroke){
+  const existing=Chart.getChart(cid);
+  if(existing) existing.destroy();
+  const max=Math.max(...vals,1);
+  const data=vals.map(v=>Math.round(v/max*100));
+  const ctx=document.getElementById(cid).getContext('2d');
+  new Chart(ctx,{type:'radar',data:{labels,datasets:[{data,backgroundColor:fill,borderColor:stroke,borderWidth:2,pointBackgroundColor:stroke,pointRadius:3}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:8}},pointLabels:{font:{size:10,weight:'bold'}}}}}});
+}
+function drawBars(cid,labels,vals,colors){
+  const el=document.getElementById(cid);
+  el.innerHTML='';
+  const max=Math.max(...vals,1);
+  labels.forEach((lbl,i)=>{
+    const pct=Math.round(vals[i]/max*100);
+    const row=document.createElement('div');
+    row.className='d-bar-row';
+    row.innerHTML=`<div class="d-bar-label">${lbl}</div><div class="d-bar-track"><div class="d-bar-fill" style="width:0%;background:${colors[i]}" data-p="${pct}"></div></div><div class="d-bar-val">${vals[i]}점</div>`;
+    el.appendChild(row);
+  });
+  setTimeout(()=>el.querySelectorAll('.d-bar-fill').forEach(f=>f.style.width=f.dataset.p+'%'),300);
+}
+
+function showCompare(hist){
+  const sec=document.getElementById('compareSection');
+  sec.style.display='block';
+  const first=hist[0], last=hist[hist.length-1];
+  const diff=last.glsiScore-first.glsiScore;
+  const banner=document.getElementById('improveBanner');
+  banner.style.display='block';
+  if(diff>0){document.getElementById('impEmoji').textContent='🎉';document.getElementById('impText').textContent=`GLSI ${diff}점 성장! 정말 잘하고 있어요!`;document.getElementById('impSub').textContent=`${first.date} 입회 → ${last.date} 현재`;}
+  else if(diff<0){document.getElementById('impEmoji').textContent='💪';document.getElementById('impText').textContent='계속 함께 성장해 나가요!';document.getElementById('impSub').textContent='선생님과 함께 복습해요.';}
+  else{document.getElementById('impEmoji').textContent='📊';document.getElementById('impText').textContent='꾸준히 유지되고 있어요!';document.getElementById('impSub').textContent=`총 ${hist.length}회차 기록`;}
+
+  // ── ① GLSI 성장 추이 SVG
+  const scores=hist.map(h=>h.glsiScore);
+  const W=460,H=90,pL=36,pR=10,pT=20,pB=22;
+  const minS=Math.max(0,Math.min(...scores)-15);
+  const maxS=Math.min(100,Math.max(...scores)+15);
+  const n=scores.length;
+  const xPos=i=>pL+i*((W-pL-pR)/(n-1||1));
+  const yPos=v=>H-pB-(v-minS)/(maxS-minS||1)*(H-pT-pB);
+  let linePath=`M${xPos(0)},${yPos(scores[0])}`;
+  let areaPath=`M${xPos(0)},${yPos(scores[0])}`;
+  for(let i=1;i<n;i++){linePath+=` L${xPos(i)},${yPos(scores[i])}`;areaPath+=` L${xPos(i)},${yPos(scores[i])}`;}
+  areaPath+=` L${xPos(n-1)},${H-pB} L${xPos(0)},${H-pB} Z`;
+  const dotsSvg=hist.map((h,i)=>{
+    const c=h.glsiScore>=70?'#16a34a':h.glsiScore>=50?'#f59e0b':'#ef4444';
+    return `<circle cx="${xPos(i)}" cy="${yPos(h.glsiScore)}" r="5" fill="${c}" stroke="#fff" stroke-width="2.5"/>
+      <text x="${xPos(i)}" y="${yPos(h.glsiScore)-11}" text-anchor="middle" font-size="11" font-weight="700" fill="${c}">${h.glsiScore}</text>
+      <text x="${xPos(i)}" y="${H-5}" text-anchor="middle" font-size="10" fill="#9ca3af">${i+1}회차</text>`;
+  }).join('');
+  const trendSvg=`
+    <div style="margin-bottom:14px;padding:14px 16px 10px;background:#fafafa;border-radius:14px;border:1px solid #e5e7eb">
+      <div style="font-size:12px;font-weight:700;color:#374151;margin-bottom:8px">📈 GLSI 성장 추이</div>
+      <svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block;overflow:visible">
+        <defs><linearGradient id="gr1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#7c3aed" stop-opacity=".3"/>
+          <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+        </linearGradient></defs>
+        <path d="${areaPath}" fill="url(#gr1)"/>
+        <path d="${linePath}" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        ${dotsSvg}
+      </svg>
+    </div>`;
+
+  // ── ② 도메인 전·후 비교 (1회차 vs 최근)
+  let domHtml='';
+  if(hist.length>=2 && first.glsiDomains && last.glsiDomains){
+    const DK=['H','C','T','A','G'];
+    const DC={H:'#f26c1b',C:'#7c3aed',T:'#0891b2',A:'#16a34a',G:'#d97706'};
+    const DL={H:'습관(H)',C:'인지(C)',T:'시간(T)',A:'성취(A)',G:'성장(G)'};
+    const bars=DK.map(k=>{
+      const v1=first.glsiDomains[k]||0;
+      const v2=last.glsiDomains[k]||0;
+      const d=v2-v1;
+      const arrow=d>0?`<span style="color:#16a34a;font-weight:900;font-size:11px">▲${d}</span>`:d<0?`<span style="color:#ef4444;font-weight:900;font-size:11px">▼${Math.abs(d)}</span>`:`<span style="color:#9ca3af;font-size:11px">—</span>`;
+      return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+        <div style="width:52px;font-size:11px;font-weight:700;color:${DC[k]}">${DL[k]}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px">
+            <span style="font-size:9px;color:#9ca3af;width:20px">1회</span>
+            <div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden">
+              <div style="height:100%;width:${v1}%;background:${DC[k]};opacity:.4;border-radius:3px;transition:width .6s"></div>
+            </div>
+            <span style="font-size:10px;font-weight:700;color:#6b7280;width:22px;text-align:right">${v1}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px">
+            <span style="font-size:9px;color:#7c3aed;width:20px">최근</span>
+            <div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden">
+              <div style="height:100%;width:${v2}%;background:${DC[k]};border-radius:3px;transition:width .6s"></div>
+            </div>
+            <span style="font-size:10px;font-weight:700;color:${DC[k]};width:22px;text-align:right">${v2}</span>
+          </div>
+        </div>
+        <div style="width:30px;text-align:center">${arrow}</div>
+      </div>`;
+    }).join('');
+    domHtml=`<div style="padding:14px 16px;background:#f8f5ff;border-radius:14px;border:1.5px solid #ddd6fe;margin-bottom:14px">
+      <div style="font-size:12px;font-weight:700;color:#7c3aed;margin-bottom:12px">📊 도메인별 전·후 비교 (1회차 → 최근)</div>
+      ${bars}
+    </div>`;
+  }
+
+  // ── ③ 회차별 요약 표
+  let rows='';
+  hist.forEach((h,i)=>{
+    let trend='';
+    if(i>0){const d=h.glsiScore-hist[i-1].glsiScore;trend=d>0?`<span class="trend-up">▲${d}</span>`:d<0?`<span class="trend-down">▼${Math.abs(d)}</span>`:`<span class="trend-same">—</span>`;}
+    const lv=h.glsiScore>=80?'🌟 S':h.glsiScore>=60?'😊 A':h.glsiScore>=40?'💪 B':'🌱 C';
+    rows+=`<tr><td>${i+1}회차</td><td>${h.date}</td><td>${h.grade}</td><td>${h.mTotal}</td><td>${h.rTotal}</td><td>${h.grand}</td><td style="font-weight:700;color:var(--purple)">${h.glsiScore}</td><td style="font-size:12px">${lv}</td><td>${trend||'—'}</td></tr>`;
+  });
+
+  document.getElementById('compareContent').innerHTML=`
+    ${trendSvg}
+    ${domHtml}
+    <div style="overflow-x:auto">
+      <table class="history-table">
+        <thead><tr><th>회차</th><th>날짜</th><th>학년</th><th>수학</th><th>독서</th><th>총점</th><th>GLSI</th><th>레벨</th><th>변화</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+// ══════════════════════════════════════════
+//  로컬 스토리지
+// ══════════════════════════════════════════
+/* ═══ 메모리 저장소 + JSON 내보내기/불러오기 ═══ */
+// ══════════════════════════════════════════
+//  Google Sheets 자동 저장 설정
+//  ※ 아래 URL을 Apps Script 배포 URL로 교체하세요
+// ══════════════════════════════════════════
+const SHEET_URL = ''; // ← 여기에 Apps Script 웹앱 URL 붙여넣기
+
+async function sendToSheet(resultData) {
+  if (!SHEET_URL) return;
+  try {
+    const res = await fetch(SHEET_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(resultData)
+    });
+    const json = await res.json();
+    if (json.status === 'ok') {
+      showSheetToast('✅ 구글 시트에 자동 저장됐어요!', '#16a34a');
+    } else {
+      showSheetToast('⚠️ 저장 실패: ' + (json.message || ''), '#d97706');
+    }
+  } catch (err) {
+    showSheetToast('⚠️ 시트 연결 안 됨 (인터넷 확인)', '#d97706');
+  }
+}
+
+function showSheetToast(msg, color) {
+  let toast = document.getElementById('sheetToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'sheetToast';
+    toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:13px 24px;border-radius:28px;font-size:13px;font-weight:700;color:#fff;z-index:9999;box-shadow:0 6px 24px rgba(0,0,0,.25);transition:opacity .5s;white-space:nowrap';
+    document.body.appendChild(toast);
+  }
+  toast.style.background = color;
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  setTimeout(() => { toast.style.opacity = '0'; }, 4000);
+}
+
+let _DB={};
+function sKey(n){return 'zelvia_v4_'+n;}
+function loadHistory(n){
+  if(_DB[n]&&_DB[n].length) return _DB[n];
+  try{const d=localStorage.getItem(sKey(n));if(d){_DB[n]=JSON.parse(d);return _DB[n];}}catch{}
+  return [];
+}
+function saveHistory(n,arr){
+  _DB[n]=arr;
+  try{localStorage.setItem(sKey(n),JSON.stringify(arr));}catch{}
+}
+function getAllStudents(){
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k&&k.startsWith('zelvia_v4_')){
+        const name=k.replace('zelvia_v4_','');
+        if(!_DB[name]){try{const d=localStorage.getItem(k);if(d)_DB[name]=JSON.parse(d);}catch{}}
+      }
+    }
+  }catch{}
+  return Object.keys(_DB).filter(n=>_DB[n]&&_DB[n].length).map(n=>({name:n,history:_DB[n]}));
+}
+function exportData(){
+  const exportedAt=new Date();
+  const flatRecords=Object.entries(_DB).flatMap(([studentKey,history])=> (history||[]).map((row,idx)=>({
+    studentKey,
+    studentName: row.studentName || studentKey.split('__')[0] || '',
+    studentGrade: row.studentGrade || studentKey.split('__')[1] || '',
+    attemptId: row.attemptId || `ATTEMPT_${idx+1}`,
+    date: row.date || '',
+    glsiScore: row.glsiScore ?? '',
+    level: row.level || '',
+    totalTime: row.totalTime ?? '',
+    mTotal: row.mTotal ?? '',
+    rTotal: row.rTotal ?? '',
+    grand: row.grand ?? '',
+    glsiDomains: row.glsiDomains || {},
+    mathScores: row.mathScores || {},
+    readScores: row.readScores || {}
+  })));
+  const data={
+    fileType:'GLSI_UPLOAD_JSON',
+    version:'zelvia_uploadready_v1',
+    exportedAt: exportedAt.toISOString(),
+    recordCount: flatRecords.length,
+    students:_DB,
+    flatRecords
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  const stamp=`${exportedAt.getFullYear()}${String(exportedAt.getMonth()+1).padStart(2,'0')}${String(exportedAt.getDate()).padStart(2,'0')}_${String(exportedAt.getHours()).padStart(2,'0')}${String(exportedAt.getMinutes()).padStart(2,'0')}${String(exportedAt.getSeconds()).padStart(2,'0')}`;
+  a.download='GLSI업로드_'+stamp+'.json';
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+function importData(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=JSON.parse(e.target.result);
+      // ── 형식 1: 전체 백업 (data.students)
+      if(data.students){
+        Object.assign(_DB,data.students);
+        Object.keys(data.students).forEach(n=>{try{localStorage.setItem(sKey(n),JSON.stringify(data.students[n]));}catch{}});
+        alert('✅ 기록을 불러왔어요!');
+        showHistory();
+        return;
+      }
+      // ── 형식 2: 개별 결과 파일 (GLSI입회_이름_날짜.json)
+      if(data._source==='zelvia_admission_test' || data.studentName){
+        const name = data.studentName || (data.student && data.student.name) || '이름없음';
+        const grade = data.studentGrade || (data.student && data.student.grade) || '';
+        const raw = data.raw || data.testResult || {};
+        const record = {
+          date: data.date || raw.date || '',
+          grade: grade,
+          mTotal: data.mathScores ? Object.values(data.mathScores).reduce((a,b)=>a+b,0) : (raw.mathScore||0),
+          rTotal: data.readScores ? Object.values(data.readScores).reduce((a,b)=>a+b,0) : (raw.readScore||0),
+          grand: raw.totalScore || data.glsiScore || 0,
+          glsiScore: data.glsiScore || raw.glsiScore || 0,
+          glsiDomains: data.sit || data.glsiDomains || raw.glsiDomains || {},
+          level: data.level || raw.level || '',
+          totalTime: raw.totalTime || 0,
+          mathScores: data.mathScores || raw.mathScores || {},
+          readScores: data.readScores || raw.readScores || {}
+        };
+        if(!_DB[name]) _DB[name]=[];
+        // 중복 날짜 방지
+        if(!_DB[name].find(r=>r.date===record.date)) _DB[name].push(record);
+        try{localStorage.setItem(sKey(name),JSON.stringify(_DB[name]));}catch{}
+        alert(`✅ ${name} 학생 결과를 불러왔어요!`);
+        showHistory();
+        return;
+      }
+      alert('올바른 젤비아 기록 파일이 아니에요.');
+    }catch(err){alert('파일을 읽을 수 없어요.\n'+err.message);}
+  };
+  reader.readAsText(file);
+}
+
+function showHistory(){
+  showScreen('histScreen');
+  const students=getAllStudents();
+  const el=document.getElementById('studentList');
+  if(!students.length){
+    el.innerHTML=`<div class="empty-state"><div class="empty-icon">📭</div><div>아직 저장된 기록이 없어요.</div></div>`;
+    return;
+  }
+  el.innerHTML='';
+  students.forEach(s=>{
+    const last=s.history[s.history.length-1];
+    const first=s.history[0];
+    const dScore=last.glsiScore-first.glsiScore;
+    const dSign=dScore>=0?'+':'';
+    const DK=['H','C','T','A','G'];
+    const DC={H:'#f26c1b',C:'#7c3aed',T:'#0891b2',A:'#16a34a',G:'#d97706'};
+    const DL={H:'H',C:'C',T:'T',A:'A',G:'G'};
+    // 도메인 미니 바 (최신 회차 기준)
+    const domBars=last.glsiDomains ? DK.map(k=>`
+      <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px">
+        <span style="font-size:9px;font-weight:700;color:${DC[k]};width:12px">${DL[k]}</span>
+        <div style="flex:1;height:5px;background:#e5e7eb;border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:${last.glsiDomains[k]||0}%;background:${DC[k]};border-radius:3px"></div>
+        </div>
+        <span style="font-size:10px;font-weight:700;color:#374151;width:22px;text-align:right">${last.glsiDomains[k]||0}</span>
+      </div>`).join('') : '';
+
+    // 회차별 GLSI 미니 태그
+    const histTags=s.history.map((h,i)=>{
+      const c=h.glsiScore>=70?'#16a34a':h.glsiScore>=50?'#f59e0b':'#ef4444';
+      return `<span style="display:inline-flex;align-items:center;gap:3px;background:${c}18;border:1px solid ${c}55;border-radius:8px;padding:2px 7px;font-size:10px;font-weight:700;color:${c}">${i+1}회 ${h.glsiScore}</span>`;
+    }).join(' ');
+
+    const card=document.createElement('div');
+    card.className='student-card';
+    card.style.cssText='cursor:pointer;transition:box-shadow .2s';
+    card.innerHTML=`
+      <div style="flex:1">
+        <div class="sc-name">${s.name} <span style="font-size:12px;font-weight:400;color:var(--gray)">(${last.grade})</span></div>
+        <div class="sc-meta">${s.history.length}회 응시 · 최근 ${last.date}</div>
+        <div style="margin:8px 0 4px;display:flex;flex-wrap:wrap;gap:4px">${histTags}</div>
+        <div style="margin-top:8px">${domBars}</div>
+      </div>
+      <div class="sc-right" style="min-width:60px;text-align:center">
+        <div class="sc-glsi" style="color:${last.glsiScore>=70?'var(--ok)':last.glsiScore>=50?'#f59e0b':'var(--danger)'}">${last.glsiScore}</div>
+        <div class="sc-total">GLSI</div>
+        <div style="font-size:11px;margin-top:4px;font-weight:700;color:${dScore>=0?'var(--ok)':'var(--danger)'}">${dSign}${dScore}점</div>
+      </div>`;
+    // 클릭 시 해당 학생 상세 회차 팝업
+    card.onclick=()=>showStudentDetail(s);
+    card.onmouseenter=()=>card.style.boxShadow='0 4px 16px rgba(124,58,237,.18)';
+    card.onmouseleave=()=>card.style.boxShadow='';
+    el.appendChild(card);
+  });
+}
+
+function showStudentDetail(s){
+  // 기존 상세 overlay가 있으면 제거
+  const old=document.getElementById('studentDetailOverlay');
+  if(old) old.remove();
+
+  const hist=s.history;
+  const first=hist[0], last=hist[hist.length-1];
+  const DK=['H','C','T','A','G'];
+  const DC={H:'#f26c1b',C:'#7c3aed',T:'#0891b2',A:'#16a34a',G:'#d97706'};
+  const DL={H:'습관(H)',C:'인지(C)',T:'시간(T)',A:'성취(A)',G:'성장(G)'};
+
+  // 회차 표
+  let rows='';
+  hist.forEach((h,i)=>{
+    let trend='';
+    if(i>0){const d=h.glsiScore-hist[i-1].glsiScore;trend=d>0?`<span style="color:#16a34a;font-weight:700">▲${d}</span>`:d<0?`<span style="color:#ef4444;font-weight:700">▼${Math.abs(d)}</span>`:`—`;}
+    rows+=`<tr data-idx=\"${i}\" style=\"font-size:12px;cursor:pointer\" title=\"결과지 열기\">
+      <td style="padding:6px 10px;font-weight:700;color:#7c3aed">${i+1}회</td>
+      <td style="padding:6px 10px;color:#6b7280">${h.date}</td>
+      <td style="padding:6px 10px">${h.grade}</td>
+      <td style="padding:6px 10px">${h.mTotal}</td>
+      <td style="padding:6px 10px">${h.rTotal}</td>
+      <td style="padding:6px 10px;font-weight:900;color:#7c3aed">${h.glsiScore}</td>
+      <td style="padding:6px 10px">${trend||'—'}</td>
+    </tr>`;
+  });
+
+  // 도메인 전후 비교
+  let domRows='';
+  if(hist.length>=2 && first.glsiDomains && last.glsiDomains){
+    domRows=DK.map(k=>{
+      const v1=first.glsiDomains[k]||0;
+      const v2=last.glsiDomains[k]||0;
+      const d=v2-v1;
+      const arrow=d>0?`<span style="color:#16a34a;font-weight:700">▲${d}</span>`:d<0?`<span style="color:#ef4444;font-weight:700">▼${Math.abs(d)}</span>`:'—';
+      return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div style="width:56px;font-size:11px;font-weight:700;color:${DC[k]}">${DL[k]}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px">
+            <span style="font-size:9px;color:#9ca3af;width:20px">1회</span>
+            <div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden">
+              <div style="height:100%;width:${v1}%;background:${DC[k]};opacity:.45;border-radius:3px"></div>
+            </div>
+            <span style="font-size:10px;font-weight:700;color:#6b7280;width:22px;text-align:right">${v1}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px">
+            <span style="font-size:9px;color:#7c3aed;width:20px">최근</span>
+            <div style="flex:1;height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden">
+              <div style="height:100%;width:${v2}%;background:${DC[k]};border-radius:3px"></div>
+            </div>
+            <span style="font-size:10px;font-weight:700;color:${DC[k]};width:22px;text-align:right">${v2}</span>
+          </div>
+        </div>
+        <div style="width:30px;text-align:center;font-size:11px">${arrow}</div>
+      </div>`;
+    }).join('');
+  }
+
+  // GLSI 추이 SVG
+  const scores=hist.map(h=>h.glsiScore);
+  let trendSvg='';
+  if(hist.length>=2){
+    const W=360,H=80,pL=32,pR=10,pT=20,pB=22;
+    const minS=Math.max(0,Math.min(...scores)-15);
+    const maxS=Math.min(100,Math.max(...scores)+15);
+    const xPos=i=>pL+i*((W-pL-pR)/(scores.length-1||1));
+    const yPos=v=>H-pB-(v-minS)/(maxS-minS||1)*(H-pT-pB);
+    let lp=`M${xPos(0)},${yPos(scores[0])}`,ap=`M${xPos(0)},${yPos(scores[0])}`;
+    for(let i=1;i<scores.length;i++){lp+=` L${xPos(i)},${yPos(scores[i])}`;ap+=` L${xPos(i)},${yPos(scores[i])}`;}
+    ap+=` L${xPos(scores.length-1)},${H-pB} L${xPos(0)},${H-pB} Z`;
+    const ds=hist.map((h,i)=>{
+      const c=h.glsiScore>=70?'#16a34a':h.glsiScore>=50?'#f59e0b':'#ef4444';
+      return `<circle cx="${xPos(i)}" cy="${yPos(h.glsiScore)}" r="4.5" fill="${c}" stroke="#fff" stroke-width="2"/>
+        <text x="${xPos(i)}" y="${yPos(h.glsiScore)-10}" text-anchor="middle" font-size="10" font-weight="700" fill="${c}">${h.glsiScore}</text>
+        <text x="${xPos(i)}" y="${H-4}" text-anchor="middle" font-size="9" fill="#9ca3af">${i+1}회</text>`;
+    }).join('');
+    trendSvg=`<div style="padding:12px;background:#fafafa;border-radius:12px;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:6px">📈 GLSI 추이</div>
+      <svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block;overflow:visible">
+        <defs><linearGradient id="gr2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#7c3aed" stop-opacity=".3"/>
+          <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+        </linearGradient></defs>
+        <path d="${ap}" fill="url(#gr2)"/>
+        <path d="${lp}" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linejoin="round"/>
+        ${ds}
+      </svg>
+    </div>`;
+  }
+
+  const overlay=document.createElement('div');
+  overlay.id='studentDetailOverlay';
+  overlay.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px';
+  overlay.innerHTML=`
+    <div style="background:#fff;border-radius:20px;padding:24px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+        <div>
+          <div style="font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#0d1f3c">${s.name}</div>
+          <div style="font-size:12px;color:#9ca3af;margin-top:2px">${hist.length}회 응시 · 입회 ${first.date}</div>
+        </div>
+        <button onclick="document.getElementById('studentDetailOverlay').remove()" style="background:#f3f4f6;border:none;border-radius:50%;width:34px;height:34px;font-size:18px;cursor:pointer;color:#374151">×</button>
+      </div>
+      ${trendSvg}
+      ${domRows ? `<div style="padding:14px;background:#f8f5ff;border-radius:12px;border:1.5px solid #ddd6fe;margin-bottom:14px">
+        <div style="font-size:11px;font-weight:700;color:#7c3aed;margin-bottom:10px">📊 도메인 전·후 비교</div>
+        ${domRows}
+      </div>` : ''}
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead><tr style="border-bottom:2px solid #e5e7eb">
+            <th style="padding:6px 10px;text-align:left;color:#9ca3af">회차</th>
+            <th style="padding:6px 10px;text-align:left;color:#9ca3af">날짜</th>
+            <th style="padding:6px 10px;text-align:left;color:#9ca3af">학년</th>
+            <th style="padding:6px 10px;text-align:left;color:#9ca3af">수학</th>
+            <th style="padding:6px 10px;text-align:left;color:#9ca3af">독서</th>
+            <th style="padding:6px 10px;text-align:left;color:#9ca3af">GLSI</th>
+            <th style="padding:6px 10px;text-align:left;color:#9ca3af">변화</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  overlay.onclick=e=>{if(e.target===overlay)overlay.remove();};
+  document.body.appendChild(overlay);
+  // ✅ 회차 클릭 → 결과지 다시 열기
+  overlay.querySelectorAll('tbody tr[data-idx]').forEach(tr=>{
+    tr.onclick=()=>{ const idx=+tr.dataset.idx; openHistoryRecord(s.name, idx); overlay.remove(); };
+  });
+}
+
+
+// ══════════════════════════════════════════
+//  누락 함수 보완 (v12-fix)
+// ══════════════════════════════════════════
+
+// ① 결과지 출력 (PDF)
+function printResult(){
+  window.print();
+}
+
+// ② 학부모 공유
+function shareResult(){
+  const name = studentName || '학생';
+  const grade = studentGrade || '';
+  const glsi = document.getElementById('glsiNum')?.textContent || '-';
+  const level = document.getElementById('resLevel')?.textContent || '-';
+  const math = document.getElementById('sMath')?.textContent || '-';
+  const read = document.getElementById('sRead')?.textContent || '-';
+  const total = document.getElementById('sTotal')?.textContent || '-';
+  const msg =
+    '[젤비아 에듀센터 입회 테스트 결과]\n' +
+    '학생: ' + name + ' (' + grade + ')\n' +
+    '수학: ' + math + '점 | 독서: ' + read + '점 | 총점: ' + total + '점\n' +
+    'GLSI 지수: ' + glsi + ' / 100\n' +
+    '추천 레벨: ' + level + '\n\n' +
+    '📞 상담 예약: 010-4373-2021\n' +
+    '젤비아 에듀센터 · 리드인해밀학원';
+  if(navigator.share){
+    navigator.share({ title:'젤비아 입회 테스트 결과', text:msg }).catch(()=>_copyToClipboard(msg));
+  } else {
+    _copyToClipboard(msg);
+  }
+}
+function _copyToClipboard(text){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>{
+      _showToast('📋 결과가 복사됐어요! 카카오톡/문자에 붙여넣기 하세요.','#16a34a');
+    }).catch(()=>_fallbackCopy(text));
+  } else { _fallbackCopy(text); }
+}
+function _fallbackCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text; ta.style.cssText='position:fixed;opacity:0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); _showToast('📋 복사 완료! 붙여넣기 하세요.','#16a34a'); }
+  catch{ _showToast('⚠️ 복사 실패 — 결과를 캡처해주세요.','#d97706'); }
+  document.body.removeChild(ta);
+}
+function _showToast(msg, color){
+  let t=document.getElementById('_shareToast');
+  if(!t){ t=document.createElement('div'); t.id='_shareToast';
+    t.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);padding:13px 22px;border-radius:28px;font-size:13px;font-weight:700;color:#fff;z-index:99999;box-shadow:0 6px 24px rgba(0,0,0,.25);transition:opacity .5s;white-space:nowrap;max-width:90vw;text-align:center';
+    document.body.appendChild(t); }
+  t.style.background=color; t.textContent=msg; t.style.opacity='1';
+  setTimeout(()=>{ t.style.opacity='0'; },4000);
+}
+
+// ③ 성장기록에서 특정 회차 결과지 열기
+function openHistoryRecord(studentKey, idx){
+  const hist = loadHistory(studentKey);
+  if(!hist || !hist[idx]){ alert('기록을 불러올 수 없어요.'); return; }
+  const rec = hist[idx];
+  studentName = rec.studentName || studentKey.split('__')[0] || studentKey;
+  studentGrade = rec.studentGrade || rec.grade || '';
+  document.getElementById('resName').innerHTML = '<strong>' + studentName + '</strong> (' + studentGrade + ') 학생의 GLSI 기록 (' + (idx+1) + '회차)';
+  document.getElementById('sMath').textContent = rec.mTotal != null ? rec.mTotal : '-';
+  document.getElementById('sRead').textContent = rec.rTotal != null ? rec.rTotal : '-';
+  document.getElementById('sTotal').textContent = rec.grand != null ? rec.grand : '-';
+  document.getElementById('glsiNum').textContent = rec.glsiScore != null ? rec.glsiScore : '-';
+  const pct = (rec.grand || 0) / 24 * 100;
+  let emoji,level,lClass;
+  if(pct>=80){emoji='🌟';level=rec.level||'S — 알고리즘반 추천';lClass='level-S';}
+  else if(pct>=60){emoji='😊';level=rec.level||'A — 로직반 추천';lClass='level-A';}
+  else if(pct>=40){emoji='💪';level=rec.level||'B — 기본반 추천';lClass='level-B';}
+  else{emoji='🌱';level=rec.level||'C — 기초집중반 추천';lClass='level-C';}
+  document.getElementById('resEmoji').textContent = emoji;
+  document.getElementById('resLevel').textContent = level;
+  document.getElementById('resLevel').className = 'result-level-badge ' + lClass;
+  document.getElementById('resComment').textContent = idx + 1 + '회차 기록 보기 모드입니다.';
+  const d = rec.glsiDomains || {};
+  const domains=[
+    {key:'H',label:'H · HABIT',val:d.H||0,color:GLSI_COLORS.H},
+    {key:'C',label:'C · COGNITIVE',val:d.C||0,color:GLSI_COLORS.C},
+    {key:'T',label:'T · TIME',val:d.T||0,color:GLSI_COLORS.T},
+    {key:'A',label:'A · ACHIEVEMENT',val:d.A||0,color:GLSI_COLORS.A},
+    {key:'G',label:'G · GROWTH',val:d.G||0,color:GLSI_COLORS.G},
+  ];
+  const dbEl=document.getElementById('glsiDomainBars');
+  dbEl.innerHTML='';
+  domains.forEach(function(dm){
+    const row=document.createElement('div'); row.className='gdb-row';
+    row.innerHTML='<div class="gdb-label">'+dm.label+'</div><div class="gdb-track"><div class="gdb-fill" style="width:0%;background:'+dm.color+'" data-w="'+dm.val+'"></div></div><div class="gdb-val">'+dm.val+'</div>';
+    dbEl.appendChild(row);
+  });
+  setTimeout(function(){dbEl.querySelectorAll('.gdb-fill').forEach(function(f){f.style.width=f.dataset.w+'%';});},300);
+  const ms = rec.mathScores || {수감각:0,연산규칙:0,도형공간:0,사고력:0};
+  const rs = rec.readScores || {어휘:0,이해:0,추론:0,표현:0};
+  setTimeout(function(){
+    drawRadar('mathRadar',MATH_DOMS,Object.values(ms),'rgba(37,99,235,0.2)','#2563eb');
+    drawBars('mathBars',MATH_DOMS,Object.values(ms),M_COLORS);
+    drawRadar('readRadar',READ_DOMS,Object.values(rs),'rgba(22,163,74,0.2)','#16a34a');
+    drawBars('readBars',READ_DOMS,Object.values(rs),R_COLORS);
+  },200);
+  document.getElementById('sitSummaryBars').innerHTML='<div style="font-size:12px;color:#9ca3af;padding:8px">이 회차의 상황형 데이터는 별도 저장되지 않아요.</div>';
+  renderGlsiImprove({H:d.H||0,C:d.C||0,T:d.T||0,A:d.A||0,G:d.G||0});
+  document.getElementById('consultCard').innerHTML='<div style="font-size:13px;color:#9ca3af;padding:12px">회차 기록 보기에서는 상담 멘트가 표시되지 않아요.</div>';
+  if(document.getElementById('teacherReviewCard')) document.getElementById('teacherReviewCard').style.display='none';
+  showScreen('resultScreen');
+}
+
+// ④ 선생님 오답/서술형 리뷰 렌더링
+function renderTeacherReview(){
+  const card = document.getElementById('teacherReviewCard');
+  if(!card) return;
+  card.style.display = TEACHER_MODE ? 'block' : 'none';
+  if(!TEACHER_MODE) return;
+  const body = document.getElementById('teacherReviewBody');
+  if(!body) return;
+  let html = '';
+  if(WRONG_LOG.length){
+    html += '<div style="font-size:12px;font-weight:700;color:#dc2626;margin-bottom:10px">❌ 오답 목록 (' + WRONG_LOG.length + '개)</div>';
+    WRONG_LOG.forEach(function(w,i){
+      const secLabel = w.section==='math'?'수학':'독서';
+      html += '<div style="background:#fef2f2;border-radius:10px;padding:12px 14px;margin-bottom:8px;border-left:3px solid #dc2626">' +
+        '<div style="font-size:11px;font-weight:700;color:#dc2626;margin-bottom:4px">[' + secLabel + '] ' + w.tag + ' · ' + w.elapsed + '초</div>' +
+        '<div style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:6px">' + w.question + '</div>' +
+        (w.passage ? '<div style="font-size:11px;color:#6b7280;margin-bottom:6px;padding:6px 10px;background:rgba(0,0,0,.04);border-radius:6px">' + w.passage + '</div>' : '') +
+        '<div style="font-size:12px;color:#374151">선택: <span style="color:#dc2626;font-weight:700">' + ((w.options&&w.options[w.picked])||'-') + '</span> → 정답: <span style="color:#16a34a;font-weight:700">' + ((w.options&&w.options[w.answer])||'-') + '</span></div>' +
+        '<div style="font-size:11.5px;color:#374151;margin-top:6px;padding-top:6px;border-top:1px solid #fca5a5">💡 ' + (w.explain||'') + '</div>' +
+        '</div>';
+    });
+  } else {
+    html += '<div style="font-size:13px;color:#16a34a;margin-bottom:12px">✅ 오답 없음</div>';
+  }
+  if(SUB_LOG.length){
+    html += '<div style="font-size:12px;font-weight:700;color:#7c3aed;margin:14px 0 10px">✍️ 서술형 답안 (' + SUB_LOG.length + '개)</div>';
+    SUB_LOG.forEach(function(s,i){
+      const secLabel = s.section==='math'?'수학':'독서';
+      html += '<div style="background:#faf5ff;border-radius:10px;padding:12px 14px;margin-bottom:8px;border-left:3px solid #7c3aed">' +
+        '<div style="font-size:11px;font-weight:700;color:#7c3aed;margin-bottom:4px">[' + secLabel + '] ' + s.tag + '</div>' +
+        '<div style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:6px">' + s.question + '</div>' +
+        '<div style="font-size:12px;color:#374151;margin-bottom:6px">학생 답안: <span style="font-weight:700">' + (s.answerText||'(미작성)') + '</span></div>' +
+        '<div style="font-size:11.5px;color:#6b7280;padding-top:6px;border-top:1px solid #ddd6fe">📌 모범답: ' + (s.sample||'') + '</div>' +
+        '</div>';
+    });
+  }
+  if(!WRONG_LOG.length && !SUB_LOG.length){
+    html = '<div style="font-size:13px;color:#9ca3af;text-align:center;padding:20px">테스트 완료 후 확인할 수 있어요.</div>';
+  }
+  body.innerHTML = html;
+}
+
+// ⑤ 선생님 리뷰 펼치기/접기
+function toggleTeacherReview(){
+  const body = document.getElementById('teacherReviewBody');
+  if(!body) return;
+  renderTeacherReview();
+  body.style.display = (body.style.display==='none'||body.style.display==='') ? 'block' : 'none';
+}
+
+// ⑥ 선생님 리뷰 복사
+function copyTeacherReview(){
+  if(!TEACHER_MODE){ alert('선생님 모드에서만 사용 가능해요.'); return; }
+  let text = '[젤비아 오답/서술형 리뷰] ' + studentName + ' (' + studentGrade + ')\n\n';
+  if(WRONG_LOG.length){
+    text += '■ 오답 (' + WRONG_LOG.length + '개)\n';
+    WRONG_LOG.forEach(function(w,i){
+      const secLabel = w.section==='math'?'수학':'독서';
+      text += (i+1) + '. [' + secLabel + '] ' + w.tag + '\n';
+      text += '   문제: ' + w.question + '\n';
+      text += '   선택: ' + ((w.options&&w.options[w.picked])||'-') + ' → 정답: ' + ((w.options&&w.options[w.answer])||'-') + '\n';
+      text += '   해설: ' + (w.explain||'') + '\n\n';
+    });
+  }
+  if(SUB_LOG.length){
+    text += '■ 서술형 (' + SUB_LOG.length + '개)\n';
+    SUB_LOG.forEach(function(s,i){
+      const secLabel = s.section==='math'?'수학':'독서';
+      text += (i+1) + '. [' + secLabel + '] ' + s.tag + '\n';
+      text += '   문제: ' + s.question + '\n';
+      text += '   학생 답: ' + (s.answerText||'(미작성)') + '\n';
+      text += '   모범답: ' + (s.sample||'') + '\n\n';
+    });
+  }
+  _copyToClipboard(text);
+}
+
+function restartAll(){resetLogs(); showScreen('startScreen'); applyTeacherModeUI();}
+
+/* ═══ GLSI 연동 내보내기 ═══ */
+// 현재 결과만 GLSI 시스템용 JSON으로 저장
+function exportCurrentResult(){
+  if(!studentName || studentName.trim()===''){ alert('학생 이름이 없어요. 테스트를 다시 시작해주세요.'); return; }
+  const hist = loadHistory(studentName);
+  if(!hist.length){ alert('저장된 결과가 없어요.'); return; }
+  const latest = hist[hist.length-1];
+  const d = latest.glsiDomains || {};
+
+  // ✅ GLSI v8 importAdmissionTest 완전 호환 형식
+  const glsiPayload = {
+    _source: 'zelvia_admission_test',
+    _version: 'v12',
+    exportedAt: new Date().toISOString(),
+    // ── v8 importAdmissionTest가 읽는 구조 (student + testResult)
+    student: {
+      name: studentName,
+      grade: studentGrade
+    },
+    testResult: {
+      date: latest.date,
+      mathScore: latest.mTotal,
+      readScore: latest.rTotal,
+      totalScore: latest.grand,
+      glsiScore: latest.glsiScore,
+      glsiDomains: { H: d.H||0, C: d.C||0, T: d.T||0, A: d.A||0, G: d.G||0 },
+      level: latest.level,
+      totalTime: latest.totalTime
+    },
+    // ── v8 doImportIntake / saveIntakeBaseline이 읽는 구조
+    studentName: studentName,
+    studentGrade: studentGrade,
+    date: latest.date,
+    glsiScore: latest.glsiScore,
+    level: latest.level,
+    sitType: classifySitType(),
+    sit: { H: d.H||0, C: d.C||0, T: d.T||0, G: d.G||0, A: d.A||0 },
+    A: d.A || 0,
+    eiDelta: d.EI || 0,
+    mathScores: latest.mathScores,
+    readScores: latest.readScores,
+    version: 'v12',
+    raw: latest
+  };
+  const blob = new Blob([JSON.stringify(glsiPayload, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const safeName = studentName.replace(/[^가-힣a-zA-Z0-9]/g,'_');
+  a.download = `GLSI입회_${safeName}_${latest.date.replace(/\./g,'')}.json`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  // 안내 토스트
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#0d1f3c;color:#fff;padding:12px 22px;border-radius:12px;font-size:13px;font-weight:700;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3)';
+  t.textContent='✅ 저장 완료! GLSI 시스템에서 가져오기 하세요.';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 3000);
+}
+</script>
+</body>
+</html>
