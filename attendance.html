@@ -15,7 +15,7 @@
   --text:#1a1814;--text2:#4a4640;
 }
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-  
+
 /* 헤더 */
 .hdr{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3)}
 .brand{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:900;color:#fff}
@@ -66,14 +66,14 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .student-name:hover{border-color:var(--orange);background:#fff8f4}
 .student-name:focus{outline:none;border-color:var(--orange);background:#fff;box-shadow:0 0 0 3px rgba(242,108,27,.15)}
 .student-grade{font-size:10px;color:var(--muted);display:block}
-.del-student-btn{width:18px;height:18px;border-radius:50%;border:none;background:#fee2e2;color:var(--red);font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:opacity .15s}
+.del-student-btn{width:36px;height:36px;border-radius:50%;border:none;background:#fee2e2;color:var(--red);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:1;}
 .move-class-btn{width:18px;height:18px;border-radius:50%;border:none;background:#e0f2fe;color:#0369a1;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:0;transition:opacity .15s;font-weight:900}
-.att-table tr:hover .del-student-btn{opacity:1}
-.att-table tr:hover .move-class-btn{opacity:1}
+
+
 
 /* 출석 버튼 */
 .att-btns{display:flex;gap:4px;justify-content:center}
-.att-btn{width:32px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fafafa;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--text2)}
+.att-btn{width:44px;height:44px;border-radius:7px;border:1.5px solid var(--border);background:#fafafa;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:var(--text2)}
 .att-btn:hover{border-color:var(--orange);color:var(--orange)}
 .att-btn.att-in{background:#dcfce7;border-color:var(--green);color:var(--green)}
 .att-btn.att-late{background:#fef3c7;border-color:#d97706;color:#d97706}
@@ -81,7 +81,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 
 /* 점수 버튼 */
 .score-btns{display:flex;gap:3px;justify-content:center}
-.score-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fafafa;font-size:12px;font-weight:900;cursor:pointer;transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:#aaa;position:relative}
+.score-btn{width:40px;height:40px;border-radius:7px;border:1.5px solid var(--border);background:#fafafa;font-size:12px;font-weight:900;cursor:pointer;transition:all .15s;font-family:'Noto Sans KR',sans-serif;color:#aaa;position:relative}
 .score-btn:hover{transform:scale(1.1)}
 .score-btn.s1-active{background:#ef4444;border-color:#ef4444;color:#fff}
 .score-btn.s2-active{background:#f97316;border-color:#f97316;color:#fff}
@@ -92,7 +92,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .tooltip-wrap{position:relative}
 .tooltip-wrap .tooltip{display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;font-size:11px;line-height:1.6;padding:8px 12px;border-radius:10px;white-space:nowrap;z-index:200;box-shadow:0 4px 14px rgba(0,0,0,.3);pointer-events:none;min-width:160px;text-align:left}
 .tooltip-wrap .tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--navy)}
-.score-btn:hover + .tooltip,.score-btn:focus + .tooltip{display:block}
+.tooltip.show{display:block}
 
 /* 메모 */
 .memo-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:6px 8px;font-size:12px;font-family:'Noto Sans KR',sans-serif;background:#fafafa;outline:none;resize:none;transition:border .2s;min-height:36px}
@@ -346,34 +346,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 
 <script>
 // ── 기본 데이터 ──
-let CLASSES = {
-  '알고리즘': [
-    {name:'김민준',grade:'중2',phone:'010-1234-5678'},
-    {name:'이서연',grade:'중2',phone:'010-2345-6789'},
-    {name:'박지호',grade:'중2',phone:'010-3456-7890'},
-    {name:'최하은',grade:'중2',phone:'010-4567-8901'},
-    {name:'정도윤',grade:'중2',phone:'010-5678-9012'},
-    {name:'강수아',grade:'중2',phone:'010-6789-0123'},
-    {name:'조현우',grade:'중2',phone:'010-7890-1234'},
-    {name:'윤지민',grade:'중2',phone:'010-8901-2345'},
-    {name:'임채원',grade:'중3',phone:'010-9012-3456'},
-    {name:'한예린',grade:'중3',phone:'010-0123-4567'},
-  ],
-  '로직': [
-    {name:'오승훈',grade:'중1',phone:'010-1111-2222'},
-    {name:'신나래',grade:'중1',phone:'010-2222-3333'},
-    {name:'권태양',grade:'중1',phone:'010-3333-4444'},
-    {name:'문소희',grade:'중1',phone:'010-4444-5555'},
-    {name:'배준혁',grade:'중1',phone:'010-5555-6666'},
-    {name:'노은서',grade:'중1',phone:'010-6666-7777'},
-  ],
-  '코어': [
-    {name:'황민서',grade:'초6',phone:'010-7777-8888'},
-    {name:'송지우',grade:'초6',phone:'010-8888-9999'},
-    {name:'류하진',grade:'초6',phone:'010-9999-0000'},
-    {name:'전수빈',grade:'초6',phone:'010-0000-1111'},
-  ]
-};
+let CLASSES = {};
 
 const TOOLTIPS = {
   energy:  ['무기력·멍함·참여 없음','시키면 함·수동적','적극적·질문 있음','주도적·넘치는 에너지'],
@@ -387,7 +360,7 @@ const TOOLTIPS = {
   completion:['미완성·포기','절반 이하','대부분 완성','100% 완성·추가 도전'],
 };
 
-let currentClass = '알고리즘';
+let currentClass = '';
 let tableData = {};
 let extraVisible = false;
 
@@ -454,6 +427,11 @@ function initData(cls) {
 
 // ── 렌더 ──
 function render() {
+  if(!currentClass || !CLASSES[currentClass]) {
+    document.getElementById('tableBody').innerHTML = '<tr><td colspan="13" style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">⚙️ 반 설정에서 반을 추가하고 학생을 등록해주세요</td></tr>';
+    updateSummary();
+    return;
+  }
   initData(currentClass);
   const students = CLASSES[currentClass];
   const body = document.getElementById('tableBody');
@@ -1162,6 +1140,8 @@ function saveRecording() {
 }
 
 
+function switchClass(btn, cls) {
+  document.querySelectorAll('.class-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   currentClass = cls;
   render();
