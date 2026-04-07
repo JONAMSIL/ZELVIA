@@ -16,7 +16,7 @@
   --habit:#f26c1b;--cog:#7c3aed;--time:#0891b2;--ach:#16a34a;--growth:#d97706;
 }
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:#1a1a2e;min-height:100vh}
- 
+
 /* ── 헤더 ── */
 .hdr{background:var(--navy);position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,.3)}
 .hdr-inner{max-width:920px;margin:0 auto;padding:12px 28px;display:flex;align-items:center;justify-content:space-between}
@@ -1297,10 +1297,10 @@ function selectOpt(i,q,btn){
   btn.style.background='#fff8f4';
   btn.querySelector('.opt-num').style.background='var(--orange)';
   btn.querySelector('.opt-num').style.color='#fff';
-  // 이전 타이머 취소 후 새로 설정
+  // 선택 임시 저장 (다음 버튼 눌러야 확정)
   if(_selectTimer) clearTimeout(_selectTimer);
   _pendingOpt={i,q,btn};
-  _selectTimer=setTimeout(()=>_confirmSelect(_pendingOpt.i,_pendingOpt.q,_pendingOpt.btn),600);
+  document.getElementById('btnNext').style.display='inline-flex';
 }
 
 function _confirmSelect(i,q,btn){
@@ -1399,6 +1399,10 @@ function adjustDiff(correct){
 }
 
 function nextQ(){
+  if(_pendingOpt && !answered){
+    _confirmSelect(_pendingOpt.i, _pendingOpt.q, _pendingOpt.btn);
+    return;
+  }
   curQIdx++;
   if(curQIdx>=15){
     clearTimer();
