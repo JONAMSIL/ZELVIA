@@ -488,8 +488,8 @@ svg.trend-chart{width:100%;min-width:280px;height:160px;display:block;}
           <div id="stuQText" style="font-size:16px;font-weight:700;color:#1a1a2e;line-height:1.7;"></div>
         </div>
         <div id="stuQOpts" style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;"></div>
-        <div style="display:flex;gap:10px;">
-          <button onclick="stuPrevQ()" style="padding:13px 18px;border-radius:12px;border:2px solid #E2E8F0;background:#fff;font-size:13px;font-weight:700;color:#94a3b8;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">← 이전</button>
+        <div style="display:flex;gap:10px;position:sticky;bottom:0;background:#f8f9ff;padding:12px 0 4px;z-index:10;">
+          <button onclick="stuPrevQ()" style="padding:13px 18px;border-radius:12px;border:2px solid #E2E8F0;background:#fff;font-size:13px;font-weight:700;color:#64748b;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">← 이전</button>
           <button id="stuBtnNext" onclick="stuNextQ()" disabled style="flex:1;padding:13px;border-radius:12px;background:linear-gradient(135deg,#F26C1B,#e05a10);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;opacity:.4;transition:.2s;">다음 →</button>
         </div>
       </div>
